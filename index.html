@@ -1713,6 +1713,24 @@ async function init(){
     if(document.querySelector('.tab-panel[data-panel="write"]').classList.contains('active')) initWriters();
   });
 }
+  window.addEventListener('resize', () => {
+  if(document.querySelector('.tab-panel[data-panel="write"]').classList.contains('active')) initWriters();
+});
+}
+
+/* ============================================================
+   LESSON DATA — có pos (loại từ) + image (tuỳ chọn)
+   ============================================================ */
+const LESSONS = [
+  {id:1,level:'HSK 1',title:'Chào hỏi cơ bản',sub:'...',
+   vocab:[...],
+   speaking:[...],
+   quiz:[...],
+   dialogue:{...}
+  },
+  // ... bài 2 đến bài 10 ...
+];
+
 init();
 </script>
 </body>         
