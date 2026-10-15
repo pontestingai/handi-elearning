@@ -12,23 +12,17 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  /* === NEW PALETTE: Cam sáng · Nâu cà phê đậm · Be sáng === */
-  --r:#ea580c;              /* Cam sáng - accent chính */
-  --r2:#c2410c;             /* Cam đậm hơn */
-  --r3:#9a3412;             /* Cam đậm nhất */
-  --rg:rgba(234,88,12,.08);
-  --dk:#3d2817;             /* Nâu cà phê đậm - text chính */
-  --sl:#5d4037;             /* Nâu trung */
-  --mu:#8d6e63;             /* Nâu nhạt */
-  --li:#faf3e8;             /* Be sáng - background phụ */
-  --bd:#e7d5be;             /* Be border */
-  --gd:#fbbf24;             /* Vàng gold accent */
+  --r:#ea580c;--r2:#c2410c;--r3:#9a3412;--rg:rgba(234,88,12,.08);
+  --dk:#3d2817;--sl:#5d4037;--mu:#8d6e63;--li:#faf3e8;--bd:#e7d5be;
+  --gd:#fbbf24;
   --ok:#16a34a;--ok-bg:rgba(22,163,74,.1);
   --warn:#f59e0b;--warn-bg:rgba(245,158,11,.1);
   --info:#3b82f6;--info-bg:rgba(59,130,246,.1);
   --sb-w:270px;
-  --sb-bg:#2d1b0e;          /* Sidebar nâu cà phê rất đậm */
-  --sb-bg2:#3d2817;         /* Sidebar block */
+  --sb-bg:#1c1008;         /* FIX: sidebar tối hơn */
+  --sb-bg2:#2a1810;
+  --sb-text:#cfc1a8;
+  --sb-muted:#8a7259;
   --sh:0 10px 30px rgba(61,40,23,.08);
   --fn:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
   --zh:'Noto Sans SC',sans-serif;
@@ -40,47 +34,46 @@ a{color:inherit;text-decoration:none}
 ul{list-style:none}
 button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
 
-/* ============ SIDEBAR ============ */
-.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sb-w);background:var(--sb-bg);color:#d4c4a8;padding:22px 0;overflow:hidden;z-index:200;display:flex;flex-direction:column;transition:transform .3s ease}
+/* === SIDEBAR === */
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sb-w);background:var(--sb-bg);color:var(--sb-text);padding:22px 0;overflow:hidden;z-index:200;display:flex;flex-direction:column;transition:transform .3s ease}
 .main{margin-left:var(--sb-w);min-height:100vh;display:flex;flex-direction:column}
-.sidebar__brand{display:flex;align-items:center;gap:12px;padding:0 22px 22px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:20px;flex-shrink:0}
+.sidebar__brand{display:flex;align-items:center;gap:12px;padding:0 22px 22px;border-bottom:1px solid rgba(255,255,255,.05);margin-bottom:20px;flex-shrink:0}
 .sidebar__logo{width:44px;height:44px;background:linear-gradient(135deg,#ea580c,#c2410c);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--zh);font-weight:900;font-size:26px;color:#fff;flex-shrink:0;box-shadow:0 4px 12px rgba(234,88,12,.35)}
-.sidebar__brand-text b{display:block;color:#fdf8f1;font-size:14px;font-weight:800}
-.sidebar__brand-text span{font-size:11.5px;color:#a1887f}
+.sidebar__brand-text b{display:block;color:#f5eadb;font-size:14px;font-weight:800}
+.sidebar__brand-text span{font-size:11.5px;color:var(--sb-muted)}
 .sidebar__section{padding:0 22px;margin-bottom:22px;flex-shrink:0}
-.sidebar__section--grow{flex:1;overflow-y:auto;min-height:0;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.1) transparent}
+.sidebar__section--grow{flex:1;overflow-y:auto;min-height:0;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.08) transparent}
 .sidebar__section--grow::-webkit-scrollbar{width:6px}
-.sidebar__section--grow::-webkit-scrollbar-track{background:transparent}
-.sidebar__section--grow::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
-.sidebar__section--grow::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.22)}
-.sidebar__section-title{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#8d6e63;margin-bottom:12px}
+.sidebar__section--grow::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:3px}
+.sidebar__section--grow::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.2)}
+.sidebar__section-title{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--sb-muted);margin-bottom:12px}
 .progress-block{background:var(--sb-bg2);border-radius:12px;padding:16px;margin-bottom:20px}
 .progress-block__head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.progress-block__head span{font-size:12px;font-weight:700;color:#a1887f}
-.progress-block__head b{font-size:18px;font-weight:800;color:#fdf8f1}
-.progress-block__bar{height:8px;background:rgba(0,0,0,.25);border-radius:99px;overflow:hidden;margin-bottom:10px}
-.progress-block__fill{height:100%;background:linear-gradient(90deg,#ea580c,#f97316);border-radius:99px;transition:width .5s ease;width:0%}
-.progress-block__stats{display:flex;justify-content:space-between;font-size:11.5px;color:#8d6e63}
+.progress-block__head span{font-size:12px;font-weight:700;color:var(--sb-muted)}
+.progress-block__head b{font-size:18px;font-weight:800;color:#f5eadb}
+.progress-block__bar{height:8px;background:rgba(0,0,0,.35);border-radius:99px;overflow:hidden;margin-bottom:10px}
+.progress-block__fill{height:100%;background:linear-gradient(90deg,#ea580c,#f97316);border-radius:99px;transition:width .5s ease;width:0%;box-shadow:0 0 12px rgba(234,88,12,.6)} /* HIGHLIGHT */
+.progress-block__stats{display:flex;justify-content:space-between;font-size:11.5px;color:var(--sb-muted)}
 .progress-block__stats span{display:flex;align-items:center;gap:5px}
 .progress-block__stats i{color:var(--gd)}
 .lesson{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;cursor:pointer;transition:background .2s;margin-bottom:4px;position:relative}
 .lesson:hover{background:var(--sb-bg2)}
-.lesson.active{background:rgba(234,88,12,.18);color:#fff}
-.lesson.active::before{content:"";position:absolute;left:-22px;top:8px;bottom:8px;width:3px;background:var(--r);border-radius:0 3px 3px 0}
+.lesson.active{background:rgba(234,88,12,.18);color:#fff;box-shadow:inset 0 0 0 1px rgba(234,88,12,.25)} /* HIGHLIGHT */
+.lesson.active::before{content:"";position:absolute;left:-22px;top:8px;bottom:8px;width:3px;background:var(--r);border-radius:0 3px 3px 0;box-shadow:0 0 10px rgba(234,88,12,.8)} /* HIGHLIGHT */
 .lesson.done .lesson__num{background:var(--ok);color:#fff;border-color:var(--ok)}
-.lesson__num{flex-shrink:0;width:28px;height:28px;border-radius:8px;background:var(--sb-bg2);border:1.5px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#a1887f;transition:all .2s}
+.lesson__num{flex-shrink:0;width:28px;height:28px;border-radius:8px;background:var(--sb-bg2);border:1.5px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--sb-muted);transition:all .2s}
 .lesson.active .lesson__num{background:var(--r);border-color:var(--r);color:#fff}
 .lesson__body{flex:1;min-width:0}
-.lesson__title{font-size:13.5px;font-weight:600;line-height:1.3;color:#e8dcc8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lesson__meta{font-size:11px;color:#8d6e63;margin-top:2px}
-.lesson.active .lesson__title{color:#fdf8f1;font-weight:700}
+.lesson__title{font-size:13.5px;font-weight:600;line-height:1.3;color:#e2d4bc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lesson__meta{font-size:11px;color:var(--sb-muted);margin-top:2px}
+.lesson.active .lesson__title{color:#fff;font-weight:700}
 .lesson__check{font-size:12px;color:var(--ok);opacity:0;transition:opacity .2s}
 .lesson.done .lesson__check{opacity:1}
-.sidebar__footer{margin-top:auto;padding:16px 22px;border-top:1px solid rgba(255,255,255,.06);font-size:12px;color:#8d6e63;flex-shrink:0}
-.sidebar__footer a{color:#a1887f;display:flex;align-items:center;gap:8px;padding:8px 0;transition:color .2s}
+.sidebar__footer{margin-top:auto;padding:16px 22px;border-top:1px solid rgba(255,255,255,.05);font-size:12px;color:var(--sb-muted);flex-shrink:0}
+.sidebar__footer a{color:var(--sb-muted);display:flex;align-items:center;gap:8px;padding:8px 0;transition:color .2s}
 .sidebar__footer a:hover{color:var(--r)}
 
-/* ============ TOPBAR ============ */
+/* === TOPBAR === */
 .topbar{background:#fff;border-bottom:1px solid var(--bd);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;position:sticky;top:0;z-index:50}
 .topbar__title{font-size:15px;font-weight:700;color:var(--dk);display:flex;align-items:center;gap:10px;min-width:0}
 .topbar__title > span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -91,58 +84,60 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .menu-btn{display:none}
 .content{flex:1;padding:32px;max-width:1100px;width:100%;margin:0 auto}
 
-/* ============ LESSON HEAD ============ */
+/* === LESSON HEAD === */
 .lesson-head{margin-bottom:28px}
 .lesson-head__lbl{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--r2);background:var(--rg);border-radius:99px;padding:6px 14px;margin-bottom:14px}
 .lesson-head__title{font-size:clamp(24px,3vw,32px);font-weight:800;color:var(--dk);line-height:1.2;letter-spacing:-.02em;margin-bottom:10px}
 .lesson-head__sub{font-size:15px;color:var(--mu);line-height:1.7;max-width:720px}
 
-/* ============ TABS ============ */
+/* === TABS === */
 .tabs{display:flex;gap:6px;background:#fff;padding:6px;border-radius:14px;border:1px solid var(--bd);margin-bottom:24px;overflow-x:auto}
 .tab{flex:1;min-width:max-content;padding:10px 16px;border-radius:10px;font-size:13.5px;font-weight:700;color:var(--sl);display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;white-space:nowrap}
 .tab:hover{background:var(--li);color:var(--dk)}
-.tab.active{background:var(--r);color:#fff;box-shadow:0 4px 12px rgba(234,88,12,.28)}
+.tab.active{background:var(--r);color:#fff;box-shadow:0 4px 16px rgba(234,88,12,.45),0 0 0 2px rgba(234,88,12,.12)} /* HIGHLIGHT */
 .tab i{font-size:13px}
 .tab-panel{display:none}
 .tab-panel.active{display:block;animation:fade .3s ease}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-/* ============ VOCAB ============ */
+/* === VOCAB (with emoji) === */
 .vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
-.vocab-card{background:#fff;border:1.5px solid var(--bd);border-radius:16px;padding:20px 16px;text-align:center;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.vocab-card{background:#fff;border:1.5px solid var(--bd);border-radius:16px;padding:18px 16px;text-align:center;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
 .vocab-card:hover{transform:translateY(-4px);box-shadow:var(--sh);border-color:rgba(234,88,12,.3)}
-.vocab-card__hanzi{font-family:var(--zh);font-size:36px;font-weight:700;color:var(--dk);line-height:1.1;margin-bottom:6px}
-.vocab-card__pinyin{font-size:13px;color:var(--r);font-weight:600;margin-bottom:8px;font-style:italic}
+.vocab-card__emoji{font-size:44px;line-height:1;margin-bottom:8px;display:block;filter:drop-shadow(0 4px 8px rgba(234,88,12,.15))}
+.vocab-card__hanzi{font-family:var(--zh);font-size:32px;font-weight:700;color:var(--dk);line-height:1.1;margin-bottom:6px}
+.vocab-card__pinyin{font-size:13px;color:var(--r);font-weight:600;margin-bottom:6px;font-style:italic}
 .vocab-card__meaning{font-size:13.5px;color:var(--mu);line-height:1.4}
 .vocab-card__speak{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;background:var(--rg);color:var(--r);display:flex;align-items:center;justify-content:center;font-size:12px;opacity:0;transition:opacity .2s}
 .vocab-card:hover .vocab-card__speak{opacity:1}
 .vocab-card__speak:hover{background:var(--r);color:#fff}
 
-/* ============ FLASHCARD ============ */
-.fc-stage{background:#fff;border:1.5px solid var(--bd);border-radius:20px;padding:40px 24px;text-align:center;min-height:340px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
-.fc-stage__counter{position:absolute;top:20px;left:24px;font-size:13px;font-weight:700;color:var(--mu)}
+/* === FLASHCARD (FIX mobile) === */
+.fc-stage{background:#fff;border:1.5px solid var(--bd);border-radius:20px;padding:24px;text-align:center;min-height:340px;display:flex;flex-direction:column;align-items:center;gap:20px}
+.fc-stage__counter{align-self:flex-start;font-size:13px;font-weight:700;color:var(--mu);order:-1}
 .fc-stage__counter b{color:var(--r)}
-.fc-card{width:100%;max-width:480px;aspect-ratio:5/3;perspective:1200px;cursor:pointer;margin-bottom:24px}
-.fc-card__inner{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d}
+.fc-card{width:100%;max-width:480px;aspect-ratio:5/3;perspective:1200px;cursor:pointer;flex-shrink:0}
+.fc-card__inner{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d;-webkit-transform-style:preserve-3d;will-change:transform}
 .fc-card.flipped .fc-card__inner{transform:rotateY(180deg)}
-.fc-card__face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;box-shadow:0 8px 24px rgba(61,40,23,.1)}
+.fc-card__face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;box-shadow:0 8px 24px rgba(61,40,23,.1)}
 .fc-card__front{background:linear-gradient(135deg,#fff 0%,var(--li) 100%);border:2px solid rgba(234,88,12,.2)}
 .fc-card__back{background:linear-gradient(135deg,#3d2817 0%,#2d1b0e 100%);color:#fff;transform:rotateY(180deg)}
-.fc-card__hanzi{font-family:var(--zh);font-size:clamp(48px,10vw,84px);font-weight:700;color:var(--dk);line-height:1.1;margin-bottom:12px}
-.fc-card__pinyin{font-size:18px;color:var(--r);font-weight:700;font-style:italic}
-.fc-card__meaning{font-size:22px;font-weight:700;color:#fdf8f1;margin-bottom:12px}
-.fc-card__example{font-family:var(--zh);font-size:15px;color:rgba(253,248,241,.75);line-height:1.6;padding:0 10px}
-.fc-card__hint{position:absolute;bottom:14px;font-size:11.5px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.1em}
+.fc-card__hanzi{font-family:var(--zh);font-size:clamp(44px,9vw,72px);font-weight:700;color:var(--dk);line-height:1.1;margin-bottom:10px}
+.fc-card__pinyin{font-size:16px;color:var(--r);font-weight:700;font-style:italic;line-height:1.3}
+.fc-card__meaning{font-size:20px;font-weight:700;color:#fdf8f1;margin-bottom:6px;line-height:1.3}
+.fc-card__pinyin-back{font-size:14px;color:var(--gd);font-weight:600;font-style:italic;margin-bottom:10px}
+.fc-card__example{font-family:var(--zh);font-size:13.5px;color:rgba(253,248,241,.75);line-height:1.5;padding:0 8px}
+.fc-card__hint{position:absolute;bottom:10px;font-size:10.5px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.1em}
 .fc-card__back .fc-card__hint{color:rgba(253,248,241,.4)}
-.fc-controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.fc-controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%}
 
-/* ============ QUIZ ============ */
+/* === QUIZ === */
 .quiz{background:#fff;border:1.5px solid var(--bd);border-radius:20px;padding:32px 28px}
 .quiz__head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;flex-wrap:wrap;gap:12px}
 .quiz__progress{font-size:13px;font-weight:700;color:var(--mu)}
 .quiz__progress b{color:var(--r)}
 .quiz__bar{height:6px;background:var(--li);border-radius:99px;overflow:hidden;flex:1;min-width:140px;margin-left:12px}
-.quiz__fill{height:100%;background:var(--r);transition:width .4s;border-radius:99px}
+.quiz__fill{height:100%;background:var(--r);transition:width .4s;border-radius:99px;box-shadow:0 0 8px rgba(234,88,12,.5)}
 .quiz__question{font-size:19px;font-weight:700;color:var(--dk);line-height:1.4;margin-bottom:24px}
 .quiz__question .zh{font-family:var(--zh);font-size:26px;display:block;margin-bottom:6px}
 .quiz__options{display:grid;gap:10px}
@@ -171,19 +166,61 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .result-box__title{font-size:22px;font-weight:800;color:var(--dk);margin-bottom:10px}
 .result-box__desc{font-size:15px;color:var(--mu);line-height:1.7;margin-bottom:26px}
 
-/* ============ BUTTONS ============ */
+/* === BUTTONS === */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;border-radius:10px;font-size:14px;font-weight:700;transition:all .2s;border:2px solid transparent;white-space:nowrap}
 .btn:hover{transform:translateY(-2px)}
 .btn--primary{background:var(--r);border-color:var(--r);color:#fff}
 .btn--primary:hover{background:var(--r2);border-color:var(--r2);box-shadow:0 8px 20px rgba(234,88,12,.3)}
 .btn--ghost{background:#fff;border-color:var(--bd);color:var(--dk)}
 .btn--ghost:hover{border-color:var(--r);color:var(--r)}
-.btn--ok{background:var(--ok);border-color:var(--ok);color:#fff}
-.btn--ok:hover{background:#15803d;border-color:#15803d}
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
-/* ============ WRITING (HANZI WRITER) ============ */
-.writing{background:#fff;border:1.5px solid var(--bd);border-radius:20px;padding:32px 28px}
+/* === DIALOGUE === */
+.dialogue{background:#fff;border:1.5px solid var(--bd);border-radius:20px;padding:28px}
+.dialogue__header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.dialogue__title{font-size:17px;font-weight:800;color:var(--dk)}
+.dialogue__toggle{display:inline-flex;align-items:center;gap:8px;background:var(--li);border:1.5px solid var(--bd);border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;color:var(--sl);transition:all .2s}
+.dialogue__toggle:hover{border-color:var(--r);color:var(--r)}
+.dialogue__toggle.active{background:var(--r);border-color:var(--r);color:#fff}
+.dialogue__lines{display:flex;flex-direction:column;gap:14px;margin-bottom:26px}
+.dialogue__line{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:var(--li);border-radius:12px;border-left:3px solid var(--bd);transition:all .2s}
+.dialogue__line:hover{border-left-color:var(--r);background:#fef7ee}
+.dialogue__speaker{flex-shrink:0;width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#ea580c,#c2410c);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 3px 8px rgba(234,88,12,.3)}
+.dialogue__body{flex:1;min-width:0}
+.dialogue__hanzi{font-family:var(--zh);font-size:20px;color:var(--dk);line-height:1.4;font-weight:500;cursor:pointer;user-select:none}
+.dialogue__hanzi:hover{color:var(--r)}
+.dialogue__pinyin{font-size:13px;color:var(--r);font-style:italic;font-weight:600;margin-top:2px;display:none}
+.dialogue__pinyin.show{display:block}
+.dialogue__meaning{font-size:13.5px;color:var(--mu);margin-top:4px;display:none}
+.dialogue__meaning.show{display:block}
+.dialogue__keywords{display:flex;flex-wrap:wrap;gap:8px;padding-top:20px;border-top:1px dashed var(--bd)}
+.dialogue__kw-lbl{width:100%;font-size:12px;font-weight:800;letter-spacing:.05em;color:var(--mu);text-transform:uppercase;margin-bottom:4px}
+.dialogue__kw{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;background:#fff;border:1.5px solid var(--bd);border-radius:99px;font-size:13px;font-weight:600;color:var(--dk);cursor:pointer;transition:all .2s;position:relative}
+.dialogue__kw:hover{border-color:var(--r);color:var(--r);transform:translateY(-2px);box-shadow:0 4px 12px rgba(234,88,12,.15)}
+.dialogue__kw.learned{background:var(--r);border-color:var(--r);color:#fff}
+.dialogue__kw.learned .dialogue__kw-check{background:#fff;color:var(--r);opacity:1}
+.dialogue__kw-check{width:18px;height:18px;border-radius:50%;border:1.5px solid currentColor;display:inline-flex;align-items:center;justify-content:center;font-size:10px;opacity:.4;transition:all .2s}
+.dialogue__kw .zh{font-family:var(--zh);font-weight:700;font-size:15px}
+.dialogue__kw .py{font-style:italic;font-size:11.5px;opacity:.75}
+
+/* === LIGHTBOX === */
+.lightbox{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
+.lightbox.show{display:flex}
+.lightbox__backdrop{position:absolute;inset:0;background:rgba(20,12,6,.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:fadeIn .2s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.lightbox__content{position:relative;background:#fff;border-radius:20px;padding:36px 32px 32px;max-width:400px;width:100%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.35);animation:popIn .28s cubic-bezier(.34,1.56,.64,1);border:2px solid var(--gd)}
+@keyframes popIn{from{opacity:0;transform:scale(.85) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.lightbox__close{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;background:var(--li);color:var(--sl);font-size:18px;display:inline-flex;align-items:center;justify-content:center;transition:all .2s}
+.lightbox__close:hover{background:var(--r);color:#fff}
+.lightbox__emoji{font-size:56px;line-height:1;margin-bottom:12px;display:block}
+.lightbox__hanzi{font-family:var(--zh);font-size:52px;font-weight:700;color:var(--dk);line-height:1.15;margin-bottom:10px}
+.lightbox__pinyin{font-size:20px;color:var(--r);font-weight:700;font-style:italic;margin-bottom:10px}
+.lightbox__meaning{font-size:18px;color:var(--sl);font-weight:600;line-height:1.4;padding-top:14px;border-top:1px dashed var(--bd)}
+.lightbox__speak{margin-top:18px;display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:var(--rg);color:var(--r);border-radius:10px;font-weight:700;font-size:13.5px;transition:all .2s}
+.lightbox__speak:hover{background:var(--r);color:#fff}
+
+/* === WRITING (multi-box) === */
+.writing{background:#fff;border:1.5px solid var(--bd);border-radius:20px;padding:28px 24px}
 .writing__header{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:20px;flex-wrap:wrap}
 .writing__nav{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:var(--mu)}
 .writing__nav b{color:var(--r);font-size:15px}
@@ -192,24 +229,35 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .tool-btn:hover{background:var(--rg);border-color:var(--r);color:var(--r)}
 .tool-btn.active{background:var(--r);border-color:var(--r);color:#fff}
 .tool-btn.playing{background:var(--gd);border-color:var(--gd);color:var(--dk)}
-
 .writing__stage-wrap{display:flex;justify-content:center;margin-bottom:20px}
-.writing__stage{position:relative;background:linear-gradient(135deg,#fdf8f1 0%,#faf3e8 100%);border:2px solid rgba(234,88,12,.28);border-radius:16px;width:100%;max-width:380px;aspect-ratio:1;overflow:hidden}
-.writing__grid-bg{position:absolute;inset:0;pointer-events:none;background-image:
-  linear-gradient(to right,transparent calc(50% - 1px),rgba(234,88,12,.18) 50%,transparent calc(50% + 1px)),
-  linear-gradient(to bottom,transparent calc(50% - 1px),rgba(234,88,12,.18) 50%,transparent calc(50% + 1px)),
-  linear-gradient(45deg,transparent calc(50% - 1px),rgba(234,88,12,.1) 50%,transparent calc(50% + 1px)),
-  linear-gradient(-45deg,transparent calc(50% - 1px),rgba(234,88,12,.1) 50%,transparent calc(50% + 1px))}
-.writing__writer{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:20px}
-.writing__writer svg{display:block}
-
+.writing__stage{position:relative;background:linear-gradient(135deg,#fdf8f1 0%,#faf3e8 100%);border:2px solid rgba(234,88,12,.28);border-radius:16px;width:100%;max-width:520px;min-height:280px;padding:20px;display:flex;align-items:center;justify-content:center}
+.writing__writer{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.writing__box{position:relative;background:#fff;border:1px solid rgba(234,88,12,.2);border-radius:10px;box-shadow:0 3px 10px rgba(61,40,23,.08);overflow:hidden}
+.writing__box-grid{position:absolute;inset:0;pointer-events:none;z-index:0;background-image:
+  linear-gradient(to right,transparent calc(50% - 0.5px),rgba(234,88,12,.16) 50%,transparent calc(50% + 0.5px)),
+  linear-gradient(to bottom,transparent calc(50% - 0.5px),rgba(234,88,12,.16) 50%,transparent calc(50% + 0.5px)),
+  linear-gradient(45deg,transparent calc(50% - 0.5px),rgba(234,88,12,.08) 50%,transparent calc(50% + 0.5px)),
+  linear-gradient(-45deg,transparent calc(50% - 0.5px),rgba(234,88,12,.08) 50%,transparent calc(50% + 0.5px))}
+.writing__box-hw{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;width:100%;height:100%}
+.writing__box-lbl{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:700;color:var(--mu);z-index:2;pointer-events:none;font-family:var(--zh)}
 .writing__info{text-align:center;margin-bottom:20px}
 .writing__info b{font-family:var(--zh);font-size:22px;color:var(--dk);display:block;margin-bottom:4px}
 .writing__info span{font-size:14px;color:var(--mu)}
 .writing__controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .writing__hint{font-size:12.5px;color:var(--mu);text-align:center;margin-top:12px;font-style:italic}
+.writing__score{margin-top:18px;padding:18px 22px;border-radius:14px;text-align:center;display:none;animation:popIn .35s cubic-bezier(.34,1.56,.64,1)}
+.writing__score.show{display:block}
+.writing__score.great{background:linear-gradient(135deg,var(--ok-bg),rgba(22,163,74,.04));border:1.5px solid var(--ok)}
+.writing__score.good{background:linear-gradient(135deg,var(--info-bg),rgba(59,130,246,.04));border:1.5px solid var(--info)}
+.writing__score.try{background:linear-gradient(135deg,var(--warn-bg),rgba(245,158,11,.04));border:1.5px solid var(--warn)}
+.writing__score-emoji{font-size:38px;line-height:1;margin-bottom:6px}
+.writing__score-num{font-size:44px;font-weight:900;line-height:1;letter-spacing:-.03em}
+.writing__score.great .writing__score-num{color:var(--ok)}
+.writing__score.good .writing__score-num{color:var(--info)}
+.writing__score.try .writing__score-num{color:var(--warn)}
+.writing__score-txt{font-size:15px;color:var(--sl);margin-top:6px;font-weight:600}
 
-/* ============ SPEAKING ============ */
+/* === SPEAKING === */
 .speaking{background:#fff;border:1.5px solid var(--bd);border-radius:20px;padding:32px 28px}
 .speaking__nav{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:24px;flex-wrap:wrap}
 .speaking__counter{font-size:13px;font-weight:700;color:var(--mu)}
@@ -224,11 +272,12 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .speak-target__meaning{font-size:14.5px;color:var(--mu);line-height:1.5}
 .speak-target__actions{display:flex;justify-content:center;gap:10px;margin-top:18px;flex-wrap:wrap}
 .speak-mic{display:flex;flex-direction:column;align-items:center;gap:14px;margin-bottom:20px}
-.mic-btn{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#ea580c,#c2410c);color:#fff;font-size:42px;display:flex;align-items:center;justify-content:center;position:relative;transition:transform .2s;box-shadow:0 12px 32px rgba(234,88,12,.35);cursor:pointer;border:0;user-select:none}
-.mic-btn:hover:not(:disabled){transform:scale(1.05)}
+.mic-btn{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#ea580c,#c2410c);color:#fff;font-size:42px;display:flex;align-items:center;justify-content:center;position:relative;transition:transform .2s;box-shadow:0 12px 32px rgba(234,88,12,.35);cursor:pointer;border:0;user-select:none;animation:micBreath 3s ease-in-out infinite} /* HIGHLIGHT */
+@keyframes micBreath{0%,100%{box-shadow:0 12px 32px rgba(234,88,12,.35)}50%{box-shadow:0 14px 40px rgba(234,88,12,.5),0 0 0 8px rgba(234,88,12,.06)}}
+.mic-btn:hover:not(:disabled){transform:scale(1.05);animation:none;box-shadow:0 14px 40px rgba(234,88,12,.5)}
 .mic-btn:active:not(:disabled){transform:scale(.98)}
 .mic-btn.listening{animation:micPulse 1.4s ease-in-out infinite}
-.mic-btn:disabled{cursor:not-allowed;opacity:.7}
+.mic-btn:disabled{cursor:not-allowed;opacity:.7;animation:none}
 .mic-btn__ring{position:absolute;inset:-12px;border-radius:50%;border:2px solid rgba(234,88,12,.4);opacity:0;pointer-events:none}
 .mic-btn.listening .mic-btn__ring{animation:ringPulse 1.6s ease-out infinite}
 @keyframes micPulse{0%,100%{box-shadow:0 12px 32px rgba(234,88,12,.35)}50%{box-shadow:0 12px 48px rgba(234,88,12,.6),0 0 0 12px rgba(234,88,12,.15)}}
@@ -263,27 +312,24 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .speaking__unsupported{background:var(--warn-bg);border:1.5px solid var(--warn);border-radius:14px;padding:18px 20px;font-size:14px;line-height:1.6;color:#92400e;display:flex;gap:12px;align-items:flex-start}
 .speaking__unsupported i{font-size:20px;flex-shrink:0;margin-top:2px}
 .mic-status{display:flex;align-items:center;gap:10px;padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600;margin-bottom:16px}
-.mic-status.ok{background:var(--ok-bg);color:#166534;border:1.5px solid rgba(22,163,74,.3)}
 .mic-status.pending{background:var(--info-bg);color:#1e40af;border:1.5px solid rgba(59,130,246,.3)}
-.mic-status.denied{background:#fef2f2;color:#991b1b;border:1.5px solid rgba(239,68,68,.3)}
 .mic-status.hidden{display:none}
 .mic-status i{font-size:16px}
 .mic-status__btn{margin-left:auto;padding:6px 12px;border-radius:8px;background:#fff;border:1.5px solid currentColor;font-size:12.5px;font-weight:700;transition:all .2s}
 .mic-status__btn:hover{background:currentColor;color:#fff}
-
 .complete-banner{background:linear-gradient(135deg,#ea580c 0%,#c2410c 100%);color:#fff;border-radius:16px;padding:24px 28px;display:flex;align-items:center;gap:20px;margin-top:24px}
 .complete-banner__icon{width:56px;height:56px;background:rgba(255,255,255,.2);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
 .complete-banner__body{flex:1}
 .complete-banner__body b{display:block;font-size:17px;font-weight:800;margin-bottom:4px}
 .complete-banner__body span{font-size:13.5px;opacity:.9;line-height:1.5}
 .complete-banner .btn{background:#fff;color:var(--r2);border-color:#fff}
-
-.sidebar__overlay{position:fixed;inset:0;background:rgba(45,27,14,.5);z-index:150;opacity:0;visibility:hidden;transition:all .3s}
+.sidebar__overlay{position:fixed;inset:0;background:rgba(20,12,6,.5);z-index:150;opacity:0;visibility:hidden;transition:all .3s}
 .sidebar__overlay.show{opacity:1;visibility:visible}
 
+/* === RESPONSIVE === */
 @media (max-width:1024px){.content{padding:24px 20px}.topbar{padding:12px 20px}}
 @media (max-width:900px){
-  .sidebar{transform:translateX(-100%);box-shadow:4px 0 24px rgba(0,0,0,.15)}
+  .sidebar{transform:translateX(-100%);box-shadow:4px 0 24px rgba(0,0,0,.2)}
   .sidebar.open{transform:translateX(0)}
   .main{margin-left:0}
   .menu-btn{display:inline-flex}
@@ -293,21 +339,29 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 }
 @media (max-width:600px){
   .vocab-grid{grid-template-columns:repeat(2,1fr)}
-  .vocab-card{padding:16px 12px}
-  .vocab-card__hanzi{font-size:28px}
+  .vocab-card{padding:14px 10px}
+  .vocab-card__emoji{font-size:36px}
+  .vocab-card__hanzi{font-size:26px}
   .lesson-head__title{font-size:22px}
   .quiz{padding:22px 18px}
   .quiz__question{font-size:16px}
   .quiz__question .zh{font-size:22px}
-  .fc-stage{padding:28px 18px}
+  .fc-stage{padding:16px;gap:14px}
+  .fc-card__hanzi{font-size:44px}
+  .fc-card__meaning{font-size:17px}
   .result-box{padding:32px 22px}
   .result-box__score{font-size:44px}
   .complete-banner{flex-direction:column;text-align:center;padding:22px}
-  .writing{padding:22px 18px}
-  .writing__stage{max-width:320px}
+  .writing{padding:20px 14px}
+  .writing__stage{padding:14px;min-height:220px}
+  .writing__writer{gap:10px}
   .speaking{padding:22px 16px}
   .mic-btn{width:100px;height:100px;font-size:36px}
   .speak-target{padding:26px 16px}
+  .dialogue{padding:20px 16px}
+  .dialogue__hanzi{font-size:17px}
+  .lightbox__hanzi{font-size:44px}
+  .lightbox__emoji{font-size:48px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -362,24 +416,44 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 
     <nav class="tabs" role="tablist">
       <button class="tab active" data-tab="vocab"><i class="fas fa-book"></i> Từ vựng</button>
+      <button class="tab" data-tab="dialogue"><i class="fas fa-comments"></i> Bài khóa</button>
       <button class="tab" data-tab="flash"><i class="fas fa-clone"></i> Flashcard</button>
       <button class="tab" data-tab="quiz"><i class="fas fa-circle-question"></i> Trắc nghiệm</button>
       <button class="tab" data-tab="write"><i class="fas fa-pen-fancy"></i> Tập viết</button>
       <button class="tab" data-tab="speak"><i class="fas fa-microphone"></i> Luyện nói AI</button>
     </nav>
 
+    <!-- VOCAB -->
     <section class="tab-panel active" data-panel="vocab">
       <div class="vocab-grid" id="vocabGrid"></div>
       <div class="complete-banner" id="vocabBanner" style="display:none">
         <div class="complete-banner__icon"><i class="fas fa-check"></i></div>
         <div class="complete-banner__body">
           <b>Bạn đã xem hết từ vựng!</b>
-          <span>Tiếp tục sang phần Flashcard hoặc luyện nói cùng AI.</span>
+          <span>Tiếp tục sang phần Bài khóa hoặc Flashcard để luyện tập.</span>
         </div>
-        <button class="btn" onclick="switchTab('speak')">Luyện nói AI <i class="fas fa-arrow-right"></i></button>
+        <button class="btn" onclick="switchTab('dialogue')">Xem bài khóa <i class="fas fa-arrow-right"></i></button>
       </div>
     </section>
 
+    <!-- DIALOGUE -->
+    <section class="tab-panel" data-panel="dialogue">
+      <div class="dialogue">
+        <div class="dialogue__header">
+          <div class="dialogue__title"><i class="fas fa-comments" style="color:var(--r);margin-right:6px"></i> Hội thoại mẫu</div>
+          <button class="dialogue__toggle" id="dialogueToggle" onclick="toggleDialogueReveal()">
+            <i class="fas fa-eye"></i> <span id="dialogueToggleText">Hiện pinyin &amp; nghĩa</span>
+          </button>
+        </div>
+        <div class="dialogue__lines" id="dialogueLines"></div>
+        <div class="dialogue__keywords">
+          <div class="dialogue__kw-lbl"><i class="fas fa-bookmark"></i> Từ khóa cần học — chạm để xem chi tiết, tick để đánh dấu</div>
+          <div id="dialogueKeywords" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FLASHCARD -->
     <section class="tab-panel" data-panel="flash">
       <div class="fc-stage">
         <div class="fc-stage__counter">Thẻ <b id="fcCurrent">1</b> / <span id="fcTotal">6</span></div>
@@ -392,6 +466,7 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
             </div>
             <div class="fc-card__face fc-card__back">
               <div class="fc-card__meaning" id="fcMeaning"></div>
+              <div class="fc-card__pinyin-back" id="fcPinyinBack"></div>
               <div class="fc-card__example" id="fcExample"></div>
               <div class="fc-card__hint">Nhấn để lật lại</div>
             </div>
@@ -405,6 +480,7 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
       </div>
     </section>
 
+    <!-- QUIZ -->
     <section class="tab-panel" data-panel="quiz">
       <div class="quiz" id="quizBox">
         <div class="quiz__head">
@@ -428,29 +504,20 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
       </div>
     </section>
 
-    <!-- WRITING TAB - dùng Hanzi Writer -->
+    <!-- WRITING -->
     <section class="tab-panel" data-panel="write">
       <div class="writing">
         <div class="writing__header">
-          <div class="writing__nav">
-            Chữ <b id="writeCurrent">1</b> / <span id="writeTotal">6</span>
-          </div>
+          <div class="writing__nav">Chữ <b id="writeCurrent">1</b> / <span id="writeTotal">6</span></div>
           <div class="writing__tools">
-            <button class="tool-btn" id="btnAnimate" onclick="playStrokeOrder()" title="Xem thứ tự viết">
-              <i class="fas fa-play"></i> <span>Xem cách viết</span>
-            </button>
-            <button class="tool-btn" id="btnQuiz" onclick="startQuiz()" title="Luyện viết">
-              <i class="fas fa-pen"></i> <span>Luyện viết</span>
-            </button>
-            <button class="tool-btn" onclick="clearWriter()" title="Xóa">
-              <i class="fas fa-trash"></i>
-            </button>
+            <button class="tool-btn" id="btnAnimate" onclick="playStrokeOrder()"><i class="fas fa-play"></i> <span>Xem cách viết</span></button>
+            <button class="tool-btn" id="btnQuiz" onclick="startQuiz()"><i class="fas fa-pen"></i> <span>Luyện viết</span></button>
+            <button class="tool-btn" onclick="clearWriter()" title="Xóa"><i class="fas fa-trash"></i></button>
           </div>
         </div>
 
         <div class="writing__stage-wrap">
           <div class="writing__stage">
-            <div class="writing__grid-bg"></div>
             <div id="hanziWriterTarget" class="writing__writer"></div>
           </div>
         </div>
@@ -465,11 +532,18 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
           <button class="btn btn--ghost" onclick="speak(LESSONS[state.currentLesson].vocab[writeIndex].hanzi)"><i class="fas fa-volume-high"></i> Nghe mẫu</button>
           <button class="btn btn--primary" onclick="writeNav(1)">Chữ tiếp <i class="fas fa-chevron-right"></i></button>
         </div>
-        <p class="writing__hint"><i class="fas fa-info-circle"></i> Nhấn "Xem cách viết" để xem hoạt ảnh thứ tự nét, hoặc "Luyện viết" để tự tay viết theo hướng dẫn</p>
+
+        <div class="writing__score" id="writingScore">
+          <div class="writing__score-emoji" id="writingScoreEmoji">🎉</div>
+          <div class="writing__score-num" id="writingScoreNum">100%</div>
+          <div class="writing__score-txt" id="writingScoreTxt">Hoàn hảo!</div>
+        </div>
+
+        <p class="writing__hint"><i class="fas fa-info-circle"></i> Nhấn "Xem cách viết" để xem hoạt ảnh thứ tự nét, hoặc "Luyện viết" để tự tay viết và được chấm điểm</p>
       </div>
     </section>
 
-    <!-- SPEAKING TAB -->
+    <!-- SPEAKING -->
     <section class="tab-panel" data-panel="speak">
       <div class="speaking" id="speakingBox">
         <div class="speaking__unsupported" id="speakUnsupported" style="display:none">
@@ -484,9 +558,7 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
           <div class="mic-status hidden" id="micStatus">
             <i class="fas fa-microphone-slash" id="micStatusIcon"></i>
             <span id="micStatusText">Cần cấp quyền micro</span>
-            <button class="mic-status__btn" id="micStatusBtn" onclick="requestMicPermission()">
-              <i class="fas fa-microphone"></i> Cấp quyền
-            </button>
+            <button class="mic-status__btn" id="micStatusBtn" onclick="requestMicPermission()"><i class="fas fa-microphone"></i> Cấp quyền</button>
           </div>
 
           <div class="speaking__nav">
@@ -504,7 +576,7 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
             <div class="speak-target__pinyin" id="spkPinyin">nǐ hǎo</div>
             <div class="speak-target__meaning" id="spkMeaning">Xin chào</div>
             <div class="speak-target__actions">
-              <button class="btn btn--ghost" onclick="playTarget()"><i class="fas fa-volume-high"></i> Nghe mẫu (Bắc Kinh)</button>
+              <button class="btn btn--ghost" onclick="playTarget()"><i class="fas fa-volume-high"></i> Nghe mẫu</button>
               <button class="btn btn--ghost" onclick="playTargetSlow()"><i class="fas fa-turtle"></i> Nghe chậm</button>
             </div>
           </div>
@@ -545,64 +617,302 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
   </main>
 </div>
 
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="lightbox__backdrop" onclick="closeLightbox()"></div>
+  <div class="lightbox__content">
+    <button class="lightbox__close" onclick="closeLightbox()" aria-label="Đóng"><i class="fas fa-xmark"></i></button>
+    <span class="lightbox__emoji" id="lbEmoji">👋</span>
+    <div class="lightbox__hanzi" id="lbHanzi" lang="zh">你好</div>
+    <div class="lightbox__pinyin" id="lbPinyin">nǐ hǎo</div>
+    <div class="lightbox__meaning" id="lbMeaning">Xin chào</div>
+    <button class="lightbox__speak" onclick="speak(document.getElementById('lbHanzi').textContent)">
+      <i class="fas fa-volume-high"></i> Nghe phát âm
+    </button>
+  </div>
+</div>
+
 <script>
 /* ============================================================
-   DATA
+   DATA — Thêm emoji + dialogue
    ============================================================ */
 const LESSONS = [
   {id:1,level:'HSK 1',title:'Chào hỏi cơ bản',sub:'Học cách chào hỏi, cảm ơn, tạm biệt và tự giới thiệu tên bằng tiếng Trung.',
-   vocab:[{hanzi:'你好',pinyin:'nǐ hǎo',meaning:'Xin chào',example:'你好！我是小明。'},{hanzi:'谢谢',pinyin:'xiè xie',meaning:'Cảm ơn',example:'谢谢你！'},{hanzi:'再见',pinyin:'zài jiàn',meaning:'Tạm biệt',example:'再见，明天见！'},{hanzi:'我',pinyin:'wǒ',meaning:'Tôi, tớ',example:'我是越南人。'},{hanzi:'你',pinyin:'nǐ',meaning:'Bạn, anh/chị',example:'你叫什么名字？'},{hanzi:'叫',pinyin:'jiào',meaning:'Gọi, tên là',example:'我叫小明。'}],
+   vocab:[
+     {hanzi:'你好',pinyin:'nǐ hǎo',meaning:'Xin chào',example:'你好！我是小明。',emoji:'👋'},
+     {hanzi:'谢谢',pinyin:'xiè xie',meaning:'Cảm ơn',example:'谢谢你！',emoji:'🙏'},
+     {hanzi:'再见',pinyin:'zài jiàn',meaning:'Tạm biệt',example:'再见，明天见！',emoji:'✋'},
+     {hanzi:'我',pinyin:'wǒ',meaning:'Tôi, tớ',example:'我是越南人。',emoji:'🙋'},
+     {hanzi:'你',pinyin:'nǐ',meaning:'Bạn, anh/chị',example:'你叫什么名字？',emoji:'👤'},
+     {hanzi:'叫',pinyin:'jiào',meaning:'Gọi, tên là',example:'我叫小明。',emoji:'💬'}
+   ],
    speaking:[{hanzi:'你好',pinyin:'nǐ hǎo',meaning:'Xin chào'},{hanzi:'谢谢',pinyin:'xiè xie',meaning:'Cảm ơn'},{hanzi:'再见',pinyin:'zài jiàn',meaning:'Tạm biệt'},{hanzi:'我叫小明',pinyin:'wǒ jiào Xiǎo Míng',meaning:'Tôi tên là Tiểu Minh'},{hanzi:'很高兴认识你',pinyin:'hěn gāo xìng rèn shi nǐ',meaning:'Rất vui được gặp bạn'}],
-   quiz:[{q:'"你好" có nghĩa là gì?',zh:'你好',options:['Tạm biệt','Xin chào','Cảm ơn','Xin lỗi'],correct:1},{q:'Từ nào có nghĩa là "Cảm ơn"?',options:['再见','谢谢','你好','我'],correct:1},{q:'"nǐ" (你) nghĩa là gì?',options:['Tôi','Bạn','Anh ấy','Cô ấy'],correct:1},{q:'"Tạm biệt" trong tiếng Trung là gì?',options:['你好','谢谢','再见','我叫'],correct:2},{q:'"Tôi tên là..." nói thế nào?',zh:'我叫...',options:['你是...','我叫...','你好...','谢谢...'],correct:1}]},
+   quiz:[{q:'"你好" có nghĩa là gì?',zh:'你好',options:['Tạm biệt','Xin chào','Cảm ơn','Xin lỗi'],correct:1},{q:'Từ nào có nghĩa là "Cảm ơn"?',options:['再见','谢谢','你好','我'],correct:1},{q:'"nǐ" (你) nghĩa là gì?',options:['Tôi','Bạn','Anh ấy','Cô ấy'],correct:1},{q:'"Tạm biệt" trong tiếng Trung là gì?',options:['你好','谢谢','再见','我叫'],correct:2},{q:'"Tôi tên là..." nói thế nào?',zh:'我叫...',options:['你是...','我叫...','你好...','谢谢...'],correct:1}],
+   dialogue:{
+     lines:[
+       {speaker:'A',hanzi:'你好！',pinyin:'nǐ hǎo!',meaning:'Xin chào!'},
+       {speaker:'B',hanzi:'你好！我叫小明。',pinyin:'nǐ hǎo! wǒ jiào Xiǎo Míng.',meaning:'Xin chào! Tôi tên là Tiểu Minh.'},
+       {speaker:'A',hanzi:'很高兴认识你。',pinyin:'hěn gāo xìng rèn shi nǐ.',meaning:'Rất vui được gặp bạn.'},
+       {speaker:'B',hanzi:'我也很高兴认识你。',pinyin:'wǒ yě hěn gāo xìng rèn shi nǐ.',meaning:'Tôi cũng rất vui được gặp bạn.'}
+     ],
+     keyWords:[
+       {hanzi:'你好',pinyin:'nǐ hǎo',meaning:'Xin chào',emoji:'👋'},
+       {hanzi:'我叫',pinyin:'wǒ jiào',meaning:'Tôi tên là',emoji:'💬'},
+       {hanzi:'很高兴',pinyin:'hěn gāo xìng',meaning:'Rất vui',emoji:'😊'},
+       {hanzi:'认识',pinyin:'rèn shi',meaning:'Quen biết',emoji:'🤝'}
+     ]
+   }
+  },
   {id:2,level:'HSK 1',title:'Số đếm 1–10',sub:'Làm quen với các số đếm cơ bản và cách dùng trong câu hỏi tuổi, số điện thoại.',
-   vocab:[{hanzi:'一',pinyin:'yī',meaning:'Số 1',example:'一个人 — một người'},{hanzi:'二',pinyin:'èr',meaning:'Số 2',example:'二月 — tháng 2'},{hanzi:'三',pinyin:'sān',meaning:'Số 3',example:'三个人 — ba người'},{hanzi:'四',pinyin:'sì',meaning:'Số 4',example:'四块钱 — bốn tệ'},{hanzi:'五',pinyin:'wǔ',meaning:'Số 5',example:'五点半 — 5 giờ rưỡi'},{hanzi:'十',pinyin:'shí',meaning:'Số 10',example:'十分 — rất, mười phần'}],
+   vocab:[
+     {hanzi:'一',pinyin:'yī',meaning:'Số 1',example:'一个人 — một người',emoji:'1️⃣'},
+     {hanzi:'二',pinyin:'èr',meaning:'Số 2',example:'二月 — tháng 2',emoji:'2️⃣'},
+     {hanzi:'三',pinyin:'sān',meaning:'Số 3',example:'三个人 — ba người',emoji:'3️⃣'},
+     {hanzi:'四',pinyin:'sì',meaning:'Số 4',example:'四块钱 — bốn tệ',emoji:'4️⃣'},
+     {hanzi:'五',pinyin:'wǔ',meaning:'Số 5',example:'五点半 — 5 giờ rưỡi',emoji:'5️⃣'},
+     {hanzi:'十',pinyin:'shí',meaning:'Số 10',example:'十分 — rất, mười phần',emoji:'🔟'}
+   ],
    speaking:[{hanzi:'一二三',pinyin:'yī èr sān',meaning:'1 2 3'},{hanzi:'四五',pinyin:'sì wǔ',meaning:'4 5'},{hanzi:'十块钱',pinyin:'shí kuài qián',meaning:'10 tệ'},{hanzi:'现在五点半',pinyin:'xiàn zài wǔ diǎn bàn',meaning:'Bây giờ là 5 rưỡi'},{hanzi:'我有三个朋友',pinyin:'wǒ yǒu sān ge péng you',meaning:'Tôi có 3 người bạn'}],
-   quiz:[{q:'Số "3" trong tiếng Trung là?',options:['一','二','三','四'],correct:2},{q:'"十" là số mấy?',options:['5','7','10','100'],correct:2},{q:'"wǔ" (五) nghĩa là?',options:['2','3','5','6'],correct:2},{q:'"四" đọc là gì?',options:['sì','shí','sān','èr'],correct:0},{q:'Số 2 viết thế nào?',options:['一','二','三','十'],correct:1}]},
+   quiz:[{q:'Số "3" trong tiếng Trung là?',options:['一','二','三','四'],correct:2},{q:'"十" là số mấy?',options:['5','7','10','100'],correct:2},{q:'"wǔ" (五) nghĩa là?',options:['2','3','5','6'],correct:2},{q:'"四" đọc là gì?',options:['sì','shí','sān','èr'],correct:0},{q:'Số 2 viết thế nào?',options:['一','二','三','十'],correct:1}],
+   dialogue:{
+     lines:[
+       {speaker:'A',hanzi:'现在几点？',pinyin:'xiàn zài jǐ diǎn?',meaning:'Bây giờ là mấy giờ?'},
+       {speaker:'B',hanzi:'现在三点半。',pinyin:'xiàn zài sān diǎn bàn.',meaning:'Bây giờ là 3 giờ rưỡi.'},
+       {speaker:'A',hanzi:'谢谢！',pinyin:'xiè xie!',meaning:'Cảm ơn!'},
+       {speaker:'B',hanzi:'不客气。',pinyin:'bú kè qi.',meaning:'Không có gì.'}
+     ],
+     keyWords:[
+       {hanzi:'几点',pinyin:'jǐ diǎn',meaning:'Mấy giờ',emoji:'🕐'},
+       {hanzi:'三点',pinyin:'sān diǎn',meaning:'3 giờ',emoji:'3️⃣'},
+       {hanzi:'半',pinyin:'bàn',meaning:'Rưỡi',emoji:'🌓'},
+       {hanzi:'不客气',pinyin:'bú kè qi',meaning:'Không có gì',emoji:'🙂'}
+     ]
+   }
+  },
   {id:3,level:'HSK 1',title:'Hỏi tên và quốc tịch',sub:'Cách hỏi tên, giới thiệu quốc tịch và nói mình đến từ đâu.',
-   vocab:[{hanzi:'名字',pinyin:'míng zi',meaning:'Tên',example:'你叫什么名字？'},{hanzi:'什么',pinyin:'shén me',meaning:'Cái gì',example:'这是什么？'},{hanzi:'哪',pinyin:'nǎ',meaning:'Nào',example:'你是哪国人？'},{hanzi:'国',pinyin:'guó',meaning:'Nước, quốc gia',example:'中国 — Trung Quốc'},{hanzi:'越南',pinyin:'Yuè nán',meaning:'Việt Nam',example:'我是越南人。'},{hanzi:'中国',pinyin:'Zhōng guó',meaning:'Trung Quốc',example:'他是中国人。'}],
+   vocab:[
+     {hanzi:'名字',pinyin:'míng zi',meaning:'Tên',example:'你叫什么名字？',emoji:'📛'},
+     {hanzi:'什么',pinyin:'shén me',meaning:'Cái gì',example:'这是什么？',emoji:'❓'},
+     {hanzi:'哪',pinyin:'nǎ',meaning:'Nào',example:'你是哪国人？',emoji:'🧭'},
+     {hanzi:'国',pinyin:'guó',meaning:'Nước, quốc gia',example:'中国 — Trung Quốc',emoji:'🌏'},
+     {hanzi:'越南',pinyin:'Yuè nán',meaning:'Việt Nam',example:'我是越南人。',emoji:'🇻🇳'},
+     {hanzi:'中国',pinyin:'Zhōng guó',meaning:'Trung Quốc',example:'他是中国人。',emoji:'🇨🇳'}
+   ],
    speaking:[{hanzi:'你叫什么名字？',pinyin:'nǐ jiào shén me míng zi?',meaning:'Bạn tên là gì?'},{hanzi:'我叫小明',pinyin:'wǒ jiào Xiǎo Míng',meaning:'Tôi tên Tiểu Minh'},{hanzi:'你是哪国人？',pinyin:'nǐ shì nǎ guó rén?',meaning:'Bạn là người nước nào?'},{hanzi:'我是越南人',pinyin:'wǒ shì Yuè nán rén',meaning:'Tôi là người Việt Nam'},{hanzi:'我从河内来',pinyin:'wǒ cóng Hé nèi lái',meaning:'Tôi đến từ Hà Nội'}],
-   quiz:[{q:'"名字" nghĩa là gì?',options:['Quốc tịch','Tên','Địa chỉ','Tuổi'],correct:1},{q:'Hỏi "Bạn là người nước nào?" dùng câu nào?',zh:'你是哪国人？',options:['你叫什么名字？','你是哪国人？','你几岁？','你好吗？'],correct:1},{q:'"越南" trong tiếng Trung là?',options:['中国','越南','美国','日本'],correct:1},{q:'"什么" nghĩa là?',options:['Ai','Cái gì','Ở đâu','Khi nào'],correct:1},{q:'"中国" là nước nào?',options:['Việt Nam','Nhật Bản','Trung Quốc','Hàn Quốc'],correct:2}]},
+   quiz:[{q:'"名字" nghĩa là gì?',options:['Quốc tịch','Tên','Địa chỉ','Tuổi'],correct:1},{q:'Hỏi "Bạn là người nước nào?" dùng câu nào?',zh:'你是哪国人？',options:['你叫什么名字？','你是哪国人？','你几岁？','你好吗？'],correct:1},{q:'"越南" trong tiếng Trung là?',options:['中国','越南','美国','日本'],correct:1},{q:'"什么" nghĩa là?',options:['Ai','Cái gì','Ở đâu','Khi nào'],correct:1},{q:'"中国" là nước nào?',options:['Việt Nam','Nhật Bản','Trung Quốc','Hàn Quốc'],correct:2}],
+   dialogue:{
+     lines:[
+       {speaker:'A',hanzi:'你叫什么名字？',pinyin:'nǐ jiào shén me míng zi?',meaning:'Bạn tên là gì?'},
+       {speaker:'B',hanzi:'我叫大卫。你呢？',pinyin:'wǒ jiào Dà wèi. nǐ ne?',meaning:'Tôi tên David. Còn bạn?'},
+       {speaker:'A',hanzi:'我叫小明。你是哪国人？',pinyin:'wǒ jiào Xiǎo Míng. nǐ shì nǎ guó rén?',meaning:'Tôi tên Tiểu Minh. Bạn là người nước nào?'},
+       {speaker:'B',hanzi:'我是美国人。',pinyin:'wǒ shì Měi guó rén.',meaning:'Tôi là người Mỹ.'}
+     ],
+     keyWords:[
+       {hanzi:'名字',pinyin:'míng zi',meaning:'Tên',emoji:'📛'},
+       {hanzi:'哪国人',pinyin:'nǎ guó rén',meaning:'Người nước nào',emoji:'🌏'},
+       {hanzi:'美国',pinyin:'Měi guó',meaning:'Nước Mỹ',emoji:'🇺🇸'},
+       {hanzi:'你呢',pinyin:'nǐ ne',meaning:'Còn bạn?',emoji:'👤'}
+     ]
+   }
+  },
   {id:4,level:'HSK 1',title:'Gia đình',sub:'Từ vựng về các thành viên trong gia đình và cách giới thiệu gia đình.',
-   vocab:[{hanzi:'家',pinyin:'jiā',meaning:'Nhà, gia đình',example:'我家有四个人。'},{hanzi:'爸爸',pinyin:'bà ba',meaning:'Bố, ba',example:'我爸爸是老师。'},{hanzi:'妈妈',pinyin:'mā ma',meaning:'Mẹ',example:'妈妈在家。'},{hanzi:'哥哥',pinyin:'gē ge',meaning:'Anh trai',example:'我哥哥在北京工作。'},{hanzi:'姐姐',pinyin:'jiě jie',meaning:'Chị gái',example:'姐姐很漂亮。'},{hanzi:'弟弟',pinyin:'dì di',meaning:'Em trai',example:'弟弟今年八岁。'}],
+   vocab:[
+     {hanzi:'家',pinyin:'jiā',meaning:'Nhà, gia đình',example:'我家有四个人。',emoji:'🏠'},
+     {hanzi:'爸爸',pinyin:'bà ba',meaning:'Bố, ba',example:'我爸爸是老师。',emoji:'👨'},
+     {hanzi:'妈妈',pinyin:'mā ma',meaning:'Mẹ',example:'妈妈在家。',emoji:'👩'},
+     {hanzi:'哥哥',pinyin:'gē ge',meaning:'Anh trai',example:'我哥哥在北京工作。',emoji:'👦'},
+     {hanzi:'姐姐',pinyin:'jiě jie',meaning:'Chị gái',example:'姐姐很漂亮。',emoji:'👧'},
+     {hanzi:'弟弟',pinyin:'dì di',meaning:'Em trai',example:'弟弟今年八岁。',emoji:'👶'}
+   ],
    speaking:[{hanzi:'我家有四个人',pinyin:'wǒ jiā yǒu sì ge rén',meaning:'Nhà tôi có 4 người'},{hanzi:'我爸爸是老师',pinyin:'wǒ bà ba shì lǎo shī',meaning:'Bố tôi là giáo viên'},{hanzi:'妈妈在家',pinyin:'mā ma zài jiā',meaning:'Mẹ ở nhà'},{hanzi:'我有一个哥哥',pinyin:'wǒ yǒu yí ge gē ge',meaning:'Tôi có một anh trai'},{hanzi:'弟弟今年八岁',pinyin:'dì di jīn nián bā suì',meaning:'Em trai tôi năm nay 8 tuổi'}],
-   quiz:[{q:'"妈妈" nghĩa là?',options:['Bố','Mẹ','Chị','Em'],correct:1},{q:'"Anh trai" trong tiếng Trung là?',options:['弟弟','哥哥','姐姐','爸爸'],correct:1},{q:'"家" nghĩa là?',options:['Trường học','Gia đình, nhà','Công ty','Bệnh viện'],correct:1},{q:'"jiě jie" (姐姐) là?',options:['Em gái','Chị gái','Mẹ','Bà'],correct:1},{q:'"弟弟" là ai?',options:['Anh trai','Em trai','Em gái','Bố'],correct:1}]},
+   quiz:[{q:'"妈妈" nghĩa là?',options:['Bố','Mẹ','Chị','Em'],correct:1},{q:'"Anh trai" trong tiếng Trung là?',options:['弟弟','哥哥','姐姐','爸爸'],correct:1},{q:'"家" nghĩa là?',options:['Trường học','Gia đình, nhà','Công ty','Bệnh viện'],correct:1},{q:'"jiě jie" (姐姐) là?',options:['Em gái','Chị gái','Mẹ','Bà'],correct:1},{q:'"弟弟" là ai?',options:['Anh trai','Em trai','Em gái','Bố'],correct:1}],
+   dialogue:{
+     lines:[
+       {speaker:'A',hanzi:'你家有几口人？',pinyin:'nǐ jiā yǒu jǐ kǒu rén?',meaning:'Nhà bạn có mấy người?'},
+       {speaker:'B',hanzi:'我家有四口人。爸爸、妈妈、姐姐和我。',pinyin:'wǒ jiā yǒu sì kǒu rén. bà ba, mā ma, jiě jie hé wǒ.',meaning:'Nhà tôi có 4 người. Bố, mẹ, chị và tôi.'},
+       {speaker:'A',hanzi:'你有哥哥吗？',pinyin:'nǐ yǒu gē ge ma?',meaning:'Bạn có anh trai không?'},
+       {speaker:'B',hanzi:'没有，我只有一个姐姐。',pinyin:'méi yǒu, wǒ zhǐ yǒu yí ge jiě jie.',meaning:'Không, tôi chỉ có một chị gái.'}
+     ],
+     keyWords:[
+       {hanzi:'几口人',pinyin:'jǐ kǒu rén',meaning:'Mấy người (trong nhà)',emoji:'👨‍👩‍👧‍👦'},
+       {hanzi:'爸爸',pinyin:'bà ba',meaning:'Bố',emoji:'👨'},
+       {hanzi:'妈妈',pinyin:'mā ma',meaning:'Mẹ',emoji:'👩'},
+       {hanzi:'姐姐',pinyin:'jiě jie',meaning:'Chị gái',emoji:'👧'}
+     ]
+   }
+  },
   {id:5,level:'HSK 1',title:'Hỏi giờ',sub:'Cách nói giờ, phút và hỏi thời gian trong tiếng Trung.',
-   vocab:[{hanzi:'几点',pinyin:'jǐ diǎn',meaning:'Mấy giờ',example:'现在几点？'},{hanzi:'现在',pinyin:'xiàn zài',meaning:'Bây giờ',example:'现在八点。'},{hanzi:'点',pinyin:'diǎn',meaning:'Giờ',example:'三点 — 3 giờ'},{hanzi:'分',pinyin:'fēn',meaning:'Phút',example:'三十分 — 30 phút'},{hanzi:'半',pinyin:'bàn',meaning:'Rưỡi',example:'五点半 — 5 giờ rưỡi'},{hanzi:'早上',pinyin:'zǎo shang',meaning:'Buổi sáng',example:'早上好！'}],
+   vocab:[
+     {hanzi:'几点',pinyin:'jǐ diǎn',meaning:'Mấy giờ',example:'现在几点？',emoji:'🕐'},
+     {hanzi:'现在',pinyin:'xiàn zài',meaning:'Bây giờ',example:'现在八点。',emoji:'⏰'},
+     {hanzi:'点',pinyin:'diǎn',meaning:'Giờ',example:'三点 — 3 giờ',emoji:'🕒'},
+     {hanzi:'分',pinyin:'fēn',meaning:'Phút',example:'三十分 — 30 phút',emoji:'⏱️'},
+     {hanzi:'半',pinyin:'bàn',meaning:'Rưỡi',example:'五点半 — 5 giờ rưỡi',emoji:'🌓'},
+     {hanzi:'早上',pinyin:'zǎo shang',meaning:'Buổi sáng',example:'早上好！',emoji:'🌅'}
+   ],
    speaking:[{hanzi:'现在几点？',pinyin:'xiàn zài jǐ diǎn?',meaning:'Bây giờ là mấy giờ?'},{hanzi:'现在八点',pinyin:'xiàn zài bā diǎn',meaning:'Bây giờ là 8 giờ'},{hanzi:'八点半',pinyin:'bā diǎn bàn',meaning:'8 giờ rưỡi'},{hanzi:'早上好！',pinyin:'zǎo shang hǎo!',meaning:'Chào buổi sáng!'},{hanzi:'我七点起床',pinyin:'wǒ qī diǎn qǐ chuáng',meaning:'Tôi thức dậy lúc 7 giờ'}],
-   quiz:[{q:'"现在几点？" nghĩa là gì?',options:['Bây giờ là mấy giờ?','Hôm nay thứ mấy?','Bạn bao nhiêu tuổi?','Bạn ở đâu?'],correct:0},{q:'"半" nghĩa là?',options:['Giờ','Phút','Rưỡi','Sáng'],correct:2},{q:'"8 giờ" nói thế nào?',zh:'八点',options:['八点','八分','八半','八早'],correct:0},{q:'"早上" là buổi nào?',options:['Sáng','Chiều','Tối','Đêm'],correct:0},{q:'"分" trong thời gian là gì?',options:['Giờ','Phút','Giây','Ngày'],correct:1}]},
+   quiz:[{q:'"现在几点？" nghĩa là gì?',options:['Bây giờ là mấy giờ?','Hôm nay thứ mấy?','Bạn bao nhiêu tuổi?','Bạn ở đâu?'],correct:0},{q:'"半" nghĩa là?',options:['Giờ','Phút','Rưỡi','Sáng'],correct:2},{q:'"8 giờ" nói thế nào?',zh:'八点',options:['八点','八分','八半','八早'],correct:0},{q:'"早上" là buổi nào?',options:['Sáng','Chiều','Tối','Đêm'],correct:0},{q:'"分" trong thời gian là gì?',options:['Giờ','Phút','Giây','Ngày'],correct:1}],
+   dialogue:{
+     lines:[
+       {speaker:'A',hanzi:'现在几点？',pinyin:'xiàn zài jǐ diǎn?',meaning:'Bây giờ là mấy giờ?'},
+       {speaker:'B',hanzi:'现在八点。',pinyin:'xiàn zài bā diǎn.',meaning:'Bây giờ là 8 giờ.'},
+       {speaker:'A',hanzi:'早上好！你几点起床？',pinyin:'zǎo shang hǎo! nǐ jǐ diǎn qǐ chuáng?',meaning:'Chào buổi sáng! Bạn thức dậy lúc mấy giờ?'},
+       {speaker:'B',hanzi:'我七点起床。',pinyin:'wǒ qī diǎn qǐ chuáng.',meaning:'Tôi thức dậy lúc 7 giờ.'}
+     ],
+     keyWords:[
+       {hanzi:'几点',pinyin:'jǐ diǎn',meaning:'Mấy giờ',emoji:'🕐'},
+       {hanzi:'现在',pinyin:'xiàn zài',meaning:'Bây giờ',emoji:'⏰'},
+       {hanzi:'起床',pinyin:'qǐ chuáng',meaning:'Thức dậy',emoji:'🛏️'},
+       {hanzi:'早上好',pinyin:'zǎo shang hǎo',meaning:'Chào buổi sáng',emoji:'🌅'}
+     ]
+   }
+  },
   {id:6,level:'HSK 2',title:'Mua sắm & Hỏi giá',sub:'Từ vựng và mẫu câu khi mua sắm, hỏi giá, trả giá và thanh toán.',
-   vocab:[{hanzi:'多少钱',pinyin:'duō shao qián',meaning:'Bao nhiêu tiền',example:'这个多少钱？'},{hanzi:'这个',pinyin:'zhè ge',meaning:'Cái này',example:'这个很好。'},{hanzi:'块',pinyin:'kuài',meaning:'Tệ (đơn vị tiền)',example:'十块钱。'},{hanzi:'买',pinyin:'mǎi',meaning:'Mua',example:'我要买这个。'},{hanzi:'贵',pinyin:'guì',meaning:'Đắt',example:'太贵了！'},{hanzi:'便宜',pinyin:'pián yi',meaning:'Rẻ',example:'便宜一点吧。'}],
+   vocab:[
+     {hanzi:'多少钱',pinyin:'duō shao qián',meaning:'Bao nhiêu tiền',example:'这个多少钱？',emoji:'💰'},
+     {hanzi:'这个',pinyin:'zhè ge',meaning:'Cái này',example:'这个很好。',emoji:'👉'},
+     {hanzi:'块',pinyin:'kuài',meaning:'Tệ (đơn vị tiền)',example:'十块钱。',emoji:'💵'},
+     {hanzi:'买',pinyin:'mǎi',meaning:'Mua',example:'我要买这个。',emoji:'🛒'},
+     {hanzi:'贵',pinyin:'guì',meaning:'Đắt',example:'太贵了！',emoji:'💎'},
+     {hanzi:'便宜',pinyin:'pián yi',meaning:'Rẻ',example:'便宜一点吧。',emoji:'🏷️'}
+   ],
    speaking:[{hanzi:'这个多少钱？',pinyin:'zhè ge duō shao qián?',meaning:'Cái này bao nhiêu tiền?'},{hanzi:'太贵了！',pinyin:'tài guì le!',meaning:'Đắt quá!'},{hanzi:'便宜一点吧',pinyin:'pián yi yì diǎn ba',meaning:'Bớt chút đi'},{hanzi:'我要买这个',pinyin:'wǒ yào mǎi zhè ge',meaning:'Tôi muốn mua cái này'},{hanzi:'可以刷卡吗？',pinyin:'kě yǐ shuā kǎ ma?',meaning:'Có thể quẹt thẻ không?'}],
-   quiz:[{q:'"多少钱？" dùng để hỏi gì?',options:['Hỏi giờ','Hỏi giá','Hỏi tuổi','Hỏi tên'],correct:1},{q:'"贵" nghĩa là?',options:['Rẻ','Đắt','Đẹp','Xấu'],correct:1},{q:'"买" nghĩa là gì?',options:['Bán','Mua','Xem','Trả'],correct:1},{q:'"便宜" có nghĩa là?',options:['Đắt','Rẻ','Tốt','Mới'],correct:1},{q:'"这个" nghĩa là?',options:['Cái kia','Cái này','Cái đó','Cái nào'],correct:1}]},
+   quiz:[{q:'"多少钱？" dùng để hỏi gì?',options:['Hỏi giờ','Hỏi giá','Hỏi tuổi','Hỏi tên'],correct:1},{q:'"贵" nghĩa là?',options:['Rẻ','Đắt','Đẹp','Xấu'],correct:1},{q:'"买" nghĩa là gì?',options:['Bán','Mua','Xem','Trả'],correct:1},{q:'"便宜" có nghĩa là?',options:['Đắt','Rẻ','Tốt','Mới'],correct:1},{q:'"这个" nghĩa là?',options:['Cái kia','Cái này','Cái đó','Cái nào'],correct:1}],
+   dialogue:{
+     lines:[
+       {speaker:'A',hanzi:'这个多少钱？',pinyin:'zhè ge duō shao qián?',meaning:'Cái này bao nhiêu tiền?'},
+       {speaker:'B',hanzi:'二十块钱。',pinyin:'èr shí kuài qián.',meaning:'20 tệ.'},
+       {speaker:'A',hanzi:'太贵了！便宜一点吧。',pinyin:'tài guì le! pián yi yì diǎn ba.',meaning:'Đắt quá! Bớt chút đi.'},
+       {speaker:'B',hanzi:'好吧，十八块。',pinyin:'hǎo ba, shí bā kuài.',meaning:'Được rồi, 18 tệ.'},
+       {speaker:'A',hanzi:'好的，我买这个。',pinyin:'hǎo de, wǒ mǎi zhè ge.',meaning:'Được, tôi mua cái này.'}
+     ],
+     keyWords:[
+       {hanzi:'多少钱',pinyin:'duō shao qián',meaning:'Bao nhiêu tiền',emoji:'💰'},
+       {hanzi:'太贵了',pinyin:'tài guì le',meaning:'Đắt quá',emoji:'💎'},
+       {hanzi:'便宜一点',pinyin:'pián yi yì diǎn',meaning:'Bớt chút',emoji:'🏷️'},
+       {hanzi:'买',pinyin:'mǎi',meaning:'Mua',emoji:'🛒'}
+     ]
+   }
+  },
   {id:7,level:'HSK 2',title:'Sở thích',sub:'Nói về sở thích cá nhân: đọc sách, nghe nhạc, thể thao, du lịch...',
-   vocab:[{hanzi:'喜欢',pinyin:'xǐ huan',meaning:'Thích',example:'我喜欢看书。'},{hanzi:'看书',pinyin:'kàn shū',meaning:'Đọc sách',example:'我每天看书。'},{hanzi:'听音乐',pinyin:'tīng yīn yuè',meaning:'Nghe nhạc',example:'我喜欢听音乐。'},{hanzi:'运动',pinyin:'yùn dòng',meaning:'Vận động, thể thao',example:'我喜欢运动。'},{hanzi:'旅游',pinyin:'lǚ yóu',meaning:'Du lịch',example:'我喜欢旅游。'},{hanzi:'电影',pinyin:'diàn yǐng',meaning:'Phim',example:'我们去看电影吧。'}],
+   vocab:[
+     {hanzi:'喜欢',pinyin:'xǐ huan',meaning:'Thích',example:'我喜欢看书。',emoji:'❤️'},
+     {hanzi:'看书',pinyin:'kàn shū',meaning:'Đọc sách',example:'我每天看书。',emoji:'📚'},
+     {hanzi:'听音乐',pinyin:'tīng yīn yuè',meaning:'Nghe nhạc',example:'我喜欢听音乐。',emoji:'🎵'},
+     {hanzi:'运动',pinyin:'yùn dòng',meaning:'Vận động, thể thao',example:'我喜欢运动。',emoji:'⚽'},
+     {hanzi:'旅游',pinyin:'lǚ yóu',meaning:'Du lịch',example:'我喜欢旅游。',emoji:'✈️'},
+     {hanzi:'电影',pinyin:'diàn yǐng',meaning:'Phim',example:'我们去看电影吧。',emoji:'🎬'}
+   ],
    speaking:[{hanzi:'我喜欢看书',pinyin:'wǒ xǐ huan kàn shū',meaning:'Tôi thích đọc sách'},{hanzi:'你喜欢什么？',pinyin:'nǐ xǐ huan shén me?',meaning:'Bạn thích gì?'},{hanzi:'我喜欢听音乐',pinyin:'wǒ xǐ huan tīng yīn yuè',meaning:'Tôi thích nghe nhạc'},{hanzi:'周末我去旅游',pinyin:'zhōu mò wǒ qù lǚ yóu',meaning:'Cuối tuần tôi đi du lịch'},{hanzi:'我们去看电影吧',pinyin:'wǒ men qù kàn diàn yǐng ba',meaning:'Chúng ta đi xem phim nhé'}],
-   quiz:[{q:'"喜欢" nghĩa là gì?',options:['Ghét','Thích','Cần','Muốn'],correct:1},{q:'"看书" nghĩa là?',options:['Xem phim','Đọc sách','Nghe nhạc','Viết thư'],correct:1},{q:'"Du lịch" trong tiếng Trung là?',options:['运动','旅游','电影','音乐'],correct:1},{q:'"听音乐" nghĩa là?',options:['Nghe nhạc','Xem phim','Đọc sách','Chơi game'],correct:0},{q:'"你喜欢什么？" nghĩa là?',options:['Bạn thích gì?','Bạn tên gì?','Bạn ở đâu?','Bạn khỏe không?'],correct:0}]},
+   quiz:[{q:'"喜欢" nghĩa là gì?',options:['Ghét','Thích','Cần','Muốn'],correct:1},{q:'"看书" nghĩa là?',options:['Xem phim','Đọc sách','Nghe nhạc','Viết thư'],correct:1},{q:'"Du lịch" trong tiếng Trung là?',options:['运动','旅游','电影','音乐'],correct:1},{q:'"听音乐" nghĩa là?',options:['Nghe nhạc','Xem phim','Đọc sách','Chơi game'],correct:0},{q:'"你喜欢什么？" nghĩa là?',options:['Bạn thích gì?','Bạn tên gì?','Bạn ở đâu?','Bạn khỏe không?'],correct:0}],
+   dialogue:{
+     lines:[
+       {speaker:'A',hanzi:'你喜欢什么？',pinyin:'nǐ xǐ huan shén me?',meaning:'Bạn thích gì?'},
+       {speaker:'B',hanzi:'我喜欢看书和听音乐。',pinyin:'wǒ xǐ huan kàn shū hé tīng yīn yuè.',meaning:'Tôi thích đọc sách và nghe nhạc.'},
+       {speaker:'A',hanzi:'我也喜欢看书！你喜欢看电影吗？',pinyin:'wǒ yě xǐ huan kàn shū! nǐ xǐ huan kàn diàn yǐng ma?',meaning:'Tôi cũng thích đọc sách! Bạn thích xem phim không?'},
+       {speaker:'B',hanzi:'喜欢，我们周末去看电影吧。',pinyin:'xǐ huan, wǒ men zhōu mò qù kàn diàn yǐng ba.',meaning:'Thích, cuối tuần chúng ta đi xem phim nhé.'}
+     ],
+     keyWords:[
+       {hanzi:'喜欢',pinyin:'xǐ huan',meaning:'Thích',emoji:'❤️'},
+       {hanzi:'看书',pinyin:'kàn shū',meaning:'Đọc sách',emoji:'📚'},
+       {hanzi:'听音乐',pinyin:'tīng yīn yuè',meaning:'Nghe nhạc',emoji:'🎵'},
+       {hanzi:'看电影',pinyin:'kàn diàn yǐng',meaning:'Xem phim',emoji:'🎬'}
+     ]
+   }
+  },
   {id:8,level:'HSK 2',title:'Ở nhà hàng',sub:'Gọi món, gọi phục vụ và thanh toán khi đi ăn nhà hàng.',
-   vocab:[{hanzi:'服务员',pinyin:'fú wù yuán',meaning:'Phục vụ viên',example:'服务员，买单！'},{hanzi:'菜单',pinyin:'cài dān',meaning:'Thực đơn',example:'请给我菜单。'},{hanzi:'点菜',pinyin:'diǎn cài',meaning:'Gọi món',example:'我要点菜。'},{hanzi:'好吃',pinyin:'hǎo chī',meaning:'Ngon',example:'这个菜很好吃。'},{hanzi:'买单',pinyin:'mǎi dān',meaning:'Thanh toán',example:'服务员，买单！'},{hanzi:'筷子',pinyin:'kuài zi',meaning:'Đũa',example:'请给我一双筷子。'}],
+   vocab:[
+     {hanzi:'服务员',pinyin:'fú wù yuán',meaning:'Phục vụ viên',example:'服务员，买单！',emoji:'🧑‍🍳'},
+     {hanzi:'菜单',pinyin:'cài dān',meaning:'Thực đơn',example:'请给我菜单。',emoji:'📋'},
+     {hanzi:'点菜',pinyin:'diǎn cài',meaning:'Gọi món',example:'我要点菜。',emoji:'📝'},
+     {hanzi:'好吃',pinyin:'hǎo chī',meaning:'Ngon',example:'这个菜很好吃。',emoji:'😋'},
+     {hanzi:'买单',pinyin:'mǎi dān',meaning:'Thanh toán',example:'服务员，买单！',emoji:'💳'},
+     {hanzi:'筷子',pinyin:'kuài zi',meaning:'Đũa',example:'请给我一双筷子。',emoji:'🥢'}
+   ],
    speaking:[{hanzi:'服务员！',pinyin:'fú wù yuán!',meaning:'Phục vụ ơi!'},{hanzi:'请给我菜单',pinyin:'qǐng gěi wǒ cài dān',meaning:'Cho tôi xin thực đơn'},{hanzi:'我要一份宫保鸡丁',pinyin:'wǒ yào yí fèn Gōng bǎo jī dīng',meaning:'Tôi muốn một phần Kung Pao gà'},{hanzi:'这个菜很好吃',pinyin:'zhè ge cài hěn hǎo chī',meaning:'Món này rất ngon'},{hanzi:'服务员，买单！',pinyin:'fú wù yuán, mǎi dān!',meaning:'Phục vụ ơi, thanh toán!'}],
-   quiz:[{q:'"服务员" nghĩa là?',options:['Đầu bếp','Phục vụ viên','Khách hàng','Quản lý'],correct:1},{q:'"菜单" là gì?',options:['Bàn ăn','Thực đơn','Bếp','Ly nước'],correct:1},{q:'"买单" nghĩa là?',options:['Đặt bàn','Thanh toán','Gọi món','Đổi bàn'],correct:1},{q:'"好吃" nghĩa là?',options:['Đẹp','Ngon','Mặn','Nhạt'],correct:1},{q:'"筷子" là gì?',options:['Muỗng','Đũa','Dao','Dĩa'],correct:1}]},
+   quiz:[{q:'"服务员" nghĩa là?',options:['Đầu bếp','Phục vụ viên','Khách hàng','Quản lý'],correct:1},{q:'"菜单" là gì?',options:['Bàn ăn','Thực đơn','Bếp','Ly nước'],correct:1},{q:'"买单" nghĩa là?',options:['Đặt bàn','Thanh toán','Gọi món','Đổi bàn'],correct:1},{q:'"好吃" nghĩa là?',options:['Đẹp','Ngon','Mặn','Nhạt'],correct:1},{q:'"筷子" là gì?',options:['Muỗng','Đũa','Dao','Dĩa'],correct:1}],
+   dialogue:{
+     lines:[
+       {speaker:'A',hanzi:'服务员，请给我菜单。',pinyin:'fú wù yuán, qǐng gěi wǒ cài dān.',meaning:'Phục vụ ơi, cho tôi xin thực đơn.'},
+       {speaker:'B',hanzi:'好的，给您。',pinyin:'hǎo de, gěi nín.',meaning:'Vâng, đây ạ.'},
+       {speaker:'A',hanzi:'我要一份宫保鸡丁。',pinyin:'wǒ yào yí fèn Gōng bǎo jī dīng.',meaning:'Tôi muốn một phần Kung Pao gà.'},
+       {speaker:'B',hanzi:'好的，请稍等。',pinyin:'hǎo de, qǐng shāo děng.',meaning:'Vâng, xin đợi chút.'},
+       {speaker:'A',hanzi:'服务员，买单！',pinyin:'fú wù yuán, mǎi dān!',meaning:'Phục vụ ơi, thanh toán!'}
+     ],
+     keyWords:[
+       {hanzi:'服务员',pinyin:'fú wù yuán',meaning:'Phục vụ viên',emoji:'🧑‍🍳'},
+       {hanzi:'菜单',pinyin:'cài dān',meaning:'Thực đơn',emoji:'📋'},
+       {hanzi:'点菜',pinyin:'diǎn cài',meaning:'Gọi món',emoji:'📝'},
+       {hanzi:'买单',pinyin:'mǎi dān',meaning:'Thanh toán',emoji:'💳'}
+     ]
+   }
+  },
   {id:9,level:'HSK 2',title:'Chỉ đường',sub:'Hỏi đường, chỉ đường và tìm địa điểm bằng tiếng Trung.',
-   vocab:[{hanzi:'请问',pinyin:'qǐng wèn',meaning:'Xin hỏi',example:'请问，地铁站在哪里？'},{hanzi:'哪里',pinyin:'nǎ lǐ',meaning:'Ở đâu',example:'洗手间在哪里？'},{hanzi:'一直走',pinyin:'yì zhí zǒu',meaning:'Đi thẳng',example:'一直走，就到了。'},{hanzi:'左转',pinyin:'zuǒ zhuǎn',meaning:'Rẽ trái',example:'前面左转。'},{hanzi:'右转',pinyin:'yòu zhuǎn',meaning:'Rẽ phải',example:'在路口右转。'},{hanzi:'地铁站',pinyin:'dì tiě zhàn',meaning:'Ga tàu điện ngầm',example:'地铁站远不远？'}],
+   vocab:[
+     {hanzi:'请问',pinyin:'qǐng wèn',meaning:'Xin hỏi',example:'请问，地铁站在哪里？',emoji:'🙋'},
+     {hanzi:'哪里',pinyin:'nǎ lǐ',meaning:'Ở đâu',example:'洗手间在哪里？',emoji:'📍'},
+     {hanzi:'一直走',pinyin:'yì zhí zǒu',meaning:'Đi thẳng',example:'一直走，就到了。',emoji:'⬆️'},
+     {hanzi:'左转',pinyin:'zuǒ zhuǎn',meaning:'Rẽ trái',example:'前面左转。',emoji:'⬅️'},
+     {hanzi:'右转',pinyin:'yòu zhuǎn',meaning:'Rẽ phải',example:'在路口右转。',emoji:'➡️'},
+     {hanzi:'地铁站',pinyin:'dì tiě zhàn',meaning:'Ga tàu điện ngầm',example:'地铁站远不远？',emoji:'🚇'}
+   ],
    speaking:[{hanzi:'请问，地铁站在哪里？',pinyin:'qǐng wèn, dì tiě zhàn zài nǎ lǐ?',meaning:'Xin hỏi, ga tàu điện ngầm ở đâu?'},{hanzi:'一直走',pinyin:'yì zhí zǒu',meaning:'Đi thẳng'},{hanzi:'前面左转',pinyin:'qián miàn zuǒ zhuǎn',meaning:'Phía trước rẽ trái'},{hanzi:'在路口右转',pinyin:'zài lù kǒu yòu zhuǎn',meaning:'Rẽ phải ở ngã tư'},{hanzi:'谢谢你的帮助',pinyin:'xiè xie nǐ de bāng zhù',meaning:'Cảm ơn sự giúp đỡ của bạn'}],
-   quiz:[{q:'"请问" nghĩa là?',options:['Xin chào','Xin hỏi','Cảm ơn','Tạm biệt'],correct:1},{q:'"哪里" nghĩa là?',options:['Ở đâu','Cái gì','Ai','Khi nào'],correct:0},{q:'"一直走" nghĩa là?',options:['Dừng lại','Đi thẳng','Quay lại','Rẽ trái'],correct:1},{q:'"左转" là gì?',options:['Rẽ phải','Rẽ trái','Đi thẳng','Quay đầu'],correct:1},{q:'"地铁站" là gì?',options:['Bến xe','Sân bay','Ga tàu điện ngầm','Bến tàu'],correct:2}]},
+   quiz:[{q:'"请问" nghĩa là?',options:['Xin chào','Xin hỏi','Cảm ơn','Tạm biệt'],correct:1},{q:'"哪里" nghĩa là?',options:['Ở đâu','Cái gì','Ai','Khi nào'],correct:0},{q:'"一直走" nghĩa là?',options:['Dừng lại','Đi thẳng','Quay lại','Rẽ trái'],correct:1},{q:'"左转" là gì?',options:['Rẽ phải','Rẽ trái','Đi thẳng','Quay đầu'],correct:1},{q:'"地铁站" là gì?',options:['Bến xe','Sân bay','Ga tàu điện ngầm','Bến tàu'],correct:2}],
+   dialogue:{
+     lines:[
+       {speaker:'A',hanzi:'请问，地铁站在哪里？',pinyin:'qǐng wèn, dì tiě zhàn zài nǎ lǐ?',meaning:'Xin hỏi, ga tàu điện ngầm ở đâu?'},
+       {speaker:'B',hanzi:'一直走，前面左转就到了。',pinyin:'yì zhí zǒu, qián miàn zuǒ zhuǎn jiù dào le.',meaning:'Đi thẳng, phía trước rẽ trái là đến.'},
+       {speaker:'A',hanzi:'远不远？',pinyin:'yuǎn bu yuǎn?',meaning:'Có xa không?'},
+       {speaker:'B',hanzi:'不远，五分钟就到。',pinyin:'bù yuǎn, wǔ fēn zhōng jiù dào.',meaning:'Không xa, 5 phút là đến.'},
+       {speaker:'A',hanzi:'谢谢！',pinyin:'xiè xie!',meaning:'Cảm ơn!'}
+     ],
+     keyWords:[
+       {hanzi:'请问',pinyin:'qǐng wèn',meaning:'Xin hỏi',emoji:'🙋'},
+       {hanzi:'地铁站',pinyin:'dì tiě zhàn',meaning:'Ga tàu điện ngầm',emoji:'🚇'},
+       {hanzi:'一直走',pinyin:'yì zhí zǒu',meaning:'Đi thẳng',emoji:'⬆️'},
+       {hanzi:'左转',pinyin:'zuǒ zhuǎn',meaning:'Rẽ trái',emoji:'⬅️'}
+     ]
+   }
+  },
   {id:10,level:'HSK 2',title:'Thời tiết',sub:'Nói về thời tiết, hỏi dự báo và các hiện tượng thời tiết.',
-   vocab:[{hanzi:'天气',pinyin:'tiān qì',meaning:'Thời tiết',example:'今天天气很好。'},{hanzi:'好',pinyin:'hǎo',meaning:'Tốt, đẹp',example:'天气很好。'},{hanzi:'下雨',pinyin:'xià yǔ',meaning:'Mưa',example:'明天会下雨。'},{hanzi:'下雪',pinyin:'xià xuě',meaning:'Tuyết rơi',example:'冬天下雪。'},{hanzi:'热',pinyin:'rè',meaning:'Nóng',example:'夏天很热。'},{hanzi:'冷',pinyin:'lěng',meaning:'Lạnh',example:'冬天很冷。'}],
+   vocab:[
+     {hanzi:'天气',pinyin:'tiān qì',meaning:'Thời tiết',example:'今天天气很好。',emoji:'☀️'},
+     {hanzi:'好',pinyin:'hǎo',meaning:'Tốt, đẹp',example:'天气很好。',emoji:'👍'},
+     {hanzi:'下雨',pinyin:'xià yǔ',meaning:'Mưa',example:'明天会下雨。',emoji:'🌧️'},
+     {hanzi:'下雪',pinyin:'xià xuě',meaning:'Tuyết rơi',example:'冬天下雪。',emoji:'❄️'},
+     {hanzi:'热',pinyin:'rè',meaning:'Nóng',example:'夏天很热。',emoji:'🔥'},
+     {hanzi:'冷',pinyin:'lěng',meaning:'Lạnh',example:'冬天很冷。',emoji:'🧊'}
+   ],
    speaking:[{hanzi:'今天天气很好',pinyin:'jīn tiān tiān qì hěn hǎo',meaning:'Hôm nay thời tiết rất đẹp'},{hanzi:'明天会下雨吗？',pinyin:'míng tiān huì xià yǔ ma?',meaning:'Ngày mai có mưa không?'},{hanzi:'天气很热',pinyin:'tiān qì hěn rè',meaning:'Thời tiết rất nóng'},{hanzi:'外面很冷',pinyin:'wài miàn hěn lěng',meaning:'Bên ngoài rất lạnh'},{hanzi:'今天多少度？',pinyin:'jīn tiān duō shao dù?',meaning:'Hôm nay bao nhiêu độ?'}],
-   quiz:[{q:'"天气" nghĩa là?',options:['Không khí','Thời tiết','Bầu trời','Mặt trời'],correct:1},{q:'"下雨" nghĩa là?',options:['Nắng','Mưa','Gió','Tuyết'],correct:1},{q:'"热" nghĩa là?',options:['Lạnh','Nóng','Mát','Ấm'],correct:1},{q:'"下雪" nghĩa là?',options:['Mưa','Tuyết rơi','Sương mù','Gió'],correct:1},{q:'"冷" nghĩa là?',options:['Nóng','Lạnh','Mát','Khô'],correct:1}]}
+   quiz:[{q:'"天气" nghĩa là?',options:['Không khí','Thời tiết','Bầu trời','Mặt trời'],correct:1},{q:'"下雨" nghĩa là?',options:['Nắng','Mưa','Gió','Tuyết'],correct:1},{q:'"热" nghĩa là?',options:['Lạnh','Nóng','Mát','Ấm'],correct:1},{q:'"下雪" nghĩa là?',options:['Mưa','Tuyết rơi','Sương mù','Gió'],correct:1},{q:'"冷" nghĩa là?',options:['Nóng','Lạnh','Mát','Khô'],correct:1}],
+   dialogue:{
+     lines:[
+       {speaker:'A',hanzi:'今天天气怎么样？',pinyin:'jīn tiān tiān qì zěn me yàng?',meaning:'Hôm nay thời tiết thế nào?'},
+       {speaker:'B',hanzi:'今天天气很好，不冷也不热。',pinyin:'jīn tiān tiān qì hěn hǎo, bù lěng yě bú rè.',meaning:'Hôm nay thời tiết đẹp, không lạnh cũng không nóng.'},
+       {speaker:'A',hanzi:'明天呢？',pinyin:'míng tiān ne?',meaning:'Ngày mai thì sao?'},
+       {speaker:'B',hanzi:'明天会下雨。',pinyin:'míng tiān huì xià yǔ.',meaning:'Ngày mai sẽ mưa.'}
+     ],
+     keyWords:[
+       {hanzi:'天气',pinyin:'tiān qì',meaning:'Thời tiết',emoji:'☀️'},
+       {hanzi:'怎么样',pinyin:'zěn me yàng',meaning:'Thế nào',emoji:'❔'},
+       {hanzi:'下雨',pinyin:'xià yǔ',meaning:'Mưa',emoji:'🌧️'},
+       {hanzi:'冷',pinyin:'lěng',meaning:'Lạnh',emoji:'🧊'}
+     ]
+   }
+  }
 ];
 
 /* ============================================================
    STATE
    ============================================================ */
-const STORAGE_KEY = 'handi_elearning_v5';
-let state = { currentLesson:0, progress:{}, soundOn:true, stars:0 };
+const STORAGE_KEY = 'handi_elearning_v6';
+let state = { currentLesson:0, progress:{}, soundOn:true, stars:0, learnedKw:{} };
 function loadState(){ try{const r=localStorage.getItem(STORAGE_KEY); if(r) state={...state,...JSON.parse(r)};}catch(e){} }
 function saveState(){ try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){} }
 function getLessonProgress(id){ if(!state.progress[id]) state.progress[id]={viewedVocab:false,quizScore:null,done:false,starGiven:false}; return state.progress[id]; }
 function resetProgress(){
   if(!confirm('Bạn có chắc muốn đặt lại toàn bộ tiến độ học tập?'))return;
-  state.progress={}; state.stars=0; state.currentLesson=0;
+  state.progress={}; state.stars=0; state.currentLesson=0; state.learnedKw={};
   saveState(); renderSidebar(); loadLesson(0);
 }
 
@@ -715,19 +1025,20 @@ function loadLesson(idx){
   document.getElementById('lessonLbl').innerHTML = `<i class="fas fa-book-open"></i> Bài ${idx+1} · ${l.level}`;
   document.getElementById('lessonTitle').textContent = l.title;
   document.getElementById('lessonSub').textContent = l.sub;
-  renderVocab(l); renderFlashcard(l); renderQuiz(l); renderWriting(l); renderSpeaking(l);
+  renderVocab(l); renderDialogue(l); renderFlashcard(l); renderQuiz(l); renderWriting(l); renderSpeaking(l);
   renderSidebar(); switchTab('vocab');
   window.scrollTo({top:0, behavior:'smooth'});
   toggleSidebar(false);
 }
 
 /* ============================================================
-   VOCAB
+   VOCAB (with emoji)
    ============================================================ */
 function renderVocab(l){
   document.getElementById('vocabGrid').innerHTML = l.vocab.map(v => `
     <div class="vocab-card" onclick="speak('${v.hanzi}')">
       <button class="vocab-card__speak" onclick="event.stopPropagation();speak('${v.hanzi}')"><i class="fas fa-volume-high"></i></button>
+      <span class="vocab-card__emoji">${v.emoji || '📖'}</span>
       <div class="vocab-card__hanzi" lang="zh">${v.hanzi}</div>
       <div class="vocab-card__pinyin">${v.pinyin}</div>
       <div class="vocab-card__meaning">${v.meaning}</div>
@@ -737,21 +1048,131 @@ function renderVocab(l){
 }
 
 /* ============================================================
-   FLASHCARD
+   DIALOGUE + LIGHTBOX
    ============================================================ */
-function renderFlashcard(l){ currentFcState = { index:0, flipped:false }; document.getElementById('fcTotal').textContent = l.vocab.length; updateFlashcard(); }
+let dialogueReveal = false;
+
+function renderDialogue(l){
+  if(!l.dialogue){
+    document.getElementById('dialogueLines').innerHTML = '<p style="color:var(--mu);font-style:italic">Bài học này chưa có hội thoại mẫu.</p>';
+    document.getElementById('dialogueKeywords').innerHTML = '';
+    return;
+  }
+  dialogueReveal = false;
+  document.getElementById('dialogueToggle').classList.remove('active');
+  document.getElementById('dialogueToggleText').textContent = 'Hiện pinyin & nghĩa';
+
+  document.getElementById('dialogueLines').innerHTML = l.dialogue.lines.map(line => `
+    <div class="dialogue__line">
+      <div class="dialogue__speaker">${line.speaker}</div>
+      <div class="dialogue__body">
+        <div class="dialogue__hanzi" onclick="speak('${line.hanzi.replace(/'/g,"\\'")}')" lang="zh">${line.hanzi}</div>
+        <div class="dialogue__pinyin">${line.pinyin}</div>
+        <div class="dialogue__meaning">${line.meaning}</div>
+      </div>
+    </div>`).join('');
+
+  const kwHtml = l.dialogue.keyWords.map((kw, i) => {
+    const key = l.id + '_' + i;
+    const learned = state.learnedKw[key] ? ' learned' : '';
+    return `<div class="dialogue__kw${learned}" data-key="${key}" onclick="openKwLightbox(${l.id}, ${i})">
+      <span class="dialogue__kw-check" onclick="event.stopPropagation();toggleLearned('${key}', this.parentElement)">✓</span>
+      <span class="zh" lang="zh">${kw.hanzi}</span>
+      <span class="py">${kw.pinyin}</span>
+    </div>`;
+  }).join('');
+  document.getElementById('dialogueKeywords').innerHTML = kwHtml;
+
+  // Set initial visibility
+  updateDialogueReveal();
+}
+
+function updateDialogueReveal(){
+  document.querySelectorAll('.dialogue__pinyin, .dialogue__meaning').forEach(el => {
+    el.classList.toggle('show', dialogueReveal);
+  });
+}
+
+function toggleDialogueReveal(){
+  dialogueReveal = !dialogueReveal;
+  document.getElementById('dialogueToggle').classList.toggle('active', dialogueReveal);
+  document.getElementById('dialogueToggleText').textContent = dialogueReveal ? 'Ẩn pinyin & nghĩa' : 'Hiện pinyin & nghĩa';
+  updateDialogueReveal();
+}
+
+function toggleLearned(key, el){
+  state.learnedKw[key] = !state.learnedKw[key];
+  saveState();
+  el.classList.toggle('learned', state.learnedKw[key]);
+}
+
+function openKwLightbox(lessonId, idx){
+  const l = LESSONS.find(x => x.id === lessonId);
+  const kw = l.dialogue.keyWords[idx];
+  if(!kw) return;
+  document.getElementById('lbEmoji').textContent = kw.emoji || '📖';
+  document.getElementById('lbHanzi').textContent = kw.hanzi;
+  document.getElementById('lbPinyin').textContent = kw.pinyin;
+  document.getElementById('lbMeaning').textContent = kw.meaning;
+  document.getElementById('lightbox').classList.add('show');
+  document.getElementById('lightbox').setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  // Auto speak
+  setTimeout(()=>speak(kw.hanzi), 200);
+}
+
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('show');
+  document.getElementById('lightbox').setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape') closeLightbox();
+});
+
+/* ============================================================
+   FLASHCARD (FIX: reset flipped, add pinyin to back)
+   ============================================================ */
+function renderFlashcard(l){
+  currentFcState = { index:0, flipped:false };
+  document.getElementById('fcTotal').textContent = l.vocab.length;
+  updateFlashcard();
+}
 function updateFlashcard(){
   const v = LESSONS[state.currentLesson].vocab[currentFcState.index];
-  document.getElementById('fcCard').classList.toggle('flipped', currentFcState.flipped);
+  const card = document.getElementById('fcCard');
+  card.classList.remove('flipped'); // Reset always
+  if(currentFcState.flipped) {
+    setTimeout(()=>card.classList.add('flipped'), 10);
+  }
   document.getElementById('fcHanzi').textContent = v.hanzi;
   document.getElementById('fcPinyin').textContent = v.pinyin;
   document.getElementById('fcMeaning').textContent = v.meaning;
+  document.getElementById('fcPinyinBack').textContent = v.pinyin; // FIX: pinyin on back
   document.getElementById('fcExample').textContent = v.example || '';
   document.getElementById('fcCurrent').textContent = currentFcState.index + 1;
 }
-function flipCard(){ currentFcState.flipped = !currentFcState.flipped; document.getElementById('fcCard').classList.toggle('flipped', currentFcState.flipped); }
-function fcNext(){ const l = LESSONS[state.currentLesson]; currentFcState.index = (currentFcState.index + 1) % l.vocab.length; currentFcState.flipped = false; updateFlashcard(); setTimeout(speakCurrent, 150); }
-function fcPrev(){ const l = LESSONS[state.currentLesson]; currentFcState.index = (currentFcState.index - 1 + l.vocab.length) % l.vocab.length; currentFcState.flipped = false; updateFlashcard(); setTimeout(speakCurrent, 150); }
+function flipCard(){
+  currentFcState.flipped = !currentFcState.flipped;
+  document.getElementById('fcCard').classList.toggle('flipped', currentFcState.flipped);
+  if(currentFcState.flipped){
+    const v = LESSONS[state.currentLesson].vocab[currentFcState.index];
+    setTimeout(()=>speak(v.hanzi), 200);
+  }
+}
+function fcNext(){
+  const l = LESSONS[state.currentLesson];
+  currentFcState.index = (currentFcState.index + 1) % l.vocab.length;
+  currentFcState.flipped = false;
+  updateFlashcard();
+}
+function fcPrev(){
+  const l = LESSONS[state.currentLesson];
+  currentFcState.index = (currentFcState.index - 1 + l.vocab.length) % l.vocab.length;
+  currentFcState.flipped = false;
+  updateFlashcard();
+}
 function speakCurrent(){ speak(LESSONS[state.currentLesson].vocab[currentFcState.index].hanzi); }
 
 /* ============================================================
@@ -815,112 +1236,207 @@ function restartQuiz(){ renderQuiz(LESSONS[state.currentLesson]); }
 function nextLesson(){ const next = state.currentLesson + 1; if(next < LESSONS.length) loadLesson(next); else alert('🎉 Chúc mừng! Bạn đã hoàn thành toàn bộ khóa học!'); }
 
 /* ============================================================
-   WRITING — HANZI WRITER (thứ tự nét + luyện viết)
+   WRITING — MULTI-BOX cho từ ghép + SCORING
    ============================================================ */
-let writer = null;
-let writerChar = '';
+let writers = []; // Array of {writer, char}
+let lastQuizScore = null;
 
-function initWriter(){
+function initWriters(){
   const target = document.getElementById('hanziWriterTarget');
   if(!target) return;
   if(typeof HanziWriter === 'undefined'){
-    target.innerHTML = '<div style="padding:40px;color:#8d6e63;text-align:center">Đang tải thư viện...</div>';
-    setTimeout(initWriter, 500);
+    setTimeout(initWriters, 500);
     return;
   }
   const v = LESSONS[state.currentLesson].vocab[writeIndex];
-  if(writerChar === v.hanzi && writer) return; // Không tạo lại nếu cùng chữ
+  const chars = [...v.hanzi];
+  const count = chars.length;
 
-  writerChar = v.hanzi;
+  // Compute box size based on count
+  const stage = target.closest('.writing__stage');
+  const stageW = stage ? stage.clientWidth : 360;
+  const available = Math.min(460, stageW - 50);
+  const gap = count <= 2 ? 14 : 10;
+
+  let boxSize;
+  if(count === 1) boxSize = Math.min(240, available);
+  else if(count === 2) boxSize = Math.min(180, (available - gap) / 2);
+  else if(count === 3) boxSize = Math.min(140, (available - gap*2) / 3);
+  else boxSize = Math.min(110, (available - gap*3) / 4);
+  boxSize = Math.max(boxSize, 80);
+
   target.innerHTML = '';
+  writers = [];
 
-  writer = HanziWriter.create('hanziWriterTarget', v.hanzi, {
-    width: 300,
-    height: 300,
-    padding: 20,
-    strokeColor: '#3d2817',        // Nâu cà phê đậm
-    radicalColor: '#ea580c',        // Cam cho bộ thủ
-    highlightColor: '#fbbf24',      // Vàng gold khi highlight
-    outlineColor: '#d4c4a8',        // Be nhạt cho outline (chữ mẫu)
-    drawingColor: '#ea580c',        // Cam cho nét user vẽ
-    drawingWidth: 22,               // Nét vẽ user dày hơn để dễ trace
-    strokeAnimationSpeed: 1,
-    delayBetweenStrokes: 350,
-    showOutline: true,
-    showCharacter: false,           // Không hiện chữ đậm, chỉ outline
-    charDataLoader: function(char, onComplete){
-      const url = 'https://cdn.jsdelivr.net/npm/hanzi-writer-data@2.0/' + encodeURIComponent(char) + '.json';
-      fetch(url).then(r => r.json()).then(onComplete).catch(err => {
-        console.error('Lỗi tải dữ liệu nét:', char, err);
-        target.innerHTML = '<div style="padding:40px;color:#8d6e63;text-align:center">Không tải được dữ liệu nét</div>';
+  chars.forEach((char, i) => {
+    const box = document.createElement('div');
+    box.className = 'writing__box';
+    box.style.width = boxSize + 'px';
+    box.style.height = boxSize + 'px';
+
+    const grid = document.createElement('div');
+    grid.className = 'writing__box-grid';
+    box.appendChild(grid);
+
+    const hw = document.createElement('div');
+    hw.className = 'writing__box-hw';
+    box.appendChild(hw);
+
+    const lbl = document.createElement('div');
+    lbl.className = 'writing__box-lbl';
+    lbl.textContent = (i+1) + '/' + count;
+    box.appendChild(lbl);
+
+    target.appendChild(box);
+
+    try {
+      const innerSize = boxSize - 10;
+      const w = HanziWriter.create(hw, char, {
+        width: innerSize,
+        height: innerSize,
+        padding: Math.max(8, innerSize * 0.06),
+        strokeColor: '#3d2817',
+        radicalColor: '#ea580c',
+        highlightColor: '#fbbf24',
+        outlineColor: '#d4c4a8',
+        drawingColor: '#ea580c',
+        drawingWidth: Math.max(12, innerSize * 0.1),
+        strokeAnimationSpeed: 1,
+        delayBetweenStrokes: 320,
+        showOutline: true,
+        showCharacter: false,
+        charDataLoader: function(ch, onComplete){
+          const url = 'https://cdn.jsdelivr.net/npm/hanzi-writer-data@2.0/' + encodeURIComponent(ch) + '.json';
+          fetch(url).then(r => r.json()).then(onComplete).catch(err => {
+            console.error('HanziWriter load err:', ch, err);
+            hw.innerHTML = '<div style="padding:16px;color:#8d6e63;text-align:center;font-size:11px">Không tải được</div>';
+          });
+        }
       });
+      writers.push({ writer: w, char: char });
+    } catch(e){
+      console.error('HanziWriter create err:', e);
     }
   });
+
+  // Reset score UI
+  document.getElementById('writingScore').classList.remove('show');
 }
 
 function playStrokeOrder(){
-  if(!writer){ initWriter(); }
-  if(!writer) return;
+  if(!writers.length){ initWriters(); }
+  if(!writers.length) return;
   const btn = document.getElementById('btnAnimate');
   btn.classList.add('playing');
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Đang vẽ...</span>';
-  writer.animateCharacter({
-    onComplete: function(){
-      btn.classList.remove('playing');
-      btn.innerHTML = '<i class="fas fa-play"></i> <span>Xem cách viết</span>';
-    }
+  let done = 0;
+  const total = writers.length;
+  writers.forEach(({writer}) => {
+    writer.animateCharacter({
+      onComplete: function(){
+        done++;
+        if(done === total){
+          btn.classList.remove('playing');
+          btn.innerHTML = '<i class="fas fa-play"></i> <span>Xem cách viết</span>';
+        }
+      }
+    });
   });
 }
 
 function startQuiz(){
-  if(!writer){ initWriter(); }
-  if(!writer) return;
+  if(!writers.length){ initWriters(); }
+  if(!writers.length) return;
   const btn = document.getElementById('btnQuiz');
   btn.classList.add('active');
   btn.innerHTML = '<i class="fas fa-pen"></i> <span>Đang luyện...</span>';
-  writer.quiz({
-    onComplete: function(summary){
-      btn.classList.remove('active');
-      btn.innerHTML = '<i class="fas fa-check"></i> <span>Hoàn thành!</span>';
-      setTimeout(()=>{
-        btn.innerHTML = '<i class="fas fa-pen"></i> <span>Luyện viết</span>';
-      }, 2000);
-    }
+
+  const scoreEl = document.getElementById('writingScore');
+  scoreEl.classList.remove('show');
+
+  let done = 0;
+  let totalMistakes = 0;
+  let totalCorrect = 0;
+  const total = writers.length;
+
+  writers.forEach(({writer}) => {
+    writer.quiz({
+      onMistake: function(){ /* real-time feedback shown by HanziWriter */ },
+      onComplete: function(summary){
+        done++;
+        totalMistakes += summary.totalMistakes;
+        totalCorrect += summary.totalStrokes || 0;
+        if(done === total){
+          // Compute score
+          const accuracy = totalMistakes === 0 ? 100 :
+                           Math.max(0, Math.round(100 - totalMistakes * 8));
+          showWritingScore(accuracy, totalMistakes);
+
+          btn.classList.remove('active');
+          btn.innerHTML = '<i class="fas fa-check"></i> <span>Hoàn thành!</span>';
+          setTimeout(()=>{
+            btn.innerHTML = '<i class="fas fa-pen"></i> <span>Luyện viết</span>';
+          }, 2000);
+        }
+      }
+    });
   });
 }
 
+function showWritingScore(score, mistakes){
+  const box = document.getElementById('writingScore');
+  const num = document.getElementById('writingScoreNum');
+  const emoji = document.getElementById('writingScoreEmoji');
+  const txt = document.getElementById('writingScoreTxt');
+
+  box.classList.remove('great','good','try');
+  num.textContent = score + '%';
+
+  if(score >= 90){
+    box.classList.add('show','great');
+    emoji.textContent = '🎉';
+    txt.textContent = `Hoàn hảo! ${mistakes === 0 ? 'Không sai nét nào!' : 'Chỉ ' + mistakes + ' nét sai.'}`;
+  } else if(score >= 70){
+    box.classList.add('show','good');
+    emoji.textContent = '👍';
+    txt.textContent = `Khá tốt! Có ${mistakes} nét sai — cố gắng thêm nhé.`;
+  } else if(score >= 50){
+    box.classList.add('show','good');
+    emoji.textContent = '💪';
+    txt.textContent = `Cần cố gắng! ${mistakes} nét sai. Luyện lại thử xem.`;
+  } else {
+    box.classList.add('show','try');
+    emoji.textContent = '📝';
+    txt.textContent = `Hãy xem lại cách viết và thử lại nhé! (${mistakes} nét sai)`;
+  }
+}
+
 function clearWriter(){
-  if(!writer){ initWriter(); return; }
-  writer.cancelQuiz();
-  writer.hideCharacter();
-  writer.showOutline();
-  writerChar = ''; // Reset để có thể re-init
-  initWriter();
+  if(!writers.length){ initWriters(); return; }
+  writers.forEach(({writer}) => {
+    try { writer.cancelQuiz(); } catch(e){}
+    try { writer.hideCharacter(); } catch(e){}
+    try { writer.showOutline(); } catch(e){}
+  });
+  initWriters();
+  document.getElementById('writingScore').classList.remove('show');
 }
 
 function renderWriting(l){
   writeIndex = 0;
   updateWriting();
-  // Chỉ init writer khi tab write đang active, hoặc đợi đến khi switchTab
-  setTimeout(()=>{
-    if(document.querySelector('.tab-panel[data-panel="write"]').classList.contains('active')){
-      initWriter();
-    }
-  }, 100);
 }
-
 function updateWriting(){
   const v = LESSONS[state.currentLesson].vocab[writeIndex];
   document.getElementById('writeHanzi').textContent = v.hanzi;
   document.getElementById('writeInfo').textContent = `${v.pinyin} — ${v.meaning}`;
   document.getElementById('writeCurrent').textContent = writeIndex + 1;
   document.getElementById('writeTotal').textContent = LESSONS[state.currentLesson].vocab.length;
-  writerChar = ''; // Reset để buộc tạo lại writer với chữ mới
+  document.getElementById('writingScore').classList.remove('show');
   if(document.querySelector('.tab-panel[data-panel="write"]').classList.contains('active')){
-    initWriter();
+    initWriters();
   }
 }
-
 function writeNav(dir){
   const l = LESSONS[state.currentLesson];
   writeIndex = (writeIndex + dir + l.vocab.length) % l.vocab.length;
@@ -936,7 +1452,6 @@ let recognition = null;
 let isListening = false;
 let recognitionSupported = !!SpeechRecognition;
 let micPermissionGranted = false;
-const IS_FILE_PROTOCOL = location.protocol === 'file:';
 
 if(recognitionSupported){
   recognition = new SpeechRecognition();
@@ -952,10 +1467,7 @@ function updateMicStatus(){
   const text = document.getElementById('micStatusText');
   const btn = document.getElementById('micStatusBtn');
   if(!bar) return;
-  if(micPermissionGranted){
-    bar.classList.add('hidden');
-    return;
-  }
+  if(micPermissionGranted){ bar.classList.add('hidden'); return; }
   bar.classList.remove('hidden');
   bar.className = 'mic-status pending';
   icon.className = 'fas fa-microphone';
@@ -969,14 +1481,10 @@ async function ensurePermission(silent){
     try {
       const st = await navigator.permissions.query({name:'microphone'});
       if(st.state === 'denied'){
-        if(!silent) alert('Micro đã bị chặn. Vui lòng bật lại trong cài đặt trình duyệt (biểu tượng ổ khóa trên thanh địa chỉ).');
+        if(!silent) alert('Micro đã bị chặn. Vui lòng bật lại trong cài đặt trình duyệt.');
         return false;
       }
-      if(st.state === 'granted'){
-        micPermissionGranted = true;
-        updateMicStatus();
-        return true;
-      }
+      if(st.state === 'granted'){ micPermissionGranted = true; updateMicStatus(); return true; }
     } catch(e){}
   }
   try {
@@ -994,22 +1502,17 @@ async function ensurePermission(silent){
     return false;
   }
 }
-
 async function requestMicPermission(){
   const btn = document.getElementById('micStatusBtn');
-  const origText = btn.innerHTML;
+  const orig = btn.innerHTML;
   btn.disabled = true;
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
   const ok = await ensurePermission(false);
   if(ok){
     btn.innerHTML = '<i class="fas fa-check"></i> Đã cấp quyền';
-    btn.style.background = '#16a34a';
-    btn.style.color = '#fff';
+    btn.style.background = '#16a34a'; btn.style.color = '#fff';
     setTimeout(()=>{ updateMicStatus(); }, 900);
-  } else {
-    btn.disabled = false;
-    btn.innerHTML = origText;
-  }
+  } else { btn.disabled = false; btn.innerHTML = orig; }
 }
 
 function renderSpeaking(l){
@@ -1045,13 +1548,11 @@ function resetSpeakUI(){
 }
 function playTarget(){ speak(LESSONS[state.currentLesson].speaking[spkIndex].hanzi); }
 function playTargetSlow(){ speak(LESSONS[state.currentLesson].speaking[spkIndex].hanzi, {slow:true}); }
-
 async function toggleRecognition(){
   if(!recognitionSupported) return;
   if(isListening){ try{ recognition.stop(); }catch(e){} return; }
   await startListening();
 }
-
 async function startListening(){
   if(!recognition || isListening) return;
   const ok = await ensurePermission(true);
@@ -1078,13 +1579,8 @@ async function startListening(){
       if(res.isFinal) finalTranscript += res[0].transcript;
       else interim += res[0].transcript;
     }
-    if(finalTranscript){
-      t.className = 'speak-transcript__text';
-      t.innerHTML = escapeHTML(finalTranscript);
-    } else if(interim){
-      t.className = 'speak-transcript__text';
-      t.innerHTML = `<span class="interim">${escapeHTML(interim)}</span>`;
-    }
+    if(finalTranscript){ t.className = 'speak-transcript__text'; t.innerHTML = escapeHTML(finalTranscript); }
+    else if(interim){ t.className = 'speak-transcript__text'; t.innerHTML = `<span class="interim">${escapeHTML(interim)}</span>`; }
   };
   recognition.onerror = (event)=>{
     isListening = false;
@@ -1094,11 +1590,8 @@ async function startListening(){
     document.getElementById('keyHint').classList.remove('active');
     let msg = 'Không nhận diện được, vui lòng thử lại.';
     if(event.error === 'no-speech') msg = 'Không nghe thấy giọng nói. Hãy thử lại.';
-    else if(event.error === 'not-allowed' || event.error === 'service-not-allowed'){
-      msg = 'Bạn cần cấp quyền micro cho trang web.';
-      micPermissionGranted = false; updateMicStatus();
-    }
-    else if(event.error === 'network') msg = 'Lỗi mạng, vui lòng kiểm tra kết nối.';
+    else if(event.error === 'not-allowed' || event.error === 'service-not-allowed'){ msg = 'Bạn cần cấp quyền micro.'; micPermissionGranted = false; updateMicStatus(); }
+    else if(event.error === 'network') msg = 'Lỗi mạng.';
     else if(event.error === 'audio-capture') msg = 'Không tìm thấy micro.';
     document.getElementById('micHint').innerHTML = msg + '<small>Nhấn để thử lại</small>';
   };
@@ -1124,9 +1617,6 @@ async function startListening(){
   }
 }
 
-/* ============================================================
-   ĐÁNH GIÁ PHÁT ÂM
-   ============================================================ */
 function cleanText(s){ return (s || '').replace(/[\s\p{P}\p{S}]/gu, '').toLowerCase(); }
 function levenshtein(a, b){
   const m = a.length, n = b.length;
@@ -1164,17 +1654,17 @@ function showResult(score, target, recognized){
     result.classList.add('show','great');
     emoji.textContent = '🎉'; title.textContent = 'Tuyệt vời!';
     sub.textContent = 'Phát âm rất chuẩn, gần như người bản xứ!';
-    tips.innerHTML = `Bạn đã đọc đúng: <b>${escapeHTML(target)}</b>. Tiếp tục luyện tập để duy trì phong độ nhé!`;
+    tips.innerHTML = `Bạn đã đọc đúng: <b>${escapeHTML(target)}</b>. Tiếp tục luyện tập nhé!`;
   } else if(score >= 60){
     result.classList.add('show','good');
     emoji.textContent = '👍'; title.textContent = 'Khá tốt!';
     sub.textContent = 'Bạn đã đọc gần đúng, chỉ cần chỉnh lại một vài chỗ.';
-    tips.innerHTML = `Câu đúng: <b>${escapeHTML(target)}</b><br>AI nghe được: <i>"${escapeHTML(recognized)}"</i><br>Hãy chú ý phát âm rõ thanh điệu (dấu) và thử lại.`;
+    tips.innerHTML = `Câu đúng: <b>${escapeHTML(target)}</b><br>AI nghe được: <i>"${escapeHTML(recognized)}"</i>`;
   } else {
     result.classList.add('show','try');
     emoji.textContent = '💪'; title.textContent = 'Cố gắng thêm!';
     sub.textContent = 'Hãy nghe mẫu và thử lại.';
-    tips.innerHTML = `Câu đúng: <b>${escapeHTML(target)}</b><br>AI nghe được: <i>"${escapeHTML(recognized)}"</i><br>Mẹo: Nhấn "Nghe mẫu" (giọng Bắc Kinh) và đọc theo từng từ, chú ý thanh điệu.`;
+    tips.innerHTML = `Câu đúng: <b>${escapeHTML(target)}</b><br>AI nghe được: <i>"${escapeHTML(recognized)}"</i>`;
   }
   const l = LESSONS[state.currentLesson], p = getLessonProgress(l.id);
   if(!p.speakBest || score > p.speakBest) p.speakBest = score;
@@ -1184,9 +1674,7 @@ function escapeHTML(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;',
 function spkNext(){ const l = LESSONS[state.currentLesson]; spkIndex = (spkIndex + 1) % l.speaking.length; resetSpeakUI(); updateSpeaking(); }
 function spkPrev(){ const l = LESSONS[state.currentLesson]; spkIndex = (spkIndex - 1 + l.speaking.length) % l.speaking.length; resetSpeakUI(); updateSpeaking(); }
 
-/* ============================================================
-   SPACE HOLD
-   ============================================================ */
+/* === SPACE HOLD === */
 let spacePressed = false;
 function isSpeakingTabActive(){
   const panel = document.querySelector('.tab-panel[data-panel="speak"]');
@@ -1228,21 +1716,17 @@ window.addEventListener('blur', ()=>{
   }
 });
 
-/* ============================================================
-   TABS
-   ============================================================ */
+/* === TABS === */
 function switchTab(name){
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.dataset.panel === name));
   if(name !== 'speak' && isListening && recognition){ try{ recognition.stop(); }catch(e){} }
-  if(name === 'write'){ setTimeout(()=>{ initWriter(); }, 80); }
+  if(name === 'write'){ setTimeout(initWriters, 80); }
   if(name === 'speak'){ updateMicStatus(); }
 }
 document.querySelectorAll('.tab').forEach(tab => { tab.addEventListener('click', ()=> switchTab(tab.dataset.tab)); });
 
-/* ============================================================
-   SIDEBAR + SOUND
-   ============================================================ */
+/* === SIDEBAR + SOUND === */
 function toggleSidebar(force){
   const s = document.getElementById('sidebar'), o = document.getElementById('sidebarOverlay');
   const open = typeof force === 'boolean' ? force : !s.classList.contains('open');
@@ -1256,13 +1740,13 @@ document.getElementById('soundToggle').addEventListener('click', function(){
   if(!state.soundOn && 'speechSynthesis' in window) speechSynthesis.cancel();
 });
 
-/* ============================================================
-   INIT
-   ============================================================ */
+/* === INIT === */
 async function init(){
   loadState();
   document.getElementById('soundToggle').innerHTML = state.soundOn ? '<i class="fas fa-volume-high"></i>' : '<i class="fas fa-volume-xmark"></i>';
   loadLesson(state.currentLesson || 0);
+  // Init writers ngay khi DOM ready (để các nút hoạt động)
+  setTimeout(()=>{ initWriters(); }, 300);
   if(recognitionSupported && navigator.permissions && navigator.permissions.query){
     try {
       const st = await navigator.permissions.query({name:'microphone'});
@@ -1270,6 +1754,12 @@ async function init(){
       st.onchange = ()=>{ if(st.state === 'granted'){ micPermissionGranted = true; updateMicStatus(); } };
     } catch(e){}
   }
+  // Resize handling for writers
+  window.addEventListener('resize', ()=>{
+    if(document.querySelector('.tab-panel[data-panel="write"]').classList.contains('active')){
+      initWriters();
+    }
+  });
 }
 init();
 </script>
