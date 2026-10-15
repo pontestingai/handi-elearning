@@ -8,61 +8,77 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --r:#d2232a;--r2:#b01d22;--rg:rgba(210,35,42,.08);
-  --dk:#1e293b;--sl:#475569;--mu:#64748b;--li:#f8fafc;--bd:#e2e8f0;
+  /* === NEW PALETTE: Cam sáng · Nâu cà phê đậm · Be sáng === */
+  --r:#ea580c;              /* Cam sáng - accent chính */
+  --r2:#c2410c;             /* Cam đậm hơn */
+  --r3:#9a3412;             /* Cam đậm nhất */
+  --rg:rgba(234,88,12,.08);
+  --dk:#3d2817;             /* Nâu cà phê đậm - text chính */
+  --sl:#5d4037;             /* Nâu trung */
+  --mu:#8d6e63;             /* Nâu nhạt */
+  --li:#faf3e8;             /* Be sáng - background phụ */
+  --bd:#e7d5be;             /* Be border */
+  --gd:#fbbf24;             /* Vàng gold accent */
   --ok:#16a34a;--ok-bg:rgba(22,163,74,.1);
   --warn:#f59e0b;--warn-bg:rgba(245,158,11,.1);
   --info:#3b82f6;--info-bg:rgba(59,130,246,.1);
   --sb-w:270px;
-  --sh:0 10px 30px rgba(51,65,85,.08);
+  --sb-bg:#2d1b0e;          /* Sidebar nâu cà phê rất đậm */
+  --sb-bg2:#3d2817;         /* Sidebar block */
+  --sh:0 10px 30px rgba(61,40,23,.08);
   --fn:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
   --zh:'Noto Sans SC',sans-serif;
 }
 html{scroll-behavior:smooth}
-body{font-family:var(--fn);font-size:15px;line-height:1.6;color:var(--sl);background:#f1f5f9;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{font-family:var(--fn);font-size:15px;line-height:1.6;color:var(--sl);background:#fdf8f1;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
 ul{list-style:none}
 button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
 
 /* ============ SIDEBAR ============ */
-.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sb-w);background:#0f172a;color:#cbd5e1;padding:22px 0;overflow-y:auto;z-index:200;display:flex;flex-direction:column;transition:transform .3s ease}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sb-w);background:var(--sb-bg);color:#d4c4a8;padding:22px 0;overflow:hidden;z-index:200;display:flex;flex-direction:column;transition:transform .3s ease}
 .main{margin-left:var(--sb-w);min-height:100vh;display:flex;flex-direction:column}
-.sidebar__brand{display:flex;align-items:center;gap:12px;padding:0 22px 22px;border-bottom:1px solid #1e293b;margin-bottom:20px;flex-shrink:0}
-.sidebar__logo{width:44px;height:44px;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--zh);font-weight:900;font-size:26px;color:var(--r);flex-shrink:0}
-.sidebar__brand-text b{display:block;color:#fff;font-size:14px;font-weight:800}
-.sidebar__brand-text span{font-size:11.5px;color:#64748b}
-.sidebar__section{padding:0 22px;margin-bottom:22px}
-.sidebar__section--grow{flex:1;overflow-y:auto;min-height:0}
-.sidebar__section-title{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#475569;margin-bottom:12px}
-.progress-block{background:#1e293b;border-radius:12px;padding:16px;margin-bottom:20px}
+.sidebar__brand{display:flex;align-items:center;gap:12px;padding:0 22px 22px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:20px;flex-shrink:0}
+.sidebar__logo{width:44px;height:44px;background:linear-gradient(135deg,#ea580c,#c2410c);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--zh);font-weight:900;font-size:26px;color:#fff;flex-shrink:0;box-shadow:0 4px 12px rgba(234,88,12,.35)}
+.sidebar__brand-text b{display:block;color:#fdf8f1;font-size:14px;font-weight:800}
+.sidebar__brand-text span{font-size:11.5px;color:#a1887f}
+.sidebar__section{padding:0 22px;margin-bottom:22px;flex-shrink:0}
+.sidebar__section--grow{flex:1;overflow-y:auto;min-height:0;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.1) transparent}
+.sidebar__section--grow::-webkit-scrollbar{width:6px}
+.sidebar__section--grow::-webkit-scrollbar-track{background:transparent}
+.sidebar__section--grow::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
+.sidebar__section--grow::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.22)}
+.sidebar__section-title{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#8d6e63;margin-bottom:12px}
+.progress-block{background:var(--sb-bg2);border-radius:12px;padding:16px;margin-bottom:20px}
 .progress-block__head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.progress-block__head span{font-size:12px;font-weight:700;color:#94a3b8}
-.progress-block__head b{font-size:18px;font-weight:800;color:#fff}
-.progress-block__bar{height:8px;background:#0f172a;border-radius:99px;overflow:hidden;margin-bottom:10px}
-.progress-block__fill{height:100%;background:linear-gradient(90deg,#ef4444,#d2232a);border-radius:99px;transition:width .5s ease;width:0%}
-.progress-block__stats{display:flex;justify-content:space-between;font-size:11.5px;color:#64748b}
+.progress-block__head span{font-size:12px;font-weight:700;color:#a1887f}
+.progress-block__head b{font-size:18px;font-weight:800;color:#fdf8f1}
+.progress-block__bar{height:8px;background:rgba(0,0,0,.25);border-radius:99px;overflow:hidden;margin-bottom:10px}
+.progress-block__fill{height:100%;background:linear-gradient(90deg,#ea580c,#f97316);border-radius:99px;transition:width .5s ease;width:0%}
+.progress-block__stats{display:flex;justify-content:space-between;font-size:11.5px;color:#8d6e63}
 .progress-block__stats span{display:flex;align-items:center;gap:5px}
-.progress-block__stats i{color:#ef4444}
+.progress-block__stats i{color:var(--gd)}
 .lesson{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;cursor:pointer;transition:background .2s;margin-bottom:4px;position:relative}
-.lesson:hover{background:#1e293b}
-.lesson.active{background:rgba(210,35,42,.15);color:#fff}
+.lesson:hover{background:var(--sb-bg2)}
+.lesson.active{background:rgba(234,88,12,.18);color:#fff}
 .lesson.active::before{content:"";position:absolute;left:-22px;top:8px;bottom:8px;width:3px;background:var(--r);border-radius:0 3px 3px 0}
 .lesson.done .lesson__num{background:var(--ok);color:#fff;border-color:var(--ok)}
-.lesson__num{flex-shrink:0;width:28px;height:28px;border-radius:8px;background:#1e293b;border:1.5px solid #334155;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#94a3b8;transition:all .2s}
+.lesson__num{flex-shrink:0;width:28px;height:28px;border-radius:8px;background:var(--sb-bg2);border:1.5px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#a1887f;transition:all .2s}
 .lesson.active .lesson__num{background:var(--r);border-color:var(--r);color:#fff}
 .lesson__body{flex:1;min-width:0}
-.lesson__title{font-size:13.5px;font-weight:600;line-height:1.3;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lesson__meta{font-size:11px;color:#64748b;margin-top:2px}
-.lesson.active .lesson__title{color:#fff;font-weight:700}
+.lesson__title{font-size:13.5px;font-weight:600;line-height:1.3;color:#e8dcc8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lesson__meta{font-size:11px;color:#8d6e63;margin-top:2px}
+.lesson.active .lesson__title{color:#fdf8f1;font-weight:700}
 .lesson__check{font-size:12px;color:var(--ok);opacity:0;transition:opacity .2s}
 .lesson.done .lesson__check{opacity:1}
-.sidebar__footer{margin-top:auto;padding:16px 22px;border-top:1px solid #1e293b;font-size:12px;color:#64748b;flex-shrink:0}
-.sidebar__footer a{color:#94a3b8;display:flex;align-items:center;gap:8px;padding:8px 0;transition:color .2s}
-.sidebar__footer a:hover{color:#ef4444}
+.sidebar__footer{margin-top:auto;padding:16px 22px;border-top:1px solid rgba(255,255,255,.06);font-size:12px;color:#8d6e63;flex-shrink:0}
+.sidebar__footer a{color:#a1887f;display:flex;align-items:center;gap:8px;padding:8px 0;transition:color .2s}
+.sidebar__footer a:hover{color:var(--r)}
 
 /* ============ TOPBAR ============ */
 .topbar{background:#fff;border-bottom:1px solid var(--bd);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;position:sticky;top:0;z-index:50}
@@ -85,7 +101,7 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .tabs{display:flex;gap:6px;background:#fff;padding:6px;border-radius:14px;border:1px solid var(--bd);margin-bottom:24px;overflow-x:auto}
 .tab{flex:1;min-width:max-content;padding:10px 16px;border-radius:10px;font-size:13.5px;font-weight:700;color:var(--sl);display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;white-space:nowrap}
 .tab:hover{background:var(--li);color:var(--dk)}
-.tab.active{background:var(--r);color:#fff;box-shadow:0 4px 12px rgba(210,35,42,.28)}
+.tab.active{background:var(--r);color:#fff;box-shadow:0 4px 12px rgba(234,88,12,.28)}
 .tab i{font-size:13px}
 .tab-panel{display:none}
 .tab-panel.active{display:block;animation:fade .3s ease}
@@ -94,7 +110,7 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 /* ============ VOCAB ============ */
 .vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
 .vocab-card{background:#fff;border:1.5px solid var(--bd);border-radius:16px;padding:20px 16px;text-align:center;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
-.vocab-card:hover{transform:translateY(-4px);box-shadow:var(--sh);border-color:rgba(210,35,42,.3)}
+.vocab-card:hover{transform:translateY(-4px);box-shadow:var(--sh);border-color:rgba(234,88,12,.3)}
 .vocab-card__hanzi{font-family:var(--zh);font-size:36px;font-weight:700;color:var(--dk);line-height:1.1;margin-bottom:6px}
 .vocab-card__pinyin{font-size:13px;color:var(--r);font-weight:600;margin-bottom:8px;font-style:italic}
 .vocab-card__meaning{font-size:13.5px;color:var(--mu);line-height:1.4}
@@ -109,15 +125,15 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .fc-card{width:100%;max-width:480px;aspect-ratio:5/3;perspective:1200px;cursor:pointer;margin-bottom:24px}
 .fc-card__inner{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d}
 .fc-card.flipped .fc-card__inner{transform:rotateY(180deg)}
-.fc-card__face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;box-shadow:0 8px 24px rgba(51,65,85,.1)}
-.fc-card__front{background:linear-gradient(135deg,#fff 0%,#fef2f2 100%);border:2px solid rgba(210,35,42,.2)}
-.fc-card__back{background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);color:#fff;transform:rotateY(180deg)}
+.fc-card__face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;box-shadow:0 8px 24px rgba(61,40,23,.1)}
+.fc-card__front{background:linear-gradient(135deg,#fff 0%,var(--li) 100%);border:2px solid rgba(234,88,12,.2)}
+.fc-card__back{background:linear-gradient(135deg,#3d2817 0%,#2d1b0e 100%);color:#fff;transform:rotateY(180deg)}
 .fc-card__hanzi{font-family:var(--zh);font-size:clamp(48px,10vw,84px);font-weight:700;color:var(--dk);line-height:1.1;margin-bottom:12px}
 .fc-card__pinyin{font-size:18px;color:var(--r);font-weight:700;font-style:italic}
-.fc-card__meaning{font-size:22px;font-weight:700;color:#fff;margin-bottom:12px}
-.fc-card__example{font-family:var(--zh);font-size:15px;color:rgba(255,255,255,.75);line-height:1.6;padding:0 10px}
+.fc-card__meaning{font-size:22px;font-weight:700;color:#fdf8f1;margin-bottom:12px}
+.fc-card__example{font-family:var(--zh);font-size:15px;color:rgba(253,248,241,.75);line-height:1.6;padding:0 10px}
 .fc-card__hint{position:absolute;bottom:14px;font-size:11.5px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.1em}
-.fc-card__back .fc-card__hint{color:rgba(255,255,255,.4)}
+.fc-card__back .fc-card__hint{color:rgba(253,248,241,.4)}
 .fc-controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 
 /* ============ QUIZ ============ */
@@ -131,7 +147,7 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .quiz__question .zh{font-family:var(--zh);font-size:26px;display:block;margin-bottom:6px}
 .quiz__options{display:grid;gap:10px}
 .q-option{display:flex;align-items:center;gap:14px;background:var(--li);border:1.5px solid var(--bd);border-radius:12px;padding:14px 18px;cursor:pointer;font-size:14.5px;font-weight:600;color:var(--dk);text-align:left;width:100%;transition:all .2s}
-.q-option:hover:not(:disabled){background:#fff;border-color:rgba(210,35,42,.3);transform:translateX(3px)}
+.q-option:hover:not(:disabled){background:#fff;border-color:rgba(234,88,12,.3);transform:translateX(3px)}
 .q-option__key{flex-shrink:0;width:28px;height:28px;border-radius:8px;background:#fff;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--sl)}
 .q-option.correct{background:var(--ok-bg);border-color:var(--ok);color:#166534}
 .q-option.correct .q-option__key{background:var(--ok);border-color:var(--ok);color:#fff}
@@ -159,39 +175,39 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;border-radius:10px;font-size:14px;font-weight:700;transition:all .2s;border:2px solid transparent;white-space:nowrap}
 .btn:hover{transform:translateY(-2px)}
 .btn--primary{background:var(--r);border-color:var(--r);color:#fff}
-.btn--primary:hover{background:var(--r2);border-color:var(--r2);box-shadow:0 8px 20px rgba(210,35,42,.3)}
+.btn--primary:hover{background:var(--r2);border-color:var(--r2);box-shadow:0 8px 20px rgba(234,88,12,.3)}
 .btn--ghost{background:#fff;border-color:var(--bd);color:var(--dk)}
 .btn--ghost:hover{border-color:var(--r);color:var(--r)}
 .btn--ok{background:var(--ok);border-color:var(--ok);color:#fff}
 .btn--ok:hover{background:#15803d;border-color:#15803d}
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
-/* ============ WRITING (CANVAS) ============ */
+/* ============ WRITING (HANZI WRITER) ============ */
 .writing{background:#fff;border:1.5px solid var(--bd);border-radius:20px;padding:32px 28px}
 .writing__header{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:20px;flex-wrap:wrap}
 .writing__nav{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:var(--mu)}
 .writing__nav b{color:var(--r);font-size:15px}
 .writing__tools{display:flex;gap:8px;flex-wrap:wrap}
-.tool-btn{width:38px;height:38px;border-radius:10px;background:var(--li);border:1.5px solid var(--bd);display:inline-flex;align-items:center;justify-content:center;color:var(--sl);font-size:14px;transition:all .2s;position:relative}
+.tool-btn{min-width:38px;height:38px;padding:0 12px;border-radius:10px;background:var(--li);border:1.5px solid var(--bd);display:inline-flex;align-items:center;justify-content:center;gap:6px;color:var(--sl);font-size:13px;font-weight:700;transition:all .2s}
 .tool-btn:hover{background:var(--rg);border-color:var(--r);color:var(--r)}
 .tool-btn.active{background:var(--r);border-color:var(--r);color:#fff}
-.tool-btn__color{width:18px;height:18px;border-radius:50%;background:#d2232a}
-.tool-btn.active .tool-btn__color{box-shadow:0 0 0 2px #fff,0 0 0 3px rgba(210,35,42,.4)}
+.tool-btn.playing{background:var(--gd);border-color:var(--gd);color:var(--dk)}
 
 .writing__stage-wrap{display:flex;justify-content:center;margin-bottom:20px}
-.writing__stage{position:relative;background:#fef3f3;border:2px solid rgba(210,35,42,.3);border-radius:16px;width:100%;max-width:360px;aspect-ratio:1;overflow:hidden;touch-action:none}
+.writing__stage{position:relative;background:linear-gradient(135deg,#fdf8f1 0%,#faf3e8 100%);border:2px solid rgba(234,88,12,.28);border-radius:16px;width:100%;max-width:380px;aspect-ratio:1;overflow:hidden}
 .writing__grid-bg{position:absolute;inset:0;pointer-events:none;background-image:
-  linear-gradient(to right,transparent calc(50% - 1px),rgba(210,35,42,.15) 50%,transparent calc(50% + 1px)),
-  linear-gradient(to bottom,transparent calc(50% - 1px),rgba(210,35,42,.15) 50%,transparent calc(50% + 1px)),
-  linear-gradient(45deg,transparent calc(50% - 1px),rgba(210,35,42,.08) 50%,transparent calc(50% + 1px)),
-  linear-gradient(-45deg,transparent calc(50% - 1px),rgba(210,35,42,.08) 50%,transparent calc(50% + 1px))}
-.writing__ghost{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--zh);font-size:220px;color:rgba(210,35,42,.13);line-height:1;user-select:none;pointer-events:none;font-weight:400}
-.writing__canvas{position:absolute;inset:0;width:100%;height:100%;cursor:crosshair;touch-action:none}
+  linear-gradient(to right,transparent calc(50% - 1px),rgba(234,88,12,.18) 50%,transparent calc(50% + 1px)),
+  linear-gradient(to bottom,transparent calc(50% - 1px),rgba(234,88,12,.18) 50%,transparent calc(50% + 1px)),
+  linear-gradient(45deg,transparent calc(50% - 1px),rgba(234,88,12,.1) 50%,transparent calc(50% + 1px)),
+  linear-gradient(-45deg,transparent calc(50% - 1px),rgba(234,88,12,.1) 50%,transparent calc(50% + 1px))}
+.writing__writer{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:20px}
+.writing__writer svg{display:block}
 
 .writing__info{text-align:center;margin-bottom:20px}
 .writing__info b{font-family:var(--zh);font-size:22px;color:var(--dk);display:block;margin-bottom:4px}
 .writing__info span{font-size:14px;color:var(--mu)}
 .writing__controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.writing__hint{font-size:12.5px;color:var(--mu);text-align:center;margin-top:12px;font-style:italic}
 
 /* ============ SPEAKING ============ */
 .speaking{background:#fff;border:1.5px solid var(--bd);border-radius:20px;padding:32px 28px}
@@ -201,30 +217,30 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .speaking__voice{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--mu);flex-wrap:wrap}
 .speaking__voice select{padding:6px 10px;border:1px solid var(--bd);border-radius:8px;font-size:12.5px;background:#fff;color:var(--dk);max-width:240px}
 .speaking__voice i{color:var(--info)}
-.speak-target{background:linear-gradient(135deg,#fff 0%,#fef2f2 100%);border:2px solid rgba(210,35,42,.18);border-radius:16px;padding:32px 20px;text-align:center;margin-bottom:24px;position:relative}
+.speak-target{background:linear-gradient(135deg,#fff 0%,var(--li) 100%);border:2px solid rgba(234,88,12,.18);border-radius:16px;padding:32px 20px;text-align:center;margin-bottom:24px;position:relative}
 .speak-target__label{position:absolute;top:12px;left:16px;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mu)}
 .speak-target__hanzi{font-family:var(--zh);font-size:clamp(34px,5.5vw,52px);font-weight:700;color:var(--dk);line-height:1.2;margin-bottom:10px;letter-spacing:.02em}
 .speak-target__pinyin{font-size:16px;color:var(--r);font-weight:700;font-style:italic;margin-bottom:8px}
 .speak-target__meaning{font-size:14.5px;color:var(--mu);line-height:1.5}
 .speak-target__actions{display:flex;justify-content:center;gap:10px;margin-top:18px;flex-wrap:wrap}
 .speak-mic{display:flex;flex-direction:column;align-items:center;gap:14px;margin-bottom:20px}
-.mic-btn{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#d2232a,#b01d22);color:#fff;font-size:42px;display:flex;align-items:center;justify-content:center;position:relative;transition:transform .2s;box-shadow:0 12px 32px rgba(210,35,42,.35);cursor:pointer;border:0;user-select:none}
+.mic-btn{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#ea580c,#c2410c);color:#fff;font-size:42px;display:flex;align-items:center;justify-content:center;position:relative;transition:transform .2s;box-shadow:0 12px 32px rgba(234,88,12,.35);cursor:pointer;border:0;user-select:none}
 .mic-btn:hover:not(:disabled){transform:scale(1.05)}
 .mic-btn:active:not(:disabled){transform:scale(.98)}
 .mic-btn.listening{animation:micPulse 1.4s ease-in-out infinite}
 .mic-btn:disabled{cursor:not-allowed;opacity:.7}
-.mic-btn__ring{position:absolute;inset:-12px;border-radius:50%;border:2px solid rgba(210,35,42,.4);opacity:0;pointer-events:none}
+.mic-btn__ring{position:absolute;inset:-12px;border-radius:50%;border:2px solid rgba(234,88,12,.4);opacity:0;pointer-events:none}
 .mic-btn.listening .mic-btn__ring{animation:ringPulse 1.6s ease-out infinite}
-@keyframes micPulse{0%,100%{box-shadow:0 12px 32px rgba(210,35,42,.35)}50%{box-shadow:0 12px 48px rgba(210,35,42,.6),0 0 0 12px rgba(210,35,42,.15)}}
+@keyframes micPulse{0%,100%{box-shadow:0 12px 32px rgba(234,88,12,.35)}50%{box-shadow:0 12px 48px rgba(234,88,12,.6),0 0 0 12px rgba(234,88,12,.15)}}
 @keyframes ringPulse{0%{transform:scale(.9);opacity:.8}100%{transform:scale(1.5);opacity:0}}
 .mic-hint{font-size:14px;font-weight:700;color:var(--dk);text-align:center;min-height:42px}
 .mic-hint small{display:block;font-size:12px;font-weight:500;color:var(--mu);margin-top:4px}
 .keyhint{display:inline-flex;align-items:center;gap:8px;background:var(--li);border:1.5px solid var(--bd);border-radius:10px;padding:8px 14px;font-size:12.5px;color:var(--mu);margin-top:6px}
 .keyhint kbd{display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:24px;padding:0 8px;background:#fff;border:1.5px solid var(--bd);border-bottom-width:3px;border-radius:6px;font-family:var(--fn);font-size:11px;font-weight:800;color:var(--dk)}
-.keyhint.active{background:var(--rg);border-color:rgba(210,35,42,.4);color:var(--r2)}
+.keyhint.active{background:var(--rg);border-color:rgba(234,88,12,.4);color:var(--r2)}
 .keyhint.active kbd{background:var(--r);border-color:var(--r2);color:#fff}
 .speak-transcript{background:var(--li);border:1.5px dashed var(--bd);border-radius:14px;padding:18px 20px;min-height:70px;margin-bottom:18px;transition:border-color .2s}
-.speak-transcript.listening{border-color:var(--r);background:rgba(210,35,42,.04)}
+.speak-transcript.listening{border-color:var(--r);background:rgba(234,88,12,.04)}
 .speak-transcript__label{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);margin-bottom:8px;display:flex;align-items:center;gap:6px}
 .speak-transcript__text{font-family:var(--zh);font-size:20px;color:var(--dk);line-height:1.5;word-break:break-word}
 .speak-transcript__text.empty{color:var(--mu);font-family:var(--fn);font-size:14px;font-style:italic}
@@ -255,14 +271,14 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .mic-status__btn{margin-left:auto;padding:6px 12px;border-radius:8px;background:#fff;border:1.5px solid currentColor;font-size:12.5px;font-weight:700;transition:all .2s}
 .mic-status__btn:hover{background:currentColor;color:#fff}
 
-.complete-banner{background:linear-gradient(135deg,#16a34a 0%,#15803d 100%);color:#fff;border-radius:16px;padding:24px 28px;display:flex;align-items:center;gap:20px;margin-top:24px}
+.complete-banner{background:linear-gradient(135deg,#ea580c 0%,#c2410c 100%);color:#fff;border-radius:16px;padding:24px 28px;display:flex;align-items:center;gap:20px;margin-top:24px}
 .complete-banner__icon{width:56px;height:56px;background:rgba(255,255,255,.2);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
 .complete-banner__body{flex:1}
 .complete-banner__body b{display:block;font-size:17px;font-weight:800;margin-bottom:4px}
 .complete-banner__body span{font-size:13.5px;opacity:.9;line-height:1.5}
-.complete-banner .btn{background:#fff;color:#166534;border-color:#fff}
+.complete-banner .btn{background:#fff;color:var(--r2);border-color:#fff}
 
-.sidebar__overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:150;opacity:0;visibility:hidden;transition:all .3s}
+.sidebar__overlay{position:fixed;inset:0;background:rgba(45,27,14,.5);z-index:150;opacity:0;visibility:hidden;transition:all .3s}
 .sidebar__overlay.show{opacity:1;visibility:visible}
 
 @media (max-width:1024px){.content{padding:24px 20px}.topbar{padding:12px 20px}}
@@ -288,7 +304,7 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
   .result-box__score{font-size:44px}
   .complete-banner{flex-direction:column;text-align:center;padding:22px}
   .writing{padding:22px 18px}
-  .writing__ghost{font-size:160px}
+  .writing__stage{max-width:320px}
   .speaking{padding:22px 16px}
   .mic-btn{width:100px;height:100px;font-size:36px}
   .speak-target{padding:26px 16px}
@@ -412,7 +428,7 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
       </div>
     </section>
 
-    <!-- WRITING TAB -->
+    <!-- WRITING TAB - dùng Hanzi Writer -->
     <section class="tab-panel" data-panel="write">
       <div class="writing">
         <div class="writing__header">
@@ -420,20 +436,22 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
             Chữ <b id="writeCurrent">1</b> / <span id="writeTotal">6</span>
           </div>
           <div class="writing__tools">
-            <button class="tool-btn active" id="toolPen" onclick="setTool('pen')" title="Bút vẽ"><i class="fas fa-pen"></i></button>
-            <button class="tool-btn" id="toolEraser" onclick="setTool('eraser')" title="Cục tẩy"><i class="fas fa-eraser"></i></button>
-            <button class="tool-btn" id="toolColor" onclick="cycleColor()" title="Đổi màu">
-              <span class="tool-btn__color" id="colorDot"></span>
+            <button class="tool-btn" id="btnAnimate" onclick="playStrokeOrder()" title="Xem thứ tự viết">
+              <i class="fas fa-play"></i> <span>Xem cách viết</span>
             </button>
-            <button class="tool-btn" onclick="clearCanvas()" title="Xóa hết"><i class="fas fa-trash"></i></button>
+            <button class="tool-btn" id="btnQuiz" onclick="startQuiz()" title="Luyện viết">
+              <i class="fas fa-pen"></i> <span>Luyện viết</span>
+            </button>
+            <button class="tool-btn" onclick="clearWriter()" title="Xóa">
+              <i class="fas fa-trash"></i>
+            </button>
           </div>
         </div>
 
         <div class="writing__stage-wrap">
-          <div class="writing__stage" id="writeStage">
+          <div class="writing__stage">
             <div class="writing__grid-bg"></div>
-            <div class="writing__ghost" id="writeGhost">你</div>
-            <canvas class="writing__canvas" id="writeCanvas"></canvas>
+            <div id="hanziWriterTarget" class="writing__writer"></div>
           </div>
         </div>
 
@@ -445,9 +463,9 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
         <div class="writing__controls">
           <button class="btn btn--ghost" onclick="writeNav(-1)"><i class="fas fa-chevron-left"></i> Chữ trước</button>
           <button class="btn btn--ghost" onclick="speak(LESSONS[state.currentLesson].vocab[writeIndex].hanzi)"><i class="fas fa-volume-high"></i> Nghe mẫu</button>
-          <button class="btn btn--ghost" onclick="toggleGhost()"><i class="fas fa-eye"></i> <span id="ghostLabel">Ẩn chữ mẫu</span></button>
           <button class="btn btn--primary" onclick="writeNav(1)">Chữ tiếp <i class="fas fa-chevron-right"></i></button>
         </div>
+        <p class="writing__hint"><i class="fas fa-info-circle"></i> Nhấn "Xem cách viết" để xem hoạt ảnh thứ tự nét, hoặc "Luyện viết" để tự tay viết theo hướng dẫn</p>
       </div>
     </section>
 
@@ -463,7 +481,6 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
         </div>
 
         <div id="speakMain">
-          <!-- Mic status bar -->
           <div class="mic-status hidden" id="micStatus">
             <i class="fas fa-microphone-slash" id="micStatusIcon"></i>
             <span id="micStatusText">Cần cấp quyền micro</span>
@@ -578,7 +595,7 @@ const LESSONS = [
 /* ============================================================
    STATE
    ============================================================ */
-const STORAGE_KEY = 'handi_elearning_v4';
+const STORAGE_KEY = 'handi_elearning_v5';
 let state = { currentLesson:0, progress:{}, soundOn:true, stars:0 };
 function loadState(){ try{const r=localStorage.getItem(STORAGE_KEY); if(r) state={...state,...JSON.parse(r)};}catch(e){} }
 function saveState(){ try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){} }
@@ -798,131 +815,112 @@ function restartQuiz(){ renderQuiz(LESSONS[state.currentLesson]); }
 function nextLesson(){ const next = state.currentLesson + 1; if(next < LESSONS.length) loadLesson(next); else alert('🎉 Chúc mừng! Bạn đã hoàn thành toàn bộ khóa học!'); }
 
 /* ============================================================
-   WRITING — CANVAS VẼ CHỮ HÁN
+   WRITING — HANZI WRITER (thứ tự nét + luyện viết)
    ============================================================ */
-let canvas, ctx;
-let isDrawing = false;
-let lastX = 0, lastY = 0;
-let currentTool = 'pen';
-let currentColor = '#d2232a';
-let ghostVisible = true;
-const COLORS = ['#d2232a','#1e293b','#3b82f6','#16a34a','#f59e0b'];
+let writer = null;
+let writerChar = '';
 
-function initCanvas(){
-  canvas = document.getElementById('writeCanvas');
-  if(!canvas) return;
-  ctx = canvas.getContext('2d');
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
-
-  // Mouse events
-  canvas.addEventListener('mousedown', startDraw);
-  canvas.addEventListener('mousemove', draw);
-  canvas.addEventListener('mouseup', endDraw);
-  canvas.addEventListener('mouseleave', endDraw);
-
-  // Touch events
-  canvas.addEventListener('touchstart', (e)=>{ e.preventDefault(); const t = e.touches[0]; startDraw({clientX:t.clientX, clientY:t.clientY}); }, {passive:false});
-  canvas.addEventListener('touchmove', (e)=>{ e.preventDefault(); const t = e.touches[0]; draw({clientX:t.clientX, clientY:t.clientY}); }, {passive:false});
-  canvas.addEventListener('touchend', endDraw);
-  canvas.addEventListener('touchcancel', endDraw);
-
-  // Pointer events (stylus, pen)
-  canvas.addEventListener('pointerdown', (e)=>{ if(e.pointerType !== 'mouse' && e.pointerType !== 'touch'){ startDraw(e); } });
-  canvas.addEventListener('pointermove', (e)=>{ if(e.pointerType !== 'mouse' && e.pointerType !== 'touch'){ draw(e); } });
-  canvas.addEventListener('pointerup', endDraw);
-}
-
-function resizeCanvas(){
-  if(!canvas) return;
-  const rect = canvas.getBoundingClientRect();
-  const dpr = window.devicePixelRatio || 1;
-  let oldImage = null;
-  if(canvas.width > 0 && canvas.height > 0){
-    try { oldImage = ctx.getImageData(0, 0, canvas.width, canvas.height); } catch(e){}
+function initWriter(){
+  const target = document.getElementById('hanziWriterTarget');
+  if(!target) return;
+  if(typeof HanziWriter === 'undefined'){
+    target.innerHTML = '<div style="padding:40px;color:#8d6e63;text-align:center">Đang tải thư viện...</div>';
+    setTimeout(initWriter, 500);
+    return;
   }
-  canvas.width = rect.width * dpr;
-  canvas.height = rect.height * dpr;
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  if(oldImage){
-    try { ctx.putImageData(oldImage, 0, 0, 0, 0, canvas.width / dpr, canvas.height / dpr); } catch(e){}
-  }
+  const v = LESSONS[state.currentLesson].vocab[writeIndex];
+  if(writerChar === v.hanzi && writer) return; // Không tạo lại nếu cùng chữ
+
+  writerChar = v.hanzi;
+  target.innerHTML = '';
+
+  writer = HanziWriter.create('hanziWriterTarget', v.hanzi, {
+    width: 300,
+    height: 300,
+    padding: 20,
+    strokeColor: '#3d2817',        // Nâu cà phê đậm
+    radicalColor: '#ea580c',        // Cam cho bộ thủ
+    highlightColor: '#fbbf24',      // Vàng gold khi highlight
+    outlineColor: '#d4c4a8',        // Be nhạt cho outline (chữ mẫu)
+    drawingColor: '#ea580c',        // Cam cho nét user vẽ
+    drawingWidth: 22,               // Nét vẽ user dày hơn để dễ trace
+    strokeAnimationSpeed: 1,
+    delayBetweenStrokes: 350,
+    showOutline: true,
+    showCharacter: false,           // Không hiện chữ đậm, chỉ outline
+    charDataLoader: function(char, onComplete){
+      const url = 'https://cdn.jsdelivr.net/npm/hanzi-writer-data@2.0/' + encodeURIComponent(char) + '.json';
+      fetch(url).then(r => r.json()).then(onComplete).catch(err => {
+        console.error('Lỗi tải dữ liệu nét:', char, err);
+        target.innerHTML = '<div style="padding:40px;color:#8d6e63;text-align:center">Không tải được dữ liệu nét</div>';
+      });
+    }
+  });
 }
 
-function getPos(e){
-  const rect = canvas.getBoundingClientRect();
-  return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+function playStrokeOrder(){
+  if(!writer){ initWriter(); }
+  if(!writer) return;
+  const btn = document.getElementById('btnAnimate');
+  btn.classList.add('playing');
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Đang vẽ...</span>';
+  writer.animateCharacter({
+    onComplete: function(){
+      btn.classList.remove('playing');
+      btn.innerHTML = '<i class="fas fa-play"></i> <span>Xem cách viết</span>';
+    }
+  });
 }
 
-function startDraw(e){
-  isDrawing = true;
-  const p = getPos(e);
-  lastX = p.x; lastY = p.y;
-  ctx.beginPath();
-  ctx.arc(p.x, p.y, currentTool === 'eraser' ? 12 : 2.5, 0, Math.PI * 2);
-  ctx.fillStyle = currentTool === 'eraser' ? '#fef3f3' : currentColor;
-  ctx.fill();
+function startQuiz(){
+  if(!writer){ initWriter(); }
+  if(!writer) return;
+  const btn = document.getElementById('btnQuiz');
+  btn.classList.add('active');
+  btn.innerHTML = '<i class="fas fa-pen"></i> <span>Đang luyện...</span>';
+  writer.quiz({
+    onComplete: function(summary){
+      btn.classList.remove('active');
+      btn.innerHTML = '<i class="fas fa-check"></i> <span>Hoàn thành!</span>';
+      setTimeout(()=>{
+        btn.innerHTML = '<i class="fas fa-pen"></i> <span>Luyện viết</span>';
+      }, 2000);
+    }
+  });
 }
 
-function draw(e){
-  if(!isDrawing) return;
-  const p = getPos(e);
-  ctx.beginPath();
-  ctx.moveTo(lastX, lastY);
-  ctx.lineTo(p.x, p.y);
-  if(currentTool === 'eraser'){
-    ctx.strokeStyle = '#fef3f3';
-    ctx.lineWidth = 24;
-  } else {
-    ctx.strokeStyle = currentColor;
-    ctx.lineWidth = 5;
-  }
-  ctx.stroke();
-  lastX = p.x; lastY = p.y;
-}
-
-function endDraw(){ isDrawing = false; }
-
-function clearCanvas(){
-  if(!canvas || !ctx) return;
-  const dpr = window.devicePixelRatio || 1;
-  ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
-}
-
-function setTool(tool){
-  currentTool = tool;
-  document.getElementById('toolPen').classList.toggle('active', tool === 'pen');
-  document.getElementById('toolEraser').classList.toggle('active', tool === 'eraser');
-}
-function cycleColor(){
-  const idx = COLORS.indexOf(currentColor);
-  currentColor = COLORS[(idx + 1) % COLORS.length];
-  document.getElementById('colorDot').style.background = currentColor;
-  if(currentTool === 'eraser') setTool('pen');
-}
-function toggleGhost(){
-  ghostVisible = !ghostVisible;
-  document.getElementById('writeGhost').style.opacity = ghostVisible ? '1' : '0';
-  document.getElementById('ghostLabel').textContent = ghostVisible ? 'Ẩn chữ mẫu' : 'Hiện chữ mẫu';
+function clearWriter(){
+  if(!writer){ initWriter(); return; }
+  writer.cancelQuiz();
+  writer.hideCharacter();
+  writer.showOutline();
+  writerChar = ''; // Reset để có thể re-init
+  initWriter();
 }
 
 function renderWriting(l){
   writeIndex = 0;
   updateWriting();
-  clearCanvas();
-  if(!canvas) initCanvas();
+  // Chỉ init writer khi tab write đang active, hoặc đợi đến khi switchTab
+  setTimeout(()=>{
+    if(document.querySelector('.tab-panel[data-panel="write"]').classList.contains('active')){
+      initWriter();
+    }
+  }, 100);
 }
+
 function updateWriting(){
   const v = LESSONS[state.currentLesson].vocab[writeIndex];
-  document.getElementById('writeGhost').textContent = v.hanzi;
   document.getElementById('writeHanzi').textContent = v.hanzi;
   document.getElementById('writeInfo').textContent = `${v.pinyin} — ${v.meaning}`;
   document.getElementById('writeCurrent').textContent = writeIndex + 1;
   document.getElementById('writeTotal').textContent = LESSONS[state.currentLesson].vocab.length;
-  clearCanvas();
+  writerChar = ''; // Reset để buộc tạo lại writer với chữ mới
+  if(document.querySelector('.tab-panel[data-panel="write"]').classList.contains('active')){
+    initWriter();
+  }
 }
+
 function writeNav(dir){
   const l = LESSONS[state.currentLesson];
   writeIndex = (writeIndex + dir + l.vocab.length) % l.vocab.length;
@@ -931,7 +929,7 @@ function writeNav(dir){
 }
 
 /* ============================================================
-   SPEAKING — XIN QUYỀN 1 LẦN DUY NHẤT
+   SPEAKING
    ============================================================ */
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = null;
@@ -1056,14 +1054,12 @@ async function toggleRecognition(){
 
 async function startListening(){
   if(!recognition || isListening) return;
-
   const ok = await ensurePermission(true);
   if(!ok){
     document.getElementById('micHint').innerHTML = 'Chưa có quyền micro<small>Nhấn "Cấp quyền" ở trên</small>';
     updateMicStatus();
     return;
   }
-
   resetSpeakUI();
   isListening = true;
   const btn = document.getElementById('micBtn');
@@ -1074,9 +1070,7 @@ async function startListening(){
   const t = document.getElementById('transcriptText');
   t.className = 'speak-transcript__text empty';
   t.textContent = '...';
-
   let finalTranscript = '';
-
   recognition.onresult = (event)=>{
     let interim = ''; finalTranscript = '';
     for(let i = event.resultIndex; i < event.results.length; i++){
@@ -1092,7 +1086,6 @@ async function startListening(){
       t.innerHTML = `<span class="interim">${escapeHTML(interim)}</span>`;
     }
   };
-
   recognition.onerror = (event)=>{
     isListening = false;
     btn.className = 'mic-btn';
@@ -1109,7 +1102,6 @@ async function startListening(){
     else if(event.error === 'audio-capture') msg = 'Không tìm thấy micro.';
     document.getElementById('micHint').innerHTML = msg + '<small>Nhấn để thử lại</small>';
   };
-
   recognition.onend = ()=>{
     isListening = false;
     btn.className = 'mic-btn';
@@ -1123,7 +1115,6 @@ async function startListening(){
       document.getElementById('micHint').innerHTML = 'Không nghe rõ<small>Nhấn để thử lại</small>';
     }
   };
-
   try { recognition.start(); }
   catch(e){
     isListening = false;
@@ -1244,7 +1235,7 @@ function switchTab(name){
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.dataset.panel === name));
   if(name !== 'speak' && isListening && recognition){ try{ recognition.stop(); }catch(e){} }
-  if(name === 'write'){ setTimeout(()=>{ if(canvas) resizeCanvas(); }, 50); }
+  if(name === 'write'){ setTimeout(()=>{ initWriter(); }, 80); }
   if(name === 'speak'){ updateMicStatus(); }
 }
 document.querySelectorAll('.tab').forEach(tab => { tab.addEventListener('click', ()=> switchTab(tab.dataset.tab)); });
@@ -1272,7 +1263,6 @@ async function init(){
   loadState();
   document.getElementById('soundToggle').innerHTML = state.soundOn ? '<i class="fas fa-volume-high"></i>' : '<i class="fas fa-volume-xmark"></i>';
   loadLesson(state.currentLesson || 0);
-  setTimeout(()=>{ initCanvas(); if(canvas) resizeCanvas(); }, 100);
   if(recognitionSupported && navigator.permissions && navigator.permissions.query){
     try {
       const st = await navigator.permissions.query({name:'microphone'});
