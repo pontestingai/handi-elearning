@@ -3,519 +3,1566 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HanDi – Lớp học trực tuyến (Demo Agora)</title>
+<title>HanDi – Lớp học trực tuyến</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  :root {
-    --r: #ea580c; --r2: #c2410c; --dk: #3d2817; --sl: #5d4037; --mu: #8d6e63;
-    --li: #faf3e8; --bd: #e7d5be; --ok: #16a34a; --err: #dc2626;
-    --fn: 'Inter', system-ui, -apple-system, sans-serif;
-  }
-  body {
-    font-family: var(--fn);
-    background: #fdf8f1;
-    color: var(--sl);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --r:#ea580c;--r2:#c2410c;--dk:#3d2817;--sl:#5d4037;--mu:#8d6e63;
+  --li:#faf3e8;--bd:#e7d5be;--ok:#16a34a;--err:#dc2626;--info:#3b82f6;
+  --gd:#fbbf24;
+  --fn:'Inter',system-ui,-apple-system,sans-serif;
+}
+html,body{height:100%}
+body{font-family:var(--fn);background:#fdf8f1;color:var(--sl);overflow:hidden}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+input,select,textarea{font-family:inherit}
 
-  /* ===== HEADER ===== */
-  .hdr {
-    background: linear-gradient(135deg, #1c1008, #3d2817);
-    color: #f5eadb;
-    padding: 18px 24px;
-  }
-  .hdr__inner {
-    max-width: 1200px; margin: 0 auto;
-    display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  }
-  .hdr__brand { display: flex; align-items: center; gap: 12px; }
-  .hdr__logo {
-    width: 44px; height: 44px;
-    background: linear-gradient(135deg, var(--r), var(--r2));
-    border-radius: 12px; display: flex; align-items: center; justify-content: center;
-    font-family: 'Noto Sans SC', sans-serif; font-weight: 900; font-size: 24px; color: #fff;
-  }
-  .hdr__brand b { display: block; font-size: 16px; font-weight: 800; color: #fff; }
-  .hdr__brand span { font-size: 12px; color: #a1887f; }
-  .hdr__badge {
-    padding: 6px 14px; background: rgba(234,88,12,.2);
-    border: 1px solid rgba(234,88,12,.4); color: #fbbf24;
-    border-radius: 99px; font-size: 12px; font-weight: 700;
-  }
+/* ===== HEADER ===== */
+.hdr{background:linear-gradient(135deg,#1c1008,#3d2817);color:#f5eadb;padding:12px 20px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.hdr__brand{display:flex;align-items:center;gap:12px}
+.hdr__logo{width:40px;height:40px;background:linear-gradient(135deg,var(--r),var(--r2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:22px;color:#fff}
+.hdr__brand b{display:block;font-size:15px;font-weight:800;color:#fff}
+.hdr__brand span{font-size:11.5px;color:#a1887f}
+.hdr__right{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.badge{padding:5px 12px;background:rgba(234,88,12,.2);border:1px solid rgba(234,88,12,.4);color:var(--gd);border-radius:99px;font-size:11.5px;font-weight:700;display:inline-flex;align-items:center;gap:6px}
+.badge.live{background:rgba(220,38,38,.25);border-color:rgba(220,38,38,.5);color:#fca5a5}
+.badge.live::before{content:"●";color:#ef4444;font-size:10px;animation:pulseDot 1.5s infinite}
+@keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.3}}
+.badge.role-teacher{background:rgba(59,130,246,.2);border-color:rgba(59,130,246,.4);color:#93c5fd}
+.badge.role-student{background:rgba(22,163,74,.2);border-color:rgba(22,163,74,.4);color:#86efac}
 
-  /* ===== LAYOUT ===== */
-  .wrap { max-width: 1200px; margin: 0 auto; padding: 22px 20px; width: 100%; flex: 1; }
-  .grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-  @media (min-width: 900px) {
-    .grid { grid-template-columns: 2fr 1fr; align-items: start; }
-  }
-  .card {
-    background: #fff; border: 1.5px solid var(--bd);
-    border-radius: 16px; padding: 20px;
-  }
-  .card h2 {
-    font-size: 15px; font-weight: 800; color: var(--dk);
-    display: flex; align-items: center; gap: 8px; margin-bottom: 16px;
-  }
-  .card h2 i { color: var(--r); }
+/* ===== SETUP ===== */
+.setup-screen{flex:1;display:flex;align-items:center;justify-content:center;padding:30px 20px;overflow-y:auto}
+.setup-card{background:#fff;border:1.5px solid var(--bd);border-radius:18px;padding:32px 28px;max-width:540px;width:100%;box-shadow:0 20px 60px rgba(61,40,23,.1)}
+.setup-card h1{font-size:22px;font-weight:900;color:var(--dk);text-align:center;margin-bottom:6px;letter-spacing:-.02em}
+.setup-card > p{font-size:13.5px;color:var(--mu);text-align:center;margin-bottom:22px;line-height:1.6}
 
-  /* ===== JOIN FORM ===== */
-  .form-group { margin-bottom: 14px; }
-  .form-group label {
-    display: block; font-size: 12.5px; font-weight: 700;
-    color: var(--sl); margin-bottom: 6px;
-  }
-  .form-group input, .form-group select {
-    width: 100%; padding: 11px 14px;
-    border: 1.5px solid var(--bd); border-radius: 10px;
-    font-size: 14px; font-family: inherit;
-    background: #fff; color: var(--dk);
-    transition: border .2s;
-  }
-  .form-group input:focus, .form-group select:focus {
-    outline: 0; border-color: var(--r);
-    box-shadow: 0 0 0 3px rgba(234,88,12,.1);
-  }
-  .form-group small {
-    display: block; font-size: 11.5px; color: var(--mu);
-    margin-top: 5px; line-height: 1.4;
-  }
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center;
-    gap: 8px; padding: 12px 22px;
-    border-radius: 10px; font-size: 14px; font-weight: 700;
-    border: 2px solid transparent; cursor: pointer;
-    transition: all .2s; width: 100%; font-family: inherit;
-  }
-  .btn--primary {
-    background: linear-gradient(135deg, var(--r), var(--r2));
-    color: #fff; border-color: transparent;
-    box-shadow: 0 6px 16px rgba(234,88,12,.3);
-  }
-  .btn--primary:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 24px rgba(234,88,12,.45);
-  }
-  .btn--danger {
-    background: #fff; border-color: #fecaca; color: var(--err);
-  }
-  .btn--danger:hover:not(:disabled) {
-    background: #fef2f2; border-color: var(--err);
-  }
-  .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+/* Tabs */
+.setup-tabs{display:flex;gap:4px;background:var(--li);border:1.5px solid var(--bd);border-radius:12px;padding:5px;margin-bottom:22px}
+.setup-tab{flex:1;padding:11px 14px;border-radius:9px;font-size:13.5px;font-weight:700;color:var(--mu);transition:all .2s;text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.setup-tab.active{background:#fff;color:var(--r);box-shadow:0 3px 10px rgba(61,40,23,.08)}
+.setup-tab:hover:not(.active){color:var(--dk)}
+.setup-panel{display:none}
+.setup-panel.active{display:block;animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
-  /* ===== VIDEO AREA ===== */
-  .video-stage {
-    position: relative; background: #1c1008;
-    border-radius: 14px; overflow: hidden;
-    aspect-ratio: 16/9; min-height: 320px;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 16px;
-  }
-  .video-stage video {
-    width: 100%; height: 100%; object-fit: contain; display: block;
-  }
-  .video-placeholder {
-    text-align: center; color: #8a7259; padding: 40px;
-  }
-  .video-placeholder i {
-    font-size: 48px; display: block; margin-bottom: 12px;
-    color: #5d4037;
-  }
-  .video-placeholder b {
-    display: block; font-size: 16px; color: #cfc1a8; margin-bottom: 6px;
-  }
-  .video-placeholder p { font-size: 13px; line-height: 1.5; }
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:12.5px;font-weight:700;color:var(--sl);margin-bottom:6px}
+.fg input,.fg select,.fg textarea{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:10px;font-size:14px;background:#fff;color:var(--dk);transition:border .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:0;border-color:var(--r);box-shadow:0 0 0 3px rgba(234,88,12,.1)}
+.fg small{display:block;font-size:11.5px;color:var(--mu);margin-top:5px;line-height:1.4}
+.fg small a{color:var(--r);font-weight:700;text-decoration:none}
+.fg textarea{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;resize:vertical;min-height:80px;letter-spacing:.02em}
 
-  .controls {
-    display: flex; gap: 8px; flex-wrap: wrap;
-  }
-  .controls .btn { width: auto; flex: 1; min-width: 130px; }
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border-radius:10px;font-size:13.5px;font-weight:700;border:2px solid transparent;cursor:pointer;transition:all .2s;white-space:nowrap}
+.btn--primary{background:linear-gradient(135deg,var(--r),var(--r2));color:#fff;box-shadow:0 6px 16px rgba(234,88,12,.3)}
+.btn--primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 24px rgba(234,88,12,.45)}
+.btn--ghost{background:#fff;border-color:var(--bd);color:var(--dk)}
+.btn--ghost:hover:not(:disabled){border-color:var(--r);color:var(--r)}
+.btn--danger{background:#dc2626;color:#fff}
+.btn--danger:hover:not(:disabled){background:#b91c1c}
+.btn--ok{background:#16a34a;color:#fff}
+.btn--ok:hover:not(:disabled){background:#15803d}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn--sm{padding:7px 13px;font-size:12.5px;border-radius:8px}
+.btn--xs{padding:5px 10px;font-size:11.5px;border-radius:7px}
+.btn--block{width:100%}
 
-  /* ===== STATUS BAR ===== */
-  .status-bar {
-    display: flex; align-items: center; gap: 10px;
-    padding: 12px 16px; border-radius: 10px;
-    font-size: 13.5px; font-weight: 600;
-    margin-bottom: 16px; line-height: 1.5;
-  }
-  .status-bar.info { background: #dbeafe; color: #1e40af; border: 1.5px solid #93c5fd; }
-  .status-bar.ok { background: #dcfce7; color: #166534; border: 1.5px solid #86efac; }
-  .status-bar.err { background: #fef2f2; color: #991b1b; border: 1.5px solid #fecaca; }
-  .status-bar.warn { background: #fffbeb; color: #92400e; border: 1.5px solid #fcd34d; }
-  .status-bar i { font-size: 16px; flex-shrink: 0; }
-  .status-bar.hidden { display: none; }
+.hint{margin-top:18px;padding:12px 14px;background:#fef3c7;border:1.5px solid #fcd34d;border-radius:10px;font-size:12.5px;color:#92400e;line-height:1.6}
+.hint b{color:#78350f}
+.hint code{background:rgba(120,53,15,.1);padding:1px 6px;border-radius:4px;font-family:ui-monospace,monospace;font-size:11.5px}
 
-  .participant-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 6px 12px; background: var(--li); border-radius: 99px;
-    font-size: 12px; font-weight: 700; color: var(--sl);
-    margin-bottom: 12px;
-  }
-  .participant-badge i { color: var(--ok); }
+/* ===== ROOM ===== */
+#appContainer{display:flex;flex-direction:column;height:100vh;width:100vw}
+.room-screen{flex:1;display:none;flex-direction:row;min-height:0;overflow:hidden}
+.room-screen.active{display:flex}
 
-  /* ===== TOAST ===== */
-  .toast {
-    position: fixed; bottom: 24px; left: 50%;
-    transform: translateX(-50%) translateY(30px);
-    background: var(--dk); color: #fff;
-    padding: 13px 22px; border-radius: 11px;
-    font-size: 13.5px; font-weight: 700;
-    z-index: 999; opacity: 0;
-    transition: all .3s; pointer-events: none;
-    box-shadow: 0 12px 40px rgba(0,0,0,.35);
-    max-width: 90vw; text-align: center; line-height: 1.5;
-  }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-  .toast.ok { background: var(--ok); }
-  .toast.err { background: var(--err); }
-  .toast.warn { background: #f59e0b; color: var(--dk); }
+.stage{flex:1;display:flex;flex-direction:column;min-width:0;background:#0f0905;position:relative}
+.stage__top{background:rgba(0,0,0,.4);padding:8px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,.06)}
+.stage__info{display:flex;gap:16px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:#cfc1a8;font-weight:600}
+.stage__info b{color:#fff}
+.stage__info .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block;margin-right:6px;box-shadow:0 0 8px rgba(22,163,74,.7);animation:connPulse 2s infinite}
+@keyframes connPulse{0%,100%{opacity:1}50%{opacity:.6}}
+.stage__info .dot.off{background:var(--err);box-shadow:0 0 8px rgba(220,38,38,.7)}
+.stage__area{flex:1;position:relative;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:10px}
+
+.grid{display:grid;gap:10px;width:100%;height:100%;align-content:center;justify-content:center;grid-auto-rows:min-content}
+.grid[data-count="1"]{grid-template-columns:minmax(0,1fr)}
+.grid[data-count="2"]{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid[data-count="3"]{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid[data-count="3"] .tile:first-child{grid-column:span 2}
+.grid[data-count="4"]{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid[data-count="5"],.grid[data-count="6"]{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid[data-count]:not([data-count="1"]):not([data-count="2"]):not([data-count="3"]):not([data-count="4"]):not([data-count="5"]):not([data-count="6"]){grid-template-columns:repeat(4,minmax(0,1fr))}
+
+.tile{position:relative;background:#1c1008;border-radius:12px;overflow:hidden;aspect-ratio:16/9;box-shadow:0 4px 16px rgba(0,0,0,.3);transition:all .3s}
+.tile.self{border:2px solid rgba(234,88,12,.5)}
+.tile video{width:100%;height:100%;object-fit:cover;display:block}
+.tile__name{position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,.75);color:#fff;padding:4px 11px;border-radius:99px;font-size:12px;font-weight:700;backdrop-filter:blur(8px);max-width:calc(100% - 90px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;z-index:2}
+.tile__name.teacher{background:rgba(59,130,246,.9)}
+.tile__badges{position:absolute;top:8px;right:8px;display:flex;gap:5px;z-index:2}
+.tile__badge{width:30px;height:30px;background:rgba(0,0,0,.6);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;backdrop-filter:blur(6px);transition:all .2s}
+.tile__badge.mic-on{background:rgba(22,163,74,.9)}
+.tile__badge.mic-off{background:rgba(220,38,38,.85)}
+.tile__badge.hand{background:rgba(251,191,36,.95);color:#3d2817;animation:handWave .8s ease-in-out infinite}
+@keyframes handWave{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}}
+.tile__camoff{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,#3d2817,#1c1008);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#8d6e63;z-index:1}
+.tile__camoff i{font-size:38px;color:#5d4037}
+.tile__camoff span{font-size:12px;color:#8a7259;font-weight:600}
+
+.presentation{position:absolute;inset:0;display:flex;flex-direction:column;background:#0f0905;z-index:10}
+.presentation__bar{background:rgba(0,0,0,.5);padding:8px 16px;display:flex;align-items:center;justify-content:space-between;color:#fff;font-size:13px;font-weight:700;flex-shrink:0;backdrop-filter:blur(10px)}
+.presentation__bar i{color:var(--gd)}
+.presentation__stage{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;min-height:0}
+.presentation__stage video{width:100%;height:100%;object-fit:contain;background:#000}
+.presentation__stage img.slide{max-width:100%;max-height:100%;object-fit:contain;background:#000;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.presentation__thumbs{background:rgba(0,0,0,.6);padding:10px;display:flex;gap:8px;overflow-x:auto;flex-shrink:0;backdrop-filter:blur(10px)}
+.presentation__thumbs::-webkit-scrollbar{height:6px}
+.presentation__thumbs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2);border-radius:3px}
+.mini-tile{position:relative;background:#000;border-radius:8px;overflow:hidden;flex-shrink:0;width:120px;aspect-ratio:16/9;border:2px solid transparent}
+.mini-tile video{width:100%;height:100%;object-fit:cover}
+.mini-tile__name{position:absolute;bottom:2px;left:2px;background:rgba(0,0,0,.7);color:#fff;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Sidebar */
+.sidebar{width:320px;background:#fff;border-left:1.5px solid var(--bd);display:flex;flex-direction:column;flex-shrink:0;min-height:0}
+.sidebar__head{padding:14px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0}
+.sidebar__head h3{font-size:13.5px;font-weight:800;color:var(--dk);display:flex;align-items:center;gap:8px}
+.sidebar__head h3 i{color:var(--r)}
+.sidebar__head .count-badge{background:var(--li);color:var(--r);padding:3px 9px;border-radius:99px;font-size:11.5px;font-weight:800}
+.sidebar__list{flex:1;overflow-y:auto;padding:10px}
+.sidebar__list::-webkit-scrollbar{width:6px}
+.sidebar__list::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
+
+.part{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--li);border-radius:10px;margin-bottom:8px;transition:all .2s;border:1.5px solid transparent}
+.part.self{border-color:rgba(234,88,12,.3);background:linear-gradient(90deg,rgba(234,88,12,.06),transparent)}
+.part.hand-raised{border-color:rgba(251,191,36,.6);background:linear-gradient(90deg,rgba(251,191,36,.12),transparent);animation:handGlow 2s infinite}
+@keyframes handGlow{0%,100%{box-shadow:0 0 0 0 rgba(251,191,36,.4)}50%{box-shadow:0 0 0 6px rgba(251,191,36,0)}}
+.part__avatar{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--r),var(--r2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;text-transform:uppercase;position:relative}
+.part__avatar.teacher{background:linear-gradient(135deg,#3b82f6,#1e40af)}
+.part__avatar .mic-dot{position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;border-radius:50%;border:2px solid #fff;background:var(--err);display:flex;align-items:center;justify-content:center;font-size:7px;color:#fff}
+.part__avatar .mic-dot.on{background:var(--ok)}
+.part__body{flex:1;min-width:0}
+.part__name{font-size:13.5px;font-weight:700;color:var(--dk);margin-bottom:2px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.part__name .tag{font-size:9.5px;padding:2px 6px;background:var(--li);color:var(--r2);border-radius:99px;font-weight:800;letter-spacing:.03em;border:1px solid var(--bd)}
+.part__name .tag.teacher{background:#dbeafe;color:#1e40af;border-color:#93c5fd}
+.part__meta{font-size:11.5px;color:var(--mu);font-weight:600;display:flex;gap:8px;flex-wrap:wrap}
+.part__meta .hand-badge{color:#b45309;font-weight:800}
+.part__meta .waiting-badge{color:#d97706;font-weight:800;animation:waitBlink 1s infinite}
+@keyframes waitBlink{0%,100%{opacity:1}50%{opacity:.5}}
+.part__meta .approved-badge{color:var(--ok);font-weight:800}
+.part__actions{display:flex;flex-direction:column;gap:4px;margin-top:6px}
+.part__actions-row{display:flex;gap:5px;flex-wrap:wrap}
+
+/* Controls */
+.ctrl-bar{background:#fff;border-top:1.5px solid var(--bd);padding:12px 16px;display:flex;align-items:center;justify-content:center;gap:10px;flex-shrink:0;flex-wrap:wrap}
+.ctrl-btn{width:52px;height:52px;border-radius:50%;background:var(--li);border:2px solid var(--bd);color:var(--dk);font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .2s;cursor:pointer;position:relative}
+.ctrl-btn:hover:not(:disabled){transform:scale(1.08);border-color:var(--r);color:var(--r)}
+.ctrl-btn:disabled{opacity:.4;cursor:not-allowed}
+.ctrl-btn.danger{background:#dc2626;border-color:#dc2626;color:#fff}
+.ctrl-btn.danger:hover:not(:disabled){background:#b91c1c;color:#fff;transform:scale(1.05)}
+.ctrl-btn.off{background:#dc2626;border-color:#dc2626;color:#fff}
+.ctrl-btn.off:hover:not(:disabled){background:#b91c1c;color:#fff}
+.ctrl-btn.hand-active{background:#fbbf24;border-color:#f59e0b;color:#3d2817;animation:handBtnPulse 1.5s infinite}
+@keyframes handBtnPulse{0%,100%{box-shadow:0 0 0 0 rgba(251,191,36,.5)}50%{box-shadow:0 0 0 12px rgba(251,191,36,0)}}
+.ctrl-btn__label{position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:10.5px;font-weight:700;color:var(--mu);white-space:nowrap}
+
+/* Slide panel */
+.slide-panel{position:fixed;right:340px;bottom:90px;width:340px;max-height:70vh;background:#fff;border:2px solid var(--r);border-radius:14px;box-shadow:0 20px 50px rgba(61,40,23,.3);z-index:200;display:none;flex-direction:column;overflow:hidden}
+.slide-panel.show{display:flex}
+.slide-panel__head{background:linear-gradient(135deg,var(--r),var(--r2));color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.slide-panel__head b{font-size:13.5px;display:flex;align-items:center;gap:8px}
+.slide-panel__head button{color:#fff;font-size:18px;padding:0 4px}
+.slide-panel__body{padding:14px;overflow-y:auto;flex:1}
+.slide-panel__body label{display:block;font-size:12px;font-weight:700;color:var(--sl);margin-bottom:6px}
+.slide-panel__body textarea{width:100%;padding:10px;border:1.5px solid var(--bd);border-radius:9px;font-size:12.5px;font-family:ui-monospace,monospace;resize:vertical;min-height:80px}
+.slide-thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.slide-thumb{aspect-ratio:16/9;background:var(--li);border:2px solid var(--bd);border-radius:8px;overflow:hidden;cursor:pointer;position:relative;transition:all .2s}
+.slide-thumb img{width:100%;height:100%;object-fit:cover}
+.slide-thumb:hover{border-color:var(--r);transform:scale(1.05)}
+.slide-thumb.active{border-color:var(--r);box-shadow:0 0 0 3px rgba(234,88,12,.2)}
+.slide-thumb__num{position:absolute;top:4px;left:4px;background:rgba(0,0,0,.7);color:#fff;font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px}
+.slide-thumb__del{position:absolute;top:4px;right:4px;background:rgba(220,38,38,.9);color:#fff;width:20px;height:20px;border-radius:50%;font-size:10px;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
+.slide-thumb:hover .slide-thumb__del{opacity:1}
+
+/* Status toast */
+.status-toast{position:fixed;top:70px;right:20px;background:#fff;border:1.5px solid var(--bd);border-radius:12px;padding:12px 16px;box-shadow:0 10px 30px rgba(0,0,0,.15);z-index:300;display:flex;gap:12px;align-items:flex-start;max-width:340px;animation:slideIn .3s}
+@keyframes slideIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
+.status-toast.success{background:linear-gradient(135deg,#dcfce7,#f0fdf4);border-color:#86efac;color:#166534}
+.status-toast.error{background:linear-gradient(135deg,#fef2f2,#fff1f2);border-color:#fecaca;color:#991b1b}
+.status-toast.info{background:linear-gradient(135deg,#dbeafe,#eff6ff);border-color:#93c5fd;color:#1e40af}
+.status-toast.warn{background:linear-gradient(135deg,#fef3c7,#fffbeb);border-color:#fcd34d;color:#92400e}
+.status-toast i{font-size:18px;flex-shrink:0;margin-top:1px}
+.status-toast__body b{display:block;font-size:13.5px;font-weight:800;margin-bottom:3px}
+.status-toast__body span{font-size:12.5px;line-height:1.5;opacity:.9}
+.status-toast__actions{display:flex;gap:6px;margin-top:8px}
+.status-toast__actions .btn{font-size:11px;padding:5px 10px}
+
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(30px);background:var(--dk);color:#fff;padding:12px 22px;border-radius:11px;font-size:13.5px;font-weight:700;z-index:999;opacity:0;transition:all .3s;pointer-events:none;box-shadow:0 12px 40px rgba(0,0,0,.35);max-width:90vw;text-align:center;line-height:1.5}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{background:var(--ok)}
+.toast.err{background:var(--err)}
+.toast.warn{background:#f59e0b;color:var(--dk)}
+
+/* Code reveal modal */
+.code-reveal{position:fixed;inset:0;background:rgba(20,12,6,.85);backdrop-filter:blur(8px);z-index:5000;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .3s}
+.code-reveal__box{background:#fff;border-radius:22px;padding:36px 32px;max-width:520px;width:100%;box-shadow:0 30px 80px rgba(0,0,0,.4);border-top:6px solid var(--r);text-align:center;animation:popCode .35s cubic-bezier(.34,1.56,.64,1)}
+@keyframes popCode{from{transform:scale(.9) translateY(20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.code-reveal__icon{width:70px;height:70px;margin:0 auto 18px;background:linear-gradient(135deg,var(--r),var(--r2));border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:34px;color:#fff;box-shadow:0 12px 32px rgba(234,88,12,.4)}
+.code-reveal h2{font-size:22px;font-weight:900;color:var(--dk);margin-bottom:6px}
+.code-reveal p.sub{font-size:13.5px;color:var(--mu);margin-bottom:22px}
+
+.code-box{background:linear-gradient(135deg,#1c1008,#3d2817);border-radius:16px;padding:22px;margin-bottom:14px;position:relative}
+.code-box__label{font-size:11.5px;color:#8a7259;font-weight:800;letter-spacing:.15em;margin-bottom:10px}
+.code-box__value{font-family:ui-monospace,Menlo,monospace;font-size:14px;font-weight:800;color:#fbbf24;line-height:1.5;letter-spacing:.04em;word-break:break-all;text-align:left;padding:10px 14px;background:rgba(0,0,0,.3);border-radius:10px;text-shadow:0 0 20px rgba(251,191,36,.3);max-height:140px;overflow-y:auto}
+.code-box__value::-webkit-scrollbar{width:4px}
+.code-box__value::-webkit-scrollbar-thumb{background:rgba(251,191,36,.3);border-radius:2px}
+.code-box__meta{font-size:12px;color:#a1887f;margin-top:8px}
+
+.code-actions{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;justify-content:center}
+.code-actions .btn{flex:1;min-width:130px}
+
+.link-box{font-size:12px;color:var(--mu);background:var(--li);padding:10px 14px;border-radius:10px;margin-bottom:18px;text-align:left;line-height:1.5}
+.link-box b{color:var(--r2)}
+.link-box__url{font-family:ui-monospace,monospace;font-size:11px;color:var(--sl);margin-top:4px;word-break:break-all}
+
+@media(max-width:900px){
+  .sidebar{width:260px}
+  .slide-panel{right:20px;left:20px;width:auto}
+  .ctrl-btn{width:46px;height:46px;font-size:16px}
+  .code-box__value{font-size:11px}
+}
+@media(max-width:700px){
+  .room-screen{flex-direction:column}
+  .sidebar{width:100%;max-height:220px;border-left:0;border-top:1.5px solid var(--bd)}
+  .grid[data-count]:not([data-count="1"]){grid-template-columns:1fr}
+  .grid[data-count="3"] .tile:first-child{grid-column:auto}
+}
 </style>
 </head>
 <body>
 
-<header class="hdr">
-  <div class="hdr__inner">
+<div id="appContainer">
+
+  <!-- ===== HEADER ===== -->
+  <header class="hdr">
     <div class="hdr__brand">
       <div class="hdr__logo">汉</div>
       <div>
-        <b>HanDi · Lớp học trực tuyến</b>
-        <span>Demo nhúng Agora.io</span>
+        <b>Hán Ngữ HanDi · Lớp học trực tuyến</b>
+        <span>Video call 2 chiều · Duyệt phát biểu · Chia sẻ slide</span>
       </div>
     </div>
-    <span class="hdr__badge"><i class="fas fa-flask"></i> BẢN DEMO</span>
+    <div class="hdr__right" id="hdrRight" style="display:none">
+      <span class="badge live">LIVE</span>
+      <span class="badge" id="roleBadge"><i class="fas fa-user"></i> <span id="roleText">—</span></span>
+    </div>
+  </header>
+
+  <!-- ===== SETUP ===== -->
+  <div class="setup-screen" id="setupScreen">
+    <div class="setup-card">
+      <h1>🎓 Hán Ngữ HanDi</h1>
+      <p>Chọn vai trò để bắt đầu</p>
+
+      <div class="setup-tabs">
+        <button class="setup-tab active" data-role="teacher" onclick="switchSetupTab('teacher')">
+          <i class="fas fa-chalkboard-user"></i> Giáo viên
+        </button>
+        <button class="setup-tab" data-role="student" onclick="switchSetupTab('student')">
+          <i class="fas fa-user-graduate"></i> Học viên
+        </button>
+      </div>
+
+      <!-- TEACHER PANEL -->
+      <div class="setup-panel active" id="teacherPanel">
+        <div class="fg">
+          <label>Tên của bạn <span style="color:var(--err)">*</span></label>
+          <input type="text" id="teacherNameInput" placeholder="VD: Cô Lan" maxlength="30">
+        </div>
+
+        <div class="fg">
+          <label>Tiêu đề buổi học <span style="color:var(--mu);font-weight:500">(tuỳ chọn)</span></label>
+          <input type="text" id="teacherTitleInput" placeholder="VD: Bài 1 – Chào hỏi" maxlength="50">
+        </div>
+
+        <div class="fg">
+          <label>Agora App ID <span style="color:var(--err)">*</span></label>
+          <input type="text" id="teacherAppIdInput" placeholder="Dán App ID từ Agora Console">
+          <small>Lấy miễn phí tại <a href="https://console.agora.io" target="_blank">console.agora.io</a> → Project Management → App ID</small>
+        </div>
+
+        <div class="fg">
+          <label>Tên phòng (channel) <span style="color:var(--err)">*</span></label>
+          <input type="text" id="teacherChannelInput" placeholder="VD: handi-buoi1" value="handi-class">
+          <small>Đặt tên bất kỳ, không dấu, không khoảng trắng. VD: <code>toan6a</code>, <code>hsk1-buoi3</code></small>
+        </div>
+
+        <div class="fg">
+          <label>Token <span style="color:var(--mu);font-weight:500">(tuỳ chọn)</span></label>
+          <input type="text" id="teacherTokenInput" placeholder="Để trống nếu dùng Testing mode">
+          <small>Agora Console đang ở <b>Testing mode</b> thì để trống.</small>
+        </div>
+
+        <button class="btn btn--primary btn--block" id="btnCreateClass" onclick="createClass()" style="margin-top:8px">
+          <i class="fas fa-plus-circle"></i> Tạo lớp & sinh code
+        </button>
+
+        <div class="hint">
+          Sau khi bấm, hệ thống sinh <b>1 code duy nhất</b> chứa toàn bộ thông tin lớp. Gửi code đó cho học viên qua Zalo/Messenger — các em chỉ cần dán code là vào, không cần biết App ID.
+        </div>
+      </div>
+
+      <!-- STUDENT PANEL -->
+      <div class="setup-panel" id="studentPanel">
+        <div class="fg">
+          <label>Tên của bạn <span style="color:var(--err)">*</span></label>
+          <input type="text" id="studentNameInput" placeholder="VD: Minh" maxlength="30">
+        </div>
+
+        <div class="fg">
+          <label>Code vào lớp <span style="color:var(--err)">*</span></label>
+          <textarea id="studentCodeInput" placeholder="Dán code giáo viên đã gửi vào đây..."></textarea>
+          <small>Code do giáo viên gửi — dạng chuỗi dài bắt đầu bằng <code>HND-</code></small>
+        </div>
+
+        <button class="btn btn--primary btn--block" id="btnJoinClass" onclick="joinWithCode()" style="margin-top:8px">
+          <i class="fas fa-sign-in-alt"></i> Vào lớp
+        </button>
+
+        <div class="hint">
+          <b>💡 Mẹo:</b> Nếu giáo viên gửi link dạng <code>.../live.html?code=HND-...</code>, bạn chỉ cần mở link và nhập tên — code đã được điền sẵn.
+        </div>
+      </div>
+
+    </div>
   </div>
-</header>
 
-<div class="wrap">
-  <div class="grid">
+  <!-- ===== ROOM ===== -->
+  <div class="room-screen" id="roomScreen">
 
-    <!-- CỘT TRÁI: Video + Điều khiển -->
-    <div>
-      <!-- STATUS -->
-      <div class="status-bar info" id="statusBar">
-        <i class="fas fa-info-circle"></i>
-        <span>Chưa tham gia lớp học. Điền thông tin và bấm "Tham gia".</span>
-      </div>
-
-      <!-- VIDEO -->
-      <div class="video-stage" id="videoStage">
-        <div class="video-placeholder" id="videoPlaceholder">
-          <i class="fas fa-video"></i>
-          <b>Video sẽ hiển thị ở đây</b>
-          <p>Sau khi tham gia lớp học, video của giáo viên sẽ xuất hiện trong khung này.</p>
+    <div class="stage">
+      <div class="stage__top">
+        <div class="stage__info">
+          <span><span class="dot" id="connDot"></span> <b id="channelDisplay">—</b></span>
+          <span><i class="fas fa-users"></i> <b id="countDisplay">0</b> người</span>
+          <span><i class="fas fa-clock"></i> <span id="durationDisplay">00:00</span></span>
+        </div>
+        <div class="stage__info">
+          <span style="color:#86efac"><i class="fas fa-circle-check"></i> Đã kết nối</span>
         </div>
       </div>
 
-      <!-- SỐ NGƯỜI -->
-      <div class="participant-badge hidden" id="participantBadge">
-        <i class="fas fa-users"></i>
-        <span id="participantCount">0</span> người trong lớp
-      </div>
-
-      <!-- ĐIỀU KHIỂN -->
-      <div class="controls" id="controls" style="display:none;">
-        <button class="btn btn--primary" id="btnMute" onclick="toggleMute()">
-          <i class="fas fa-microphone"></i> <span>Micro</span>
-        </button>
-        <button class="btn btn--primary" id="btnCam" onclick="toggleCamera()">
-          <i class="fas fa-video"></i> <span>Camera</span>
-        </button>
-        <button class="btn btn--danger" onclick="leaveChannel()">
-          <i class="fas fa-arrow-right-from-bracket"></i> Rời lớp
-        </button>
+      <div class="stage__area" id="stageArea">
+        <div class="grid" id="grid" data-count="1"></div>
       </div>
     </div>
 
-    <!-- CỘT PHẢI: Form tham gia -->
-    <div>
-      <div class="card" id="joinCard">
-        <h2><i class="fas fa-right-to-bracket"></i> Tham gia lớp học</h2>
-
-        <div class="form-group">
-          <label>Vai trò</label>
-          <select id="roleSelect">
-            <option value="host">👨‍🏫 Giáo viên (phát sóng)</option>
-            <option value="audience">👩‍🎓 Học viên (xem)</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Agora App ID</label>
-          <input type="text" id="appIdInput" placeholder="Dán App ID từ Agora Console">
-          <small>Lấy miễn phí tại <a href="https://console.agora.io" target="_blank" style="color:var(--r);font-weight:700">console.agora.io</a> → Project → App ID</small>
-        </div>
-
-        <div class="form-group">
-          <label>Tên kênh (Channel)</label>
-          <input type="text" id="channelInput" placeholder="VD: handi-class-01" value="handi-class">
-          <small>Tất cả mọi người phải nhập <b>cùng một tên kênh</b> để gặp nhau.</small>
-        </div>
-
-        <div class="form-group">
-          <label>Token (tùy chọn)</label>
-          <input type="text" id="tokenInput" placeholder="Để trống nếu dùng chế độ Test">
-          <small>Chế độ test (App ID chưa bật certificate) có thể để trống.</small>
-        </div>
-
-        <button class="btn btn--primary" id="btnJoin" onclick="joinChannel()" style="margin-top:8px;">
-          <i class="fas fa-sign-in-alt"></i> Tham gia
-        </button>
+    <aside class="sidebar">
+      <div class="sidebar__head">
+        <h3><i class="fas fa-users"></i> Người tham gia</h3>
+        <span class="count-badge" id="sidebarCount">1</span>
       </div>
+      <div class="sidebar__list" id="sidebarList"></div>
+    </aside>
 
-      <!-- HƯỚNG DẪN -->
-      <div class="card" style="margin-top:16px;">
-        <h2><i class="fas fa-circle-info"></i> Hướng dẫn nhanh</h2>
-        <ol style="font-size:13px; line-height:1.8; padding-left:18px; color:var(--sl);">
-          <li>Tạo tài khoản miễn phí tại <b>agora.io</b></li>
-          <li>Vào <b>Console → Project Management</b></li>
-          <li>Tạo project mới → copy <b>App ID</b></li>
-          <li>Dán App ID vào ô bên trên</li>
-          <li>Mở 2 tab: một tab chọn <b>Giáo viên</b>, một tab chọn <b>Học viên</b></li>
-          <li>Nhập <b>cùng tên kênh</b> ở cả 2 tab</li>
-          <li>Bấm <b>Tham gia</b> ở cả 2 tab → video sẽ kết nối</li>
-        </ol>
-        <div style="margin-top:12px; padding:10px 12px; background:var(--li); border-radius:8px; font-size:12px; color:var(--mu); line-height:1.5;">
-          <b style="color:var(--r2)">Lưu ý:</b> Agora cho <b>10.000 phút miễn phí</b> mỗi tháng — đủ cho lớp học ~20 người × 8 giờ.
-        </div>
-      </div>
+  </div>
+
+  <!-- ===== CONTROL BAR ===== -->
+  <div class="ctrl-bar" id="ctrlBar" style="display:none">
+    <button class="ctrl-btn" id="btnMic" onclick="toggleMic()" title="Bật/Tắt micro">
+      <i class="fas fa-microphone-slash"></i>
+      <span class="ctrl-btn__label">Micro</span>
+    </button>
+    <button class="ctrl-btn" id="btnCam" onclick="toggleCam()" title="Bật/Tắt camera">
+      <i class="fas fa-video"></i>
+      <span class="ctrl-btn__label">Camera</span>
+    </button>
+    <button class="ctrl-btn" id="btnHand" onclick="toggleHand()" title="Giơ tay xin phát biểu">
+      <i class="fas fa-hand"></i>
+      <span class="ctrl-btn__label">Giơ tay</span>
+    </button>
+    <button class="ctrl-btn" id="btnScreen" onclick="toggleScreen()" title="Chia sẻ màn hình">
+      <i class="fas fa-desktop"></i>
+      <span class="ctrl-btn__label">Màn hình</span>
+    </button>
+    <button class="ctrl-btn" id="btnSlide" onclick="toggleSlidePanel()" title="Trình chiếu slide" style="display:none">
+      <i class="fas fa-chalkboard"></i>
+      <span class="ctrl-btn__label">Slide</span>
+    </button>
+    <button class="ctrl-btn danger" onclick="leaveRoom()" title="Rời lớp">
+      <i class="fas fa-phone-slash"></i>
+      <span class="ctrl-btn__label">Rời lớp</span>
+    </button>
+  </div>
+
+</div>
+
+<!-- SLIDE PANEL -->
+<div class="slide-panel" id="slidePanel">
+  <div class="slide-panel__head">
+    <b><i class="fas fa-chalkboard"></i> Quản lý Slide</b>
+    <button onclick="toggleSlidePanel()"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="slide-panel__body">
+    <label>Thêm slide bằng URL ảnh (mỗi dòng 1 URL)</label>
+    <textarea id="slideUrlsInput" placeholder="https://i.imgur.com/slide1.jpg
+https://i.imgur.com/slide2.jpg"></textarea>
+    <button class="btn btn--primary btn--block" onclick="addSlidesFromUrls()" style="margin-top:8px">
+      <i class="fas fa-plus"></i> Thêm slide
+    </button>
+
+    <div style="margin-top:14px;font-size:12px;font-weight:700;color:var(--sl);margin-bottom:6px">
+      Hoặc upload từ máy
     </div>
+    <input type="file" id="slideFileInput" accept="image/*" multiple style="display:none" onchange="addSlidesFromFiles(event)">
+    <button class="btn btn--ghost btn--block" onclick="document.getElementById('slideFileInput').click()">
+      <i class="fas fa-upload"></i> Chọn ảnh từ máy
+    </button>
 
+    <div class="slide-thumbs" id="slideThumbs"></div>
   </div>
 </div>
 
-<!-- TOAST -->
+<div id="toastContainer"></div>
 <div class="toast" id="toast"></div>
 
-<!-- AGORA SDK -->
 <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.20.0.js"></script>
 
 <script>
 /* ============================================================
-   CẤU HÌNH
+   STATE
    ============================================================ */
 let client = null;
-let localTracks = { video: null, audio: null };
+let localAudioTrack = null;
+let localVideoTrack = null;
+let screenTrack = null;
 let remoteUsers = {};
-let joined = false;
-let muted = false;
-let camOff = false;
+let myUid = null;
+let myName = '';
+let myRole = 'student';
+let roomStartTime = 0;
+let durationTimer = null;
+let micOn = false;
+let camOn = true;
+let handUp = false;
+let speakApproved = false;
+let screenSharing = false;
+let slideMode = false;
+let mySlides = [];
+let currentSlideIdx = -1;
+let remoteSlideUrl = null;
+let remoteSlideIdx = 0;
+let remoteSlideTotal = 0;
+let remoteScreenSharingUid = null;
 
-const statusBar = document.getElementById('statusBar');
-const videoStage = document.getElementById('videoStage');
-const videoPlaceholder = document.getElementById('videoPlaceholder');
-const participantBadge = document.getElementById('participantBadge');
-const participantCount = document.getElementById('participantCount');
-const controls = document.getElementById('controls');
-const joinCard = document.getElementById('joinCard');
-
-/* ============================================================
-   TOAST
-   ============================================================ */
-function toast(msg, type, ms){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast show ' + (type || '');
-  clearTimeout(t._t);
-  t._t = setTimeout(() => t.className = 'toast', ms || 2800);
-}
+const $ = id => document.getElementById(id);
 
 /* ============================================================
-   STATUS
+   ENCODE / DECODE CODE
    ============================================================ */
-function setStatus(type, msg){
-  statusBar.className = 'status-bar ' + type;
-  statusBar.querySelector('span').textContent = msg;
-  statusBar.querySelector('i').className = {
-    info: 'fas fa-info-circle',
-    ok: 'fas fa-circle-check',
-    err: 'fas fa-circle-exclamation',
-    warn: 'fas fa-triangle-exclamation'
-  }[type] || 'fas fa-info-circle';
-}
 
-/* ============================================================
-   JOIN
-   ============================================================ */
-async function joinChannel(){
-  const appId = document.getElementById('appIdInput').value.trim();
-  const channel = document.getElementById('channelInput').value.trim();
-  const token = document.getElementById('tokenInput').value.trim() || null;
-  const role = document.getElementById('roleSelect').value;
-
-  if(!appId){ toast('Vui lòng nhập App ID', 'err'); return; }
-  if(!channel){ toast('Vui lòng nhập tên kênh', 'err'); return; }
-
-  const btn = document.getElementById('btnJoin');
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang kết nối...';
-  setStatus('info', 'Đang kết nối tới Agora...');
-
+/** Mã hoá config thành 1 chuỗi code duy nhất */
+function encodeRoomCode(appId, channel, token){
   try {
-    client = AgoraRTC.createClient({ mode: 'live', codec: 'vp8' });
+    // App ID Agora: 32 hex chars = 16 bytes
+    if(!/^[a-f0-9]{32}$/i.test(appId)){
+      // Không phải hex 32 ký tự — encode nguyên chuỗi UTF-8
+      const enc = new TextEncoder();
+      const appIdBytes = enc.encode(appId);
+      return buildCode(appIdBytes, channel, token);
+    }
+    const appIdBytes = new Uint8Array(16);
+    for(let i = 0; i < 32; i += 2){
+      appIdBytes[i/2] = parseInt(appId.substr(i, 2), 16);
+    }
+    return buildCode(appIdBytes, channel, token, true);
+  } catch(e){
+    console.error('encode fail', e);
+    return null;
+  }
+}
 
-    // Đăng ký sự kiện
-    client.on('user-published', handleUserPublished);
-    client.on('user-unpublished', handleUserUnpublished);
-    client.on('user-joined', handleUserJoined);
-    client.on('user-left', handleUserLeft);
+function buildCode(appIdBytes, channel, token, isHexAppId){
+  const enc = new TextEncoder();
+  const parts = [];
+  // Version + flag
+  parts.push(new Uint8Array([1])); // version 1
+  parts.push(new Uint8Array([isHexAppId ? 1 : 0]));
+  // App ID length + bytes
+  parts.push(new Uint8Array([appIdBytes.length]));
+  parts.push(appIdBytes);
+  // Channel
+  const chBytes = enc.encode(channel);
+  parts.push(new Uint8Array([Math.min(chBytes.length, 255)]));
+  parts.push(chBytes.slice(0, 255));
+  // Token
+  const tkBytes = token ? enc.encode(token) : new Uint8Array(0);
+  if(tkBytes.length > 65535){
+    throw new Error('Token quá dài');
+  }
+  parts.push(new Uint8Array([tkBytes.length >> 8, tkBytes.length & 0xff]));
+  if(tkBytes.length) parts.push(tkBytes);
 
-    // Tham gia kênh
-    const uid = await client.join(appId, channel, token, null);
-    console.log('Joined channel with UID:', uid);
+  // Concat
+  const total = parts.reduce((s, p) => s + p.length, 0);
+  const combined = new Uint8Array(total);
+  let off = 0;
+  parts.forEach(p => { combined.set(p, off); off += p.length; });
 
-    // Nếu là host → publish
-    if(role === 'host'){
-      await client.setClientRole('host');
-      try {
-        [localTracks.audio, localTracks.video] = await AgoraRTC.createMicrophoneAndCameraTracks();
-        await client.publish([localTracks.audio, localTracks.video]);
-        // Hiện video của chính mình
-        localTracks.video.play('videoStage', { fit: 'contain' });
-      } catch(e) {
-        console.warn('Không lấy được cam/mic:', e);
-        setStatus('warn', 'Không lấy được camera/micro. Bạn vẫn tham gia với vai trò host nhưng không phát sóng.');
-      }
+  // Base64url
+  let b64 = btoa(String.fromCharCode(...combined))
+    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  return 'HND-' + b64;
+}
+
+function decodeRoomCode(code){
+  try {
+    code = code.trim();
+    if(code.startsWith('HND-')) code = code.slice(4);
+    // Base64url → base64
+    let b64 = code.replace(/-/g, '+').replace(/_/g, '/');
+    while(b64.length % 4) b64 += '=';
+    const binary = atob(b64);
+    const bytes = new Uint8Array([...binary].map(c => c.charCodeAt(0)));
+
+    let off = 0;
+    const version = bytes[off]; off += 1;
+    if(version !== 1) throw new Error('Version không hỗ trợ: ' + version);
+    const isHexAppId = bytes[off] === 1; off += 1;
+    const appIdLen = bytes[off]; off += 1;
+    const appIdBytes = bytes.slice(off, off + appIdLen); off += appIdLen;
+    let appId;
+    if(isHexAppId){
+      appId = Array.from(appIdBytes).map(b => b.toString(16).padStart(2, '0')).join('');
     } else {
-      await client.setClientRole('audience');
+      appId = new TextDecoder().decode(appIdBytes);
     }
 
-    joined = true;
-    joinCard.style.display = 'none';
-    controls.style.display = 'flex';
-    participantBadge.classList.remove('hidden');
-    updateParticipantCount();
+    const chLen = bytes[off]; off += 1;
+    const channel = new TextDecoder().decode(bytes.slice(off, off + chLen)); off += chLen;
 
-    setStatus('ok', `Đã tham gia lớp với vai trò ${role === 'host' ? 'Giáo viên' : 'Học viên'}.`);
-    toast('Tham gia thành công!', 'ok');
+    const tkLen = (bytes[off] << 8) | bytes[off + 1]; off += 2;
+    let token = '';
+    if(tkLen > 0){
+      token = new TextDecoder().decode(bytes.slice(off, off + tkLen));
+    }
+
+    return { appId, channel, token };
+  } catch(e){
+    console.error('decode fail', e);
+    return null;
+  }
+}
+
+/* ============================================================
+   SETUP UI
+   ============================================================ */
+function switchSetupTab(role){
+  document.querySelectorAll('.setup-tab').forEach(t => t.classList.toggle('active', t.dataset.role === role));
+  $('teacherPanel').classList.toggle('active', role === 'teacher');
+  $('studentPanel').classList.toggle('active', role === 'student');
+  setTimeout(() => {
+    const inp = role === 'teacher' ? $('teacherNameInput') : $('studentNameInput');
+    if(inp) inp.focus();
+  }, 80);
+}
+
+async function createClass(){
+  const name = $('teacherNameInput').value.trim();
+  const appId = $('teacherAppIdInput').value.trim();
+  const channel = $('teacherChannelInput').value.trim();
+  const token = $('teacherTokenInput').value.trim();
+  const title = $('teacherTitleInput').value.trim();
+
+  if(!name){ toast('Nhập tên của bạn', 'err'); return; }
+  if(!appId){ toast('Nhập App ID', 'err'); return; }
+  if(!channel){ toast('Nhập tên phòng', 'err'); return; }
+  if(!/^[a-z0-9_\-]+$/i.test(channel)){
+    toast('Tên phòng chỉ được dùng chữ, số, gạch ngang, gạch dưới', 'err', 3500); return;
+  }
+
+  const btn = $('btnCreateClass');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang sinh code...';
+
+  try {
+    const code = encodeRoomCode(appId, channel, token);
+    if(!code){ throw new Error('Không sinh được code'); }
+
+    // Lưu vào localStorage để test cùng máy (optional)
+    try {
+      const map = JSON.parse(localStorage.getItem('handi_room_map') || '{}');
+      map[code] = { appId, channel, token, title, createdAt: Date.now(), teacherName: name };
+      localStorage.setItem('handi_room_map', JSON.stringify(map));
+    } catch(e){}
+
+    // Hiện modal
+    showCodeRevealModal({
+      code, name, channel, token, appId, title
+    });
   } catch(e){
     console.error(e);
-    setStatus('err', 'Lỗi: ' + (e.message || e.name || 'Không rõ'));
-    toast('Không thể tham gia: ' + (e.message || e.name), 'err', 4000);
-    cleanup();
+    toast('Lỗi: ' + e.message, 'err', 4000);
   } finally {
     btn.disabled = false;
-    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Tham gia';
+    btn.innerHTML = '<i class="fas fa-plus-circle"></i> Tạo lớp & sinh code';
+  }
+}
+
+function showCodeRevealModal({code, name, channel, token, appId, title}){
+  const shareUrl = location.origin + location.pathname + '?code=' + encodeURIComponent(code);
+  const display = code.match(/.{1,60}/g).join('\n');
+
+  const ov = document.createElement('div');
+  ov.className = 'code-reveal';
+  ov.id = 'codeReveal';
+  ov.innerHTML = `
+    <div class="code-reveal__box">
+      <div class="code-reveal__icon"><i class="fas fa-key"></i></div>
+      <h2>Lớp học đã sẵn sàng!</h2>
+      <p class="sub">Gửi code này cho học viên để các em vào lớp</p>
+
+      <div class="code-box">
+        <div class="code-box__label">CODE VÀO LỚP</div>
+        <div class="code-box__value" id="codeDisplay">${escapeHtml(display)}</div>
+        <div class="code-box__meta">
+          ${title ? '📚 ' + escapeHtml(title) + ' · ' : ''}Phòng: <b>${escapeHtml(channel)}</b>
+        </div>
+      </div>
+
+      <div class="code-actions">
+        <button class="btn btn--ghost btn--sm" onclick="copyCode()" style="flex:1;min-width:130px">
+          <i class="fas fa-copy"></i> Copy code
+        </button>
+        <button class="btn btn--ghost btn--sm" onclick="copyCodeLink()" style="flex:1;min-width:130px">
+          <i class="fas fa-link"></i> Copy link
+        </button>
+        <button class="btn btn--ghost btn--sm" onclick="shareCode()" style="flex:1;min-width:130px">
+          <i class="fas fa-share-nodes"></i> Chia sẻ
+        </button>
+      </div>
+
+      <div class="link-box">
+        <b>Link trực tiếp (học viên chỉ cần mở + nhập tên):</b>
+        <div class="link-box__url" id="linkDisplay">${escapeHtml(shareUrl)}</div>
+      </div>
+
+      <button class="btn btn--primary btn--block" onclick="enterClassNow()" style="font-size:15px;padding:14px">
+        <i class="fas fa-video"></i> Vào lớp ngay
+      </button>
+    </div>
+  `;
+  document.body.appendChild(ov);
+
+  window._pendingClassInfo = { name, appId, channel, token, code };
+}
+
+function copyCode(){
+  if(!window._pendingClassInfo) return;
+  navigator.clipboard.writeText(window._pendingClassInfo.code)
+    .then(() => toast('Đã copy code', 'ok'))
+    .catch(() => toast('Không copy được — chọn và copy thủ công', 'err'));
+}
+function copyCodeLink(){
+  if(!window._pendingClassInfo) return;
+  const url = location.origin + location.pathname + '?code=' + encodeURIComponent(window._pendingClassInfo.code);
+  navigator.clipboard.writeText(url)
+    .then(() => toast('Đã copy link', 'ok'))
+    .catch(() => toast('Không copy được', 'err'));
+}
+function shareCode(){
+  if(!window._pendingClassInfo) return;
+  const info = window._pendingClassInfo;
+  const url = location.origin + location.pathname + '?code=' + encodeURIComponent(info.code);
+  const text = `Mã vào lớp HanDi:\n\n${info.code}\n\nHoặc mở link:\n${url}`;
+  if(navigator.share){
+    navigator.share({ title: 'Lớp học HanDi', text }).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(text).then(() => toast('Đã copy nội dung chia sẻ', 'ok'));
+  }
+}
+
+async function enterClassNow(){
+  const info = window._pendingClassInfo;
+  if(!info) return;
+  const ov = $('codeReveal');
+  if(ov) ov.remove();
+
+  await joinAgora({
+    name: info.name,
+    appId: info.appId,
+    channel: info.channel,
+    token: info.token,
+    role: 'teacher'
+  });
+}
+
+/* ============================================================
+   STUDENT JOIN
+   ============================================================ */
+async function joinWithCode(){
+  const name = $('studentNameInput').value.trim();
+  let rawCode = $('studentCodeInput').value.trim();
+
+  if(!name){ toast('Nhập tên của bạn', 'err'); return; }
+  if(!rawCode){ toast('Dán code vào', 'err'); return; }
+
+  // Xoá newline/space nếu user paste nhiều dòng
+  rawCode = rawCode.replace(/\s+/g, '');
+  if(!rawCode.startsWith('HND-')) rawCode = 'HND-' + rawCode;
+
+  const config = decodeRoomCode(rawCode);
+  if(!config){
+    toast('Code không hợp lệ hoặc bị hỏng', 'err', 4000);
+    return;
+  }
+  if(!config.appId || !config.channel){
+    toast('Code thiếu thông tin', 'err');
+    return;
+  }
+
+  const btn = $('btnJoinClass');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang vào lớp...';
+
+  try {
+    await joinAgora({
+      name, appId: config.appId, channel: config.channel,
+      token: config.token || '', role: 'student'
+    });
+  } catch(e){
+    console.error(e);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Vào lớp';
   }
 }
 
 /* ============================================================
-   HANDLE REMOTE USERS
+   JOIN AGORA
    ============================================================ */
-async function handleUserPublished(user, mediaType){
-  console.log('User published:', user.uid, mediaType);
-  await client.subscribe(user, mediaType);
-  remoteUsers[user.uid] = user;
+async function joinAgora({name, appId, channel, token, role}){
+  myName = name;
+  myRole = role;
+  micOn = (role === 'teacher');
+  speakApproved = (role === 'teacher');
 
-  if(mediaType === 'video'){
-    videoPlaceholder.style.display = 'none';
-    // Xóa video cũ (nếu có nhiều người) — demo chỉ hiện 1 người
-    user.videoTrack.play('videoStage', { fit: 'contain' });
+  try {
+    client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
+
+    client.on('user-published', onUserPublished);
+    client.on('user-unpublished', onUserUnpublished);
+    client.on('user-joined', onUserJoined);
+    client.on('user-left', onUserLeft);
+    client.on('stream-message', (uid, data) => {
+      try {
+        const msg = JSON.parse(new TextDecoder().decode(data));
+        handleSignal(uid, msg);
+      } catch(e){ console.warn('Bad signal', e); }
+    });
+
+    myUid = await client.join(appId, channel, token || null, null);
+    console.log('[Agora] Joined UID:', myUid);
+
+    try {
+      [localAudioTrack, localVideoTrack] = await AgoraRTC.createMicrophoneAndCameraTracks(
+        { AEC: true, ANS: true, AGC: true },
+        { encoderConfig: '480p_1' }
+      );
+      if(myRole === 'student') localAudioTrack.setEnabled(false);
+      await client.publish([localAudioTrack, localVideoTrack]);
+    } catch(e) {
+      console.warn('Không lấy được mic/cam:', e);
+      toast('Không lấy được mic/camera — vẫn vào lớp', 'warn', 3000);
+    }
+
+    $('setupScreen').style.display = 'none';
+    $('roomScreen').classList.add('active');
+    $('hdrRight').style.display = 'flex';
+    $('ctrlBar').style.display = 'flex';
+    $('roleBadge').className = 'badge role-' + role;
+    $('roleText').textContent = role === 'teacher' ? 'Giáo viên' : 'Học viên';
+    $('channelDisplay').textContent = channel;
+
+    if(role === 'teacher') $('btnSlide').style.display = '';
+    else $('btnSlide').style.display = 'none';
+
+    updateMicUI(); updateCamUI(); updateHandUI();
+    renderSelfTile(); renderSidebar(); updateGridCount();
+
+    roomStartTime = Date.now();
+    durationTimer = setInterval(updateDuration, 1000);
+
+    sendMsg({ type: 'name-info', name: myName, role: myRole, uid: myUid });
+
+    document.title = `Lớp học – ${channel}`;
+    toast('Đã vào lớp', 'ok');
+  } catch(e){
+    console.error('Join error:', e);
+    toast('Không vào được: ' + (e.message || e.name), 'err', 4000);
+    await cleanup();
+    throw e;
   }
-  if(mediaType === 'audio'){
-    user.audioTrack.play();
-  }
-  updateParticipantCount();
 }
 
-function handleUserUnpublished(user, mediaType){
-  console.log('User unpublished:', user.uid, mediaType);
-  if(mediaType === 'video'){
-    const player = document.getElementById('videoStage');
-    // Nếu không còn remote user nào publish video → hiện placeholder
-    setTimeout(() => {
-      const anyRemoteVideo = Object.values(remoteUsers).some(u => u.hasVideo);
-      if(!anyRemoteVideo && !localTracks.video){
-        videoPlaceholder.style.display = 'flex';
+/* ============================================================
+   SIGNALING
+   ============================================================ */
+function sendMsg(obj){
+  if(!client) return;
+  try {
+    const data = new TextEncoder().encode(JSON.stringify(obj));
+    client.sendStreamMessage(data);
+  } catch(e){ console.warn('[Signal] send failed', e); }
+}
+
+function handleSignal(uid, msg){
+  switch(msg.type){
+    case 'hand-raise': handleHandRaise(uid, msg); break;
+    case 'hand-lower': handleHandLower(uid); break;
+    case 'hand-approve':
+      if(msg.target === myUid) handleMyApproval(true); break;
+    case 'hand-reject':
+      if(msg.target === myUid) handleMyApproval(false); break;
+    case 'hand-revoke':
+      if(msg.target === myUid) handleRevoke(); break;
+    case 'screenshare-start':
+      remoteScreenSharingUid = msg.uid;
+      updatePresentationMode();
+      if(uid !== myUid) toast(`${msg.name || 'Ai đó'} đang chia sẻ màn hình`, 'warn', 2500);
+      break;
+    case 'screenshare-end':
+      remoteScreenSharingUid = null;
+      updatePresentationMode();
+      break;
+    case 'slide-show':
+      remoteSlideUrl = msg.url;
+      remoteSlideIdx = msg.idx;
+      remoteSlideTotal = msg.total;
+      if(uid !== myUid){ slideMode = true; updatePresentationMode(); }
+      break;
+    case 'slide-end':
+      remoteSlideUrl = null;
+      slideMode = false;
+      updatePresentationMode();
+      break;
+    case 'mute-all':
+      if(myRole === 'student'){
+        micOn = false;
+        if(localAudioTrack) localAudioTrack.setEnabled(false);
+        updateMicUI();
+        toast('Giáo viên đã tắt mic tất cả học viên', 'warn', 2500);
       }
-    }, 500);
+      break;
+    case 'force-mute':
+      if(msg.target === myUid){
+        micOn = false;
+        if(localAudioTrack) localAudioTrack.setEnabled(false);
+        updateMicUI();
+        toast('Bạn đã bị tắt mic bởi giáo viên', 'warn', 2500);
+      }
+      break;
+    case 'name-info':
+      if(remoteUsers[uid]){
+        remoteUsers[uid].name = msg.name;
+        remoteUsers[uid].role = msg.role;
+        renderSidebar();
+        renderRemoteTile(uid);
+      }
+      break;
   }
 }
 
-function handleUserJoined(user){
-  console.log('User joined:', user.uid);
-  updateParticipantCount();
+/* ============================================================
+   REMOTE USERS
+   ============================================================ */
+async function onUserPublished(user, mediaType){
+  await client.subscribe(user, mediaType);
+  if(!remoteUsers[user.uid]){
+    remoteUsers[user.uid] = { user, name: 'Người dùng '+user.uid, role:'student', hand:false, approved:false };
+  }
+  const entry = remoteUsers[user.uid];
+  if(mediaType === 'video'){ entry.hasVideo = true; entry.videoTrack = user.videoTrack; }
+  if(mediaType === 'audio'){ entry.hasAudio = true; entry.audioTrack = user.audioTrack; user.audioTrack.play(); }
+  renderRemoteTile(user.uid);
+  renderSidebar();
+  updateGridCount();
 }
 
-function handleUserLeft(user){
-  console.log('User left:', user.uid);
+function onUserUnpublished(user, mediaType){
+  const entry = remoteUsers[user.uid];
+  if(!entry) return;
+  if(mediaType === 'video'){ entry.hasVideo = false; delete entry.videoTrack; }
+  if(mediaType === 'audio'){ entry.hasAudio = false; delete entry.audioTrack; }
+  renderRemoteTile(user.uid);
+  renderSidebar();
+}
+
+function onUserJoined(user){
+  if(!remoteUsers[user.uid]){
+    remoteUsers[user.uid] = { user, name: 'Người dùng '+user.uid, role:'student', hand:false, approved:false };
+  }
+  renderRemoteTile(user.uid);
+  renderSidebar();
+  updateGridCount();
+}
+
+function onUserLeft(user){
   delete remoteUsers[user.uid];
-  // Nếu không còn ai → hiện placeholder
-  const anyRemoteVideo = Object.values(remoteUsers).some(u => u.hasVideo);
-  if(!anyRemoteVideo && !localTracks.video){
-    videoPlaceholder.style.display = 'flex';
+  const tile = document.getElementById('tile-'+user.uid);
+  if(tile) tile.remove();
+  renderSidebar();
+  updateGridCount();
+  if(remoteScreenSharingUid === user.uid){
+    remoteScreenSharingUid = null;
+    updatePresentationMode();
   }
-  updateParticipantCount();
-}
-
-function updateParticipantCount(){
-  const total = Object.keys(remoteUsers).length + (joined ? 1 : 0);
-  participantCount.textContent = total;
 }
 
 /* ============================================================
-   CONTROLS
+   HAND RAISE
    ============================================================ */
-function toggleMute(){
-  if(!localTracks.audio) return;
-  muted = !muted;
-  localTracks.audio.setEnabled(!muted);
-  const btn = document.getElementById('btnMute');
-  btn.innerHTML = muted
-    ? '<i class="fas fa-microphone-slash"></i> <span>Bật lại</span>'
-    : '<i class="fas fa-microphone"></i> <span>Micro</span>';
-  toast(muted ? 'Đã tắt micro' : 'Đã bật micro', 'ok', 1500);
+function toggleHand(){
+  if(myRole === 'teacher'){ toast('Giáo viên không cần giơ tay', 'warn'); return; }
+  if(!speakApproved && !handUp){
+    handUp = true;
+    sendMsg({ type:'hand-raise', uid: myUid, name: myName });
+    updateHandUI();
+    toast('✋ Đã giơ tay. Chờ giáo viên duyệt.', 'warn', 3000);
+  } else if(handUp){
+    handUp = false;
+    sendMsg({ type:'hand-lower', uid: myUid });
+    updateHandUI();
+    toast('Đã hạ tay', 'ok', 1500);
+  } else if(speakApproved){
+    speakApproved = false;
+    micOn = false;
+    if(localAudioTrack) localAudioTrack.setEnabled(false);
+    sendMsg({ type:'hand-lower', uid: myUid });
+    updateHandUI(); updateMicUI();
+    toast('Đã trả quyền phát biểu', 'ok', 1500);
+  }
 }
 
-function toggleCamera(){
-  if(!localTracks.video) return;
-  camOff = !camOff;
-  localTracks.video.setEnabled(!camOff);
-  const btn = document.getElementById('btnCam');
-  btn.innerHTML = camOff
-    ? '<i class="fas fa-video-slash"></i> <span>Bật lại</span>'
-    : '<i class="fas fa-video"></i> <span>Camera</span>';
-  toast(camOff ? 'Đã tắt camera' : 'Đã bật camera', 'ok', 1500);
+function handleHandRaise(uid, msg){
+  if(myRole !== 'teacher') return;
+  if(!remoteUsers[uid]) remoteUsers[uid] = { user:{uid}, name: msg.name, role:'student' };
+  remoteUsers[uid].hand = true;
+  remoteUsers[uid].name = msg.name || remoteUsers[uid].name;
+  renderSidebar();
+  showStatus('warn', '✋ '+ (msg.name || 'Học viên') +' giơ tay',
+    'Cho phép học viên này phát biểu?',
+    `<button class="btn btn--ok btn--sm" onclick="approveStudent(${uid});this.closest('.status-toast').remove()">
+       <i class="fas fa-check"></i> Cho phép nói
+     </button>
+     <button class="btn btn--ghost btn--sm" onclick="rejectStudent(${uid});this.closest('.status-toast').remove()">
+       Từ chối
+     </button>`,
+    8000);
+}
+
+function handleHandLower(uid){
+  if(remoteUsers[uid]){
+    remoteUsers[uid].hand = false;
+    remoteUsers[uid].approved = false;
+    renderSidebar();
+  }
+}
+
+function approveStudent(uid){
+  if(myRole !== 'teacher') return;
+  if(remoteUsers[uid]){
+    remoteUsers[uid].hand = false;
+    remoteUsers[uid].approved = true;
+    renderSidebar();
+  }
+  sendMsg({ type:'hand-approve', target: uid });
+  toast('Đã cho phép học viên phát biểu', 'ok');
+}
+
+function rejectStudent(uid){
+  if(myRole !== 'teacher') return;
+  if(remoteUsers[uid]){
+    remoteUsers[uid].hand = false;
+    remoteUsers[uid].approved = false;
+    renderSidebar();
+  }
+  sendMsg({ type:'hand-reject', target: uid });
+  toast('Đã từ chối', 'warn');
+}
+
+function revokeStudent(uid){
+  if(myRole !== 'teacher') return;
+  if(remoteUsers[uid]){
+    remoteUsers[uid].approved = false;
+    renderSidebar();
+  }
+  sendMsg({ type:'hand-revoke', target: uid });
+  toast('Đã thu hồi quyền phát biểu', 'warn');
+}
+
+function muteAllStudents(){
+  sendMsg({ type:'mute-all' });
+  toast('Đã yêu cầu tắt mic tất cả học viên', 'ok');
+}
+
+function forceMuteStudent(uid){
+  sendMsg({ type:'force-mute', target: uid });
+  toast('Đã tắt mic học viên', 'ok');
+}
+
+function handleMyApproval(approved){
+  if(myRole !== 'student') return;
+  if(approved){
+    speakApproved = true;
+    handUp = false;
+    micOn = true;
+    if(localAudioTrack) localAudioTrack.setEnabled(true);
+    updateHandUI(); updateMicUI();
+    showStatus('success', '🎤 Giáo viên đã cho phép bạn nói',
+      'Mic đã được bật. Nhấn nút Micro để tắt khi xong.', null, 5000);
+  } else {
+    speakApproved = false;
+    handUp = false;
+    updateHandUI();
+    showStatus('error', '❌ Giáo viên chưa cho phép',
+      'Bạn có thể giơ tay lại sau.', null, 4000);
+  }
+}
+
+function handleRevoke(){
+  if(myRole !== 'student') return;
+  speakApproved = false;
+  handUp = false;
+  micOn = false;
+  if(localAudioTrack) localAudioTrack.setEnabled(false);
+  updateHandUI(); updateMicUI();
+  showStatus('warn', '🔇 Giáo viên đã thu hồi quyền phát biểu',
+    'Mic đã tự động tắt.', null, 5000);
 }
 
 /* ============================================================
-   LEAVE
+   UI: MIC / CAM / HAND
    ============================================================ */
-async function leaveChannel(){
+function updateMicUI(){
+  const btn = $('btnMic');
+  const canSpeak = (myRole === 'teacher') || speakApproved;
+  if(!canSpeak){
+    btn.classList.add('off');
+    btn.innerHTML = '<i class="fas fa-microphone-slash"></i><span class="ctrl-btn__label">Chờ duyệt</span>';
+    return;
+  }
+  btn.classList.toggle('off', !micOn);
+  btn.innerHTML = `<i class="fas fa-microphone${micOn ? '' : '-slash'}"></i><span class="ctrl-btn__label">${micOn ? 'Đang nói' : 'Micro'}</span>`;
+}
+
+function updateCamUI(){
+  const btn = $('btnCam');
+  btn.classList.toggle('off', !camOn);
+  btn.innerHTML = `<i class="fas fa-video${camOn ? '' : '-slash'}"></i><span class="ctrl-btn__label">Camera</span>`;
+}
+
+function updateHandUI(){
+  const btn = $('btnHand');
+  if(myRole === 'teacher'){ btn.style.display = 'none'; return; }
+  btn.style.display = '';
+  btn.classList.toggle('hand-active', handUp);
+  if(speakApproved){
+    btn.innerHTML = '<i class="fas fa-comment-dots"></i><span class="ctrl-btn__label">Đang nói</span>';
+  } else if(handUp){
+    btn.innerHTML = '<i class="fas fa-hand"></i><span class="ctrl-btn__label">Chờ duyệt</span>';
+  } else {
+    btn.innerHTML = '<i class="fas fa-hand"></i><span class="ctrl-btn__label">Giơ tay</span>';
+  }
+}
+
+function toggleMic(){
+  const canSpeak = (myRole === 'teacher') || speakApproved;
+  if(!canSpeak){ toast('Giơ tay và chờ giáo viên duyệt trước', 'warn', 2500); return; }
+  if(!localAudioTrack){ toast('Không có micro', 'err'); return; }
+  micOn = !micOn;
+  localAudioTrack.setEnabled(micOn);
+  updateMicUI();
+}
+
+function toggleCam(){
+  if(!localVideoTrack){ toast('Không có camera', 'err'); return; }
+  camOn = !camOn;
+  localVideoTrack.setEnabled(camOn);
+  updateCamUI();
+  const off = document.getElementById('selfCamOff');
+  if(off) off.style.display = camOn ? 'none' : 'flex';
+}
+
+/* ============================================================
+   SCREEN SHARE
+   ============================================================ */
+async function toggleScreen(){
+  if(myRole !== 'teacher'){ toast('Chỉ giáo viên mới chia sẻ màn hình', 'warn'); return; }
+  if(screenSharing){
+    if(screenTrack){ screenTrack.stop(); screenTrack.close(); screenTrack = null; }
+    if(localVideoTrack){
+      await client.unpublish(localVideoTrack).catch(()=>{});
+      await client.publish(localVideoTrack).catch(()=>{});
+    }
+    screenSharing = false;
+    sendMsg({ type:'screenshare-end' });
+    remoteScreenSharingUid = null;
+    updatePresentationMode();
+    toast('Đã dừng chia sẻ màn hình', 'ok');
+  } else {
+    try {
+      if(localVideoTrack) await client.unpublish(localVideoTrack).catch(()=>{});
+      screenTrack = await AgoraRTC.createScreenVideoTrack({ encoderConfig: '720p_1' }, 'auto');
+      if(Array.isArray(screenTrack)) screenTrack = screenTrack[0];
+      await client.publish(screenTrack);
+      screenSharing = true;
+      remoteScreenSharingUid = myUid;
+      sendMsg({ type:'screenshare-start', uid: myUid, name: myName });
+      screenTrack.on('track-ended', () => toggleScreen());
+      updatePresentationMode();
+      toast('Đang chia sẻ màn hình', 'ok');
+    } catch(e){
+      console.warn(e);
+      if(localVideoTrack) await client.publish(localVideoTrack).catch(()=>{});
+      toast('Không chia sẻ được màn hình', 'err');
+    }
+  }
+}
+
+/* ============================================================
+   SLIDE
+   ============================================================ */
+function toggleSlidePanel(){
+  if(myRole !== 'teacher') return;
+  $('slidePanel').classList.toggle('show');
+  renderSlideThumbs();
+}
+
+function addSlidesFromUrls(){
+  const raw = $('slideUrlsInput').value.trim();
+  if(!raw){ toast('Chưa nhập URL nào', 'warn'); return; }
+  const urls = raw.split(/\n/).map(u => u.trim()).filter(u => /^https?:\/\//.test(u));
+  if(!urls.length){ toast('Không có URL hợp lệ', 'err'); return; }
+  mySlides = mySlides.concat(urls.map(u => ({ url: u })));
+  $('slideUrlsInput').value = '';
+  renderSlideThumbs();
+  toast(`Đã thêm ${urls.length} slide`, 'ok');
+}
+
+function addSlidesFromFiles(e){
+  const files = [...e.target.files];
+  if(!files.length) return;
+  let loaded = 0;
+  files.forEach(file => {
+    if(!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      mySlides.push({ url: reader.result });
+      loaded++;
+      renderSlideThumbs();
+      if(loaded === files.length) toast(`Đã thêm ${files.length} slide`, 'ok');
+    };
+    reader.readAsDataURL(file);
+  });
+  e.target.value = '';
+}
+
+function renderSlideThumbs(){
+  $('slideThumbs').innerHTML = mySlides.map((s, i) => `
+    <div class="slide-thumb ${i === currentSlideIdx ? 'active' : ''}" onclick="showSlide(${i})">
+      <span class="slide-thumb__num">${i+1}</span>
+      <img src="${escapeAttr(s.url)}" onerror="this.parentElement.innerHTML='<div style=padding:10px;color:#dc2626;font-size:11px;text-align:center>Lỗi ảnh</div>'">
+      <button class="slide-thumb__del" onclick="event.stopPropagation();deleteSlide(${i})"><i class="fas fa-times"></i></button>
+    </div>
+  `).join('') || '<div style="grid-column:1/-1;text-align:center;color:var(--mu);font-size:12.5px;padding:14px">Chưa có slide nào</div>';
+}
+
+function showSlide(idx){
+  if(idx < 0 || idx >= mySlides.length) return;
+  currentSlideIdx = idx;
+  const url = mySlides[idx].url;
+  sendMsg({ type:'slide-show', url, idx, total: mySlides.length });
+  remoteSlideUrl = url;
+  remoteSlideIdx = idx;
+  remoteSlideTotal = mySlides.length;
+  slideMode = true;
+  renderSlideThumbs();
+  updatePresentationMode();
+}
+
+function deleteSlide(idx){
+  mySlides.splice(idx, 1);
+  if(currentSlideIdx >= mySlides.length) currentSlideIdx = -1;
+  renderSlideThumbs();
+  if(slideMode && mySlides.length === 0) endSlideshow();
+}
+
+function endSlideshow(){
+  slideMode = false;
+  currentSlideIdx = -1;
+  remoteSlideUrl = null;
+  sendMsg({ type:'slide-end' });
+  renderSlideThumbs();
+  updatePresentationMode();
+}
+
+/* ============================================================
+   PRESENTATION MODE
+   ============================================================ */
+function updatePresentationMode(){
+  const stageArea = $('stageArea');
+  const old = stageArea.querySelector('.presentation');
+  if(old) old.remove();
+
+  const hasScreen = !!remoteScreenSharingUid;
+  const hasSlide = !!remoteSlideUrl;
+
+  if(!hasScreen && !hasSlide){
+    $('grid').style.display = '';
+    reattachAllVideos();
+    return;
+  }
+  $('grid').style.display = 'none';
+
+  const pres = document.createElement('div');
+  pres.className = 'presentation';
+
+  if(hasScreen){
+    const isMyScreen = (remoteScreenSharingUid === myUid);
+    const sharerName = isMyScreen ? (myName + ' (Bạn)') :
+      (remoteUsers[remoteScreenSharingUid]?.name || 'Ai đó');
+    pres.innerHTML = `
+      <div class="presentation__bar">
+        <span><i class="fas fa-desktop"></i> ${escapeHtml(sharerName)} đang chia sẻ màn hình</span>
+        ${myRole === 'teacher' ? `<button class="btn btn--danger btn--sm" onclick="toggleScreen()"><i class="fas fa-stop"></i> Dừng chia sẻ</button>` : ''}
+      </div>
+      <div class="presentation__stage">
+        <video id="presentationVideo" autoplay playsinline></video>
+      </div>
+      <div class="presentation__thumbs" id="presentationThumbs"></div>
+    `;
+    stageArea.appendChild(pres);
+    if(isMyScreen && screenTrack){
+      screenTrack.play('presentationVideo');
+    } else if(remoteUsers[remoteScreenSharingUid]?.videoTrack){
+      remoteUsers[remoteScreenSharingUid].videoTrack.play('presentationVideo');
+    }
+    renderPresentationThumbs();
+  } else if(hasSlide){
+    pres.innerHTML = `
+      <div class="presentation__bar">
+        <span><i class="fas fa-chalkboard"></i> Slide bài giảng (${remoteSlideIdx+1}/${remoteSlideTotal})</span>
+        ${myRole === 'teacher' ? `<button class="btn btn--danger btn--sm" onclick="endSlideshow()"><i class="fas fa-stop"></i> Dừng chiếu</button>` : ''}
+      </div>
+      <div class="presentation__stage">
+        <img class="slide" src="${escapeAttr(remoteSlideUrl)}" alt="slide">
+      </div>
+    `;
+    stageArea.appendChild(pres);
+  }
+}
+
+function renderPresentationThumbs(){
+  const el = $('presentationThumbs');
+  if(!el) return;
+  const items = [{ uid: 'self', name: myName + ' (Bạn)', stream: 'selfVideoMini' }];
+  for(const uid in remoteUsers){
+    items.push({ uid, name: remoteUsers[uid].name, stream: 'videoMini-'+uid });
+  }
+  el.innerHTML = items.map(it => `
+    <div class="mini-tile">
+      <video id="${it.stream}" autoplay playsinline ${it.uid === 'self' ? 'muted' : ''}></video>
+      <div class="mini-tile__name">${escapeHtml(it.name)}</div>
+    </div>
+  `).join('');
+
+  if(localVideoTrack) localVideoTrack.play('selfVideoMini');
+  for(const uid in remoteUsers){
+    if(remoteUsers[uid].videoTrack) remoteUsers[uid].videoTrack.play('videoMini-'+uid);
+  }
+}
+
+function reattachAllVideos(){
+  if(localVideoTrack){
+    const el = document.getElementById('selfVideo');
+    if(el) localVideoTrack.play('selfVideo');
+  }
+  for(const uid in remoteUsers){
+    if(remoteUsers[uid].videoTrack){
+      const el = document.getElementById('video-'+uid);
+      if(el) remoteUsers[uid].videoTrack.play('video-'+uid);
+    }
+  }
+}
+
+/* ============================================================
+   RENDER TILES
+   ============================================================ */
+function renderSelfTile(){
+  const grid = $('grid');
+  let tile = document.getElementById('tile-self');
+  if(!tile){
+    tile = document.createElement('div');
+    tile.id = 'tile-self';
+    tile.className = 'tile self';
+    tile.innerHTML = `
+      <video id="selfVideo" autoplay muted playsinline></video>
+      <div class="tile__camoff" id="selfCamOff" style="display:none">
+        <i class="fas fa-video-slash"></i><span>Camera tắt</span>
+      </div>
+      <div class="tile__badges">
+        <div class="tile__badge ${micOn?'mic-on':'mic-off'}" id="selfMicBadge">
+          <i class="fas fa-microphone${micOn?'':'-slash'}"></i>
+        </div>
+      </div>
+      <div class="tile__name ${myRole==='teacher'?'teacher':''}">${escapeHtml(myName)} (Bạn)</div>
+    `;
+    grid.appendChild(tile);
+  } else {
+    const badge = document.getElementById('selfMicBadge');
+    if(badge){
+      badge.className = 'tile__badge ' + (micOn ? 'mic-on' : 'mic-off');
+      badge.innerHTML = `<i class="fas fa-microphone${micOn?'':'-slash'}"></i>`;
+    }
+  }
+  if(localVideoTrack) localVideoTrack.play('selfVideo');
+  const off = document.getElementById('selfCamOff');
+  if(off) off.style.display = camOn ? 'none' : 'flex';
+}
+
+function renderRemoteTile(uid){
+  const grid = $('grid');
+  const entry = remoteUsers[uid];
+  if(!entry) return;
+  const tileId = 'tile-'+uid;
+
+  let tile = document.getElementById(tileId);
+  if(!tile){
+    tile = document.createElement('div');
+    tile.id = tileId;
+    tile.className = 'tile';
+    tile.innerHTML = `
+      <video id="video-${uid}" autoplay playsinline></video>
+      <div class="tile__camoff" id="camoff-${uid}" style="display:none">
+        <i class="fas fa-video-slash"></i><span>Camera tắt</span>
+      </div>
+      <div class="tile__badges" id="badges-${uid}"></div>
+      <div class="tile__name ${entry.role==='teacher'?'teacher':''}" id="name-${uid}">${escapeHtml(entry.name)}</div>
+    `;
+    grid.appendChild(tile);
+  }
+
+  if(entry.hasVideo && entry.videoTrack){
+    document.getElementById('camoff-'+uid).style.display = 'none';
+    entry.videoTrack.play('video-'+uid);
+  } else {
+    document.getElementById('camoff-'+uid).style.display = 'flex';
+  }
+
+  const badges = document.getElementById('badges-'+uid);
+  if(badges){
+    let html = '';
+    html += entry.hasAudio
+      ? `<div class="tile__badge mic-on"><i class="fas fa-microphone"></i></div>`
+      : `<div class="tile__badge mic-off"><i class="fas fa-microphone-slash"></i></div>`;
+    if(entry.hand) html += `<div class="tile__badge hand"><i class="fas fa-hand"></i></div>`;
+    badges.innerHTML = html;
+  }
+
+  const nameEl = document.getElementById('name-'+uid);
+  if(nameEl){
+    nameEl.textContent = entry.name;
+    nameEl.className = 'tile__name' + (entry.role === 'teacher' ? ' teacher' : '');
+  }
+}
+
+function updateGridCount(){
+  const total = Object.keys(remoteUsers).length + 1;
+  $('grid').dataset.count = Math.min(total, 8);
+  $('countDisplay').textContent = total;
+  $('sidebarCount').textContent = total;
+}
+
+function updateDuration(){
+  const sec = Math.floor((Date.now() - roomStartTime) / 1000);
+  const m = String(Math.floor(sec/60)).padStart(2,'0');
+  const s = String(sec%60).padStart(2,'0');
+  $('durationDisplay').textContent = m+':'+s;
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+function renderSidebar(){
+  const list = $('sidebarList');
+  const items = [{
+    uid: 'self', name: myName + ' (Bạn)', role: myRole,
+    mic: micOn, hand: handUp, approved: speakApproved, self: true
+  }];
+  for(const uid in remoteUsers){
+    const u = remoteUsers[uid];
+    items.push({
+      uid, name: u.name, role: u.role || 'student',
+      mic: u.hasAudio, hand: u.hand, approved: u.approved, self: false
+    });
+  }
+
+  list.innerHTML = items.map(it => {
+    const initials = getInitials(it.name);
+    const isTeacher = it.role === 'teacher';
+    let statusHtml = '';
+    if(it.self && myRole === 'student'){
+      if(it.approved) statusHtml = '<span class="approved-badge">🎤 Đang được nói</span>';
+      else if(it.hand) statusHtml = '<span class="waiting-badge">⏳ Chờ duyệt</span>';
+      else statusHtml = '<span style="color:var(--mu)">🔇 Mic tắt</span>';
+    } else if(it.hand){
+      statusHtml = '<span class="hand-badge">✋ Đang giơ tay</span>';
+    } else if(it.approved){
+      statusHtml = '<span class="approved-badge">🎤 Được nói</span>';
+    } else {
+      statusHtml = `<span style="color:var(--mu)">${it.mic ? '🎤 Đang nói' : '🔇 Tắt mic'}</span>`;
+    }
+
+    let actions = '';
+    if(myRole === 'teacher' && !it.self && it.role === 'student'){
+      const btns = [];
+      if(it.hand){
+        btns.push(`<button class="btn btn--ok btn--xs" onclick="approveStudent(${it.uid})"><i class="fas fa-check"></i> Cho nói</button>`);
+        btns.push(`<button class="btn btn--ghost btn--xs" onclick="rejectStudent(${it.uid})">Từ chối</button>`);
+      }
+      if(it.approved){
+        btns.push(`<button class="btn btn--danger btn--xs" onclick="revokeStudent(${it.uid})"><i class="fas fa-microphone-slash"></i> Thu hồi</button>`);
+      }
+      if(it.mic && !it.approved){
+        btns.push(`<button class="btn btn--ghost btn--xs" onclick="forceMuteStudent(${it.uid})"><i class="fas fa-volume-xmark"></i> Tắt mic</button>`);
+      }
+      if(btns.length){
+        actions = `<div class="part__actions"><div class="part__actions-row">${btns.join('')}</div></div>`;
+      }
+    }
+
+    return `<div class="part ${it.self?'self':''} ${it.hand?'hand-raised':''}">
+      <div class="part__avatar ${isTeacher?'teacher':''}">
+        ${escapeHtml(initials)}
+        <div class="mic-dot ${it.mic?'on':''}">${it.mic?'<i class="fas fa-microphone"></i>':'<i class="fas fa-microphone-slash"></i>'}</div>
+      </div>
+      <div class="part__body">
+        <div class="part__name">
+          ${escapeHtml(it.name)}
+          ${isTeacher ? '<span class="tag teacher">Giáo viên</span>' : ''}
+        </div>
+        <div class="part__meta">${statusHtml}</div>
+        ${actions}
+      </div>
+    </div>`;
+  }).join('');
+
+  if(myRole === 'teacher'){
+    const head = document.querySelector('.sidebar__head');
+    if(!head.querySelector('.mute-all-btn')){
+      const btn = document.createElement('button');
+      btn.className = 'btn btn--ghost btn--xs mute-all-btn';
+      btn.style.marginLeft = '8px';
+      btn.innerHTML = '<i class="fas fa-volume-xmark"></i> Tắt tất cả';
+      btn.onclick = muteAllStudents;
+      head.appendChild(btn);
+    }
+  }
+}
+
+/* ============================================================
+   STATUS TOAST
+   ============================================================ */
+function showStatus(type, title, body, actions, ms){
+  const map = { success:'fa-circle-check', error:'fa-circle-exclamation', info:'fa-circle-info', warn:'fa-triangle-exclamation' };
+  const el = document.createElement('div');
+  el.className = 'status-toast ' + type;
+  el.innerHTML = `
+    <i class="fas ${map[type] || 'fa-circle-info'}"></i>
+    <div class="status-toast__body">
+      <b>${escapeHtml(title)}</b>
+      <span>${escapeHtml(body || '')}</span>
+      ${actions ? '<div class="status-toast__actions">' + actions + '</div>' : ''}
+    </div>
+  `;
+  $('toastContainer').appendChild(el);
+  setTimeout(() => {
+    el.style.transition = 'opacity .3s, transform .3s';
+    el.style.opacity = '0';
+    el.style.transform = 'translateX(120%)';
+    setTimeout(() => el.remove(), 300);
+  }, ms || 6000);
+}
+
+/* ============================================================
+   LEAVE / CLEANUP
+   ============================================================ */
+async function leaveRoom(){
   if(!confirm('Rời khỏi lớp học?')) return;
   await cleanup();
-  joinCard.style.display = 'block';
-  controls.style.display = 'none';
-  participantBadge.classList.add('hidden');
-  videoPlaceholder.style.display = 'flex';
-  setStatus('info', 'Đã rời lớp học.');
-  toast('Đã rời lớp', 'ok');
+  location.reload();
 }
 
 async function cleanup(){
   try {
-    if(localTracks.video){ localTracks.video.stop(); localTracks.video.close(); }
-    if(localTracks.audio){ localTracks.audio.stop(); localTracks.audio.close(); }
-    localTracks = { video: null, audio: null };
-    if(client){ await client.leave(); }
+    if(screenTrack){ screenTrack.stop(); screenTrack.close(); screenTrack = null; }
+    if(localVideoTrack){ localVideoTrack.stop(); localVideoTrack.close(); localVideoTrack = null; }
+    if(localAudioTrack){ localAudioTrack.stop(); localAudioTrack.close(); localAudioTrack = null; }
+    if(client){ await client.leave(); client = null; }
   } catch(e){ console.warn(e); }
-  client = null;
   remoteUsers = {};
-  joined = false;
-  muted = false;
-  camOff = false;
+  if(durationTimer){ clearInterval(durationTimer); durationTimer = null; }
 }
 
 /* ============================================================
-   INIT
+   HELPERS
    ============================================================ */
+function getInitials(name){
+  if(!name) return '?';
+  const clean = name.replace(/\s*\(Bạn\)\s*/, '').trim();
+  const p = clean.split(/\s+/);
+  if(p.length === 1) return p[0].substring(0, 2).toUpperCase();
+  return (p[0][0] + p[p.length-1][0]).toUpperCase();
+}
+
+function escapeHtml(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function escapeAttr(s){ return escapeHtml(s); }
+
+function toast(msg, type, ms){
+  const t = $('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + (type || '');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.className = 'toast', ms || 2600);
+}
+
+/* ============================================================
+   AUTO-FILL FROM URL ?code=
+   ============================================================ */
+function autoFillFromUrl(){
+  const params = new URLSearchParams(location.search);
+  const code = params.get('code');
+  const name = params.get('name');
+  if(code){
+    switchSetupTab('student');
+    const inp = $('studentCodeInput');
+    if(inp) inp.value = code;
+    if(name) $('studentNameInput').value = name;
+    setTimeout(() => $('studentNameInput').focus(), 300);
+    toast('Đã điền mã lớp từ link', 'ok', 3000);
+  }
+}
+
 window.addEventListener('beforeunload', () => { cleanup(); });
+autoFillFromUrl();
 </script>
 </body>
 </html>
