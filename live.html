@@ -24,9 +24,9 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 input,select,textarea{font-family:inherit}
 .hidden{display:none!important}
 
-/* ===== SETUP ===== */
+/* SETUP */
 .setup-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px 20px;overflow-y:auto;background:linear-gradient(135deg,#1c1008,#3d2817)}
-.setup-card{background:#fff;border-radius:18px;padding:32px 28px;max-width:540px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.setup-card{background:#fff;border-radius:18px;padding:32px 28px;max-width:560px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
 .setup-card h1{font-size:22px;font-weight:900;color:var(--dk);text-align:center;margin-bottom:6px;letter-spacing:-.02em}
 .setup-card > p{font-size:13.5px;color:var(--mu);text-align:center;margin-bottom:22px;line-height:1.6}
 .setup-tabs{display:flex;gap:4px;background:var(--li);border:1.5px solid var(--bd);border-radius:12px;padding:5px;margin-bottom:22px}
@@ -40,6 +40,8 @@ input,select,textarea{font-family:inherit}
 .fg input,.fg select,.fg textarea{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:10px;font-size:14px;background:#fff;color:var(--dk);transition:border .2s}
 .fg input:focus,.fg select:focus,.fg textarea:focus{outline:0;border-color:var(--r);box-shadow:0 0 0 3px rgba(234,88,12,.1)}
 .fg small{display:block;font-size:11.5px;color:var(--mu);margin-top:5px;line-height:1.4}
+.fg small a{color:var(--r);font-weight:700;text-decoration:none}
+.fg textarea{font-size:12px;font-family:ui-monospace,monospace;resize:vertical;min-height:70px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border-radius:10px;font-size:13.5px;font-weight:700;border:2px solid transparent;cursor:pointer;transition:all .2s;white-space:nowrap}
 .btn--primary{background:linear-gradient(135deg,var(--r),var(--r2));color:#fff;box-shadow:0 6px 16px rgba(234,88,12,.3)}
 .btn--primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 24px rgba(234,88,12,.45)}
@@ -48,7 +50,6 @@ input,select,textarea{font-family:inherit}
 .btn--danger{background:#dc2626;color:#fff}
 .btn--danger:hover:not(:disabled){background:#b91c1c}
 .btn--ok{background:#16a34a;color:#fff}
-.btn--ok:hover:not(:disabled){background:#15803d}
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .btn--sm{padding:7px 13px;font-size:12.5px;border-radius:8px}
 .btn--xs{padding:5px 10px;font-size:11.5px;border-radius:7px}
@@ -56,16 +57,19 @@ input,select,textarea{font-family:inherit}
 .hint{margin-top:18px;padding:12px 14px;background:#fef3c7;border:1.5px solid #fcd34d;border-radius:10px;font-size:12.5px;color:#92400e;line-height:1.6}
 .hint b{color:#78350f}
 .hint code{background:rgba(120,53,15,.1);padding:1px 6px;border-radius:4px;font-family:ui-monospace,monospace;font-size:11.5px}
-.code-input-big{font-family:ui-monospace,Menlo,monospace!important;font-size:26px!important;font-weight:900!important;letter-spacing:.35em!important;text-align:center!important;text-transform:uppercase;padding:18px!important;background:linear-gradient(135deg,#fff7ed,#fef3c7)!important;border:2px solid var(--r)!important;color:var(--dk)!important}
+.code-input-big{font-family:ui-monospace,Menlo,monospace!important;font-size:28px!important;font-weight:900!important;letter-spacing:.4em!important;text-align:center!important;text-transform:uppercase;padding:18px!important;background:linear-gradient(135deg,#fff7ed,#fef3c7)!important;border:2px solid var(--r)!important;color:var(--dk)!important}
 .code-input-big::placeholder{font-weight:400;letter-spacing:.15em;color:#c4b8a4}
+details.setup-advanced{margin-bottom:12px}
+details.setup-advanced summary{cursor:pointer;font-size:12.5px;font-weight:700;color:var(--sl);padding:8px 0;user-select:none}
+details.setup-advanced summary:hover{color:var(--r)}
+details.setup-advanced > div{padding-top:10px;padding-left:4px}
 
-/* ===== ROOM ===== */
+/* ROOM */
 #appContainer{display:none;flex-direction:column;height:100vh;width:100vw}
 #appContainer.active{display:flex}
 .room{flex:1;display:flex;min-height:0;overflow:hidden}
 .stage{flex:1;display:flex;flex-direction:column;min-width:0;background:#0f0905;position:relative}
 
-/* Controls floating top-right */
 .float-ctrl{position:absolute;top:12px;right:12px;z-index:30;display:flex;gap:6px;padding:6px;background:rgba(0,0,0,.55);backdrop-filter:blur(12px);border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,.4)}
 .ctrl-btn{width:42px;height:42px;border-radius:11px;background:rgba(255,255,255,.1);color:#fff;font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .2s;cursor:pointer;position:relative}
 .ctrl-btn:hover:not(:disabled){background:rgba(234,88,12,.6);transform:scale(1.05)}
@@ -78,7 +82,6 @@ input,select,textarea{font-family:inherit}
 .ctrl-btn__tip{position:absolute;top:calc(100% + 6px);right:0;background:rgba(0,0,0,.9);color:#fff;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s}
 .ctrl-btn:hover .ctrl-btn__tip{opacity:1}
 
-/* Code panel */
 .float-code{position:absolute;bottom:145px;right:12px;z-index:25;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-radius:14px;padding:14px;box-shadow:0 10px 40px rgba(0,0,0,.35);width:290px;transition:all .3s;border:2px solid var(--r)}
 .float-code.collapsed{width:auto;padding:8px 12px}
 .float-code.collapsed .float-code__body{display:none}
@@ -99,24 +102,20 @@ input,select,textarea{font-family:inherit}
 .float-code__actions{display:flex;gap:4px}
 .float-code__actions .btn{flex:1;padding:6px 8px;font-size:11px;border-radius:7px}
 
-/* Main tile */
 .stage-main{flex:1;position:relative;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:8px 8px 0}
 .main-tile{position:relative;background:#1c1008;border-radius:14px;overflow:hidden;width:100%;height:100%;box-shadow:0 8px 32px rgba(0,0,0,.4)}
 .main-tile video{width:100%;height:100%;object-fit:contain;display:block;background:#0a0603}
 .main-tile__camoff{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,#3d2817,#1c1008);display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:#8d6e63}
 .main-tile__camoff.show{display:flex}
 .main-tile__camoff i{font-size:60px;color:#5d4037}
-.main-tile__camoff span{font-size:14px;font-weight:600}
 .main-tile__name{position:absolute;bottom:14px;left:14px;background:rgba(0,0,0,.75);color:#fff;padding:6px 14px;border-radius:99px;font-size:13px;font-weight:700;backdrop-filter:blur(8px);display:flex;align-items:center;gap:8px;z-index:2}
 .main-tile__name .role-tag{font-size:10px;padding:2px 7px;border-radius:99px;font-weight:800}
 .main-tile__name .role-tag.teacher{background:rgba(59,130,246,.9)}
-.main-tile__name .role-tag.student{background:rgba(22,163,74,.9)}
 .main-tile__status{position:absolute;top:14px;left:14px;display:flex;gap:6px;z-index:2}
 .status-chip{background:rgba(0,0,0,.65);color:#fff;padding:5px 11px;border-radius:99px;font-size:11.5px;font-weight:700;display:inline-flex;align-items:center;gap:5px;backdrop-filter:blur(8px)}
 .status-chip.green{background:rgba(22,163,74,.85)}
 .status-chip.red{background:rgba(220,38,38,.85)}
 
-/* Strip */
 .strip{height:130px;flex-shrink:0;padding:8px;display:flex;gap:8px;overflow-x:auto;overflow-y:hidden}
 .strip::-webkit-scrollbar{height:6px}
 .strip::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
@@ -140,7 +139,6 @@ input,select,textarea{font-family:inherit}
 .presentation__stage video{width:100%;height:100%;object-fit:contain;background:#000}
 .presentation__stage img.slide{max-width:100%;max-height:100%;object-fit:contain;background:#000}
 
-/* Sidebar */
 .sidebar{width:var(--sb-w);background:#fff;border-left:1.5px solid var(--bd);display:flex;flex-direction:column;flex-shrink:0;min-height:0}
 .sb-tabs{display:flex;gap:0;border-bottom:1.5px solid var(--bd);flex-shrink:0;background:var(--li)}
 .sb-tab{flex:1;padding:12px 8px;font-size:12.5px;font-weight:800;color:var(--mu);transition:all .2s;text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:6px;position:relative;border-bottom:3px solid transparent}
@@ -256,7 +254,7 @@ input,select,textarea{font-family:inherit}
 </head>
 <body>
 
-<!-- ===== SETUP ===== -->
+<!-- SETUP -->
 <div class="setup-screen" id="setupScreen">
   <div class="setup-card">
     <h1>🎓 Hán Ngữ HanDi</h1>
@@ -271,6 +269,7 @@ input,select,textarea{font-family:inherit}
       </button>
     </div>
 
+    <!-- TEACHER -->
     <div class="setup-panel active" id="teacherPanel">
       <div class="fg">
         <label>Tên của bạn *</label>
@@ -280,14 +279,29 @@ input,select,textarea{font-family:inherit}
         <label>Tiêu đề buổi học (tuỳ chọn)</label>
         <input type="text" id="teacherTitleInput" placeholder="VD: Bài 1 – Chào hỏi" maxlength="50">
       </div>
+      <div class="fg">
+        <label>Agora App ID *</label>
+        <input type="text" id="teacherAppIdInput" placeholder="Dán App ID từ Agora Console">
+        <small>Lấy tại <a href="https://console.agora.io" target="_blank">console.agora.io</a> → Project Management</small>
+      </div>
+      <div class="fg">
+        <label>Tên phòng Agora *</label>
+        <input type="text" id="teacherChannelInput" placeholder="VD: handi-buoi1" value="handi-class">
+        <small>Không dấu, không khoảng trắng. VD: <code>toan6a</code></small>
+      </div>
+      <div class="fg">
+        <label>Token (tuỳ chọn)</label>
+        <input type="text" id="teacherTokenInput" placeholder="Để trống nếu Testing mode">
+      </div>
       <button class="btn btn--primary btn--block" id="btnCreateClass" onclick="createClass()" style="margin-top:8px">
         <i class="fas fa-plus-circle"></i> Tạo lớp & sinh mã 6 ký tự
       </button>
       <div class="hint">
-        Hệ thống sinh <b>mã 6 ký tự</b> + QR code. Học viên chỉ cần nhập <b>mã 6 ký tự</b> là vào lớp ngay.
+        Hệ thống sinh <b>mã 6 ký tự</b> + QR code. Học viên nhập mã → tự động nhận cấu hình lớp từ server signaling → vào thẳng.
       </div>
     </div>
 
+    <!-- STUDENT -->
     <div class="setup-panel" id="studentPanel">
       <div class="fg">
         <label>Tên của bạn *</label>
@@ -295,47 +309,46 @@ input,select,textarea{font-family:inherit}
       </div>
       <div class="fg">
         <label>Mã vào lớp (6 ký tự) *</label>
-        <input type="text" id="studentCodeInput" class="code-input-big"
-               placeholder="ABC123" maxlength="6" autocomplete="off" spellcheck="false">
-        <small>Nhập mã 6 ký tự giáo viên đã gửi, hoặc quét QR</small>
+        <input type="text" id="studentCodeInput" class="code-input-big" placeholder="ABC123" maxlength="6" autocomplete="off" spellcheck="false">
+        <small>Nhập mã 6 ký tự giáo viên đã gửi</small>
       </div>
       <button class="btn btn--primary btn--block" id="btnJoinClass" onclick="joinWithCode()" style="margin-top:8px">
         <i class="fas fa-sign-in-alt"></i> Vào lớp
       </button>
       <div class="hint">
-        <b>💡 Mẹo:</b> Nếu mở link từ QR, mã sẽ tự động điền — chỉ cần nhập tên.
+        <b>💡</b> Học viên <b>không cần biết</b> App ID/Token — hệ thống tự trao đổi với giáo viên qua kênh signaling.
       </div>
     </div>
   </div>
 </div>
 
-<!-- ===== ROOM ===== -->
+<!-- ROOM -->
 <div id="appContainer">
   <div class="room">
     <div class="stage" id="stageArea">
 
       <div class="float-ctrl" id="floatCtrl" style="display:none">
-        <button class="ctrl-btn" id="btnMic" onclick="toggleMic()" title="Micro">
+        <button class="ctrl-btn" id="btnMic" onclick="toggleMic()">
           <i class="fas fa-microphone-slash"></i>
           <span class="ctrl-btn__tip">Micro</span>
         </button>
-        <button class="ctrl-btn" id="btnCam" onclick="toggleCam()" title="Camera">
+        <button class="ctrl-btn" id="btnCam" onclick="toggleCam()">
           <i class="fas fa-video"></i>
           <span class="ctrl-btn__tip">Camera</span>
         </button>
-        <button class="ctrl-btn" id="btnHand" onclick="toggleHand()" title="Giơ tay" style="display:none">
+        <button class="ctrl-btn" id="btnHand" onclick="toggleHand()" style="display:none">
           <i class="fas fa-hand"></i>
           <span class="ctrl-btn__tip">Giơ tay</span>
         </button>
-        <button class="ctrl-btn" id="btnScreen" onclick="toggleScreen()" title="Chia sẻ màn hình" style="display:none">
+        <button class="ctrl-btn" id="btnScreen" onclick="toggleScreen()" style="display:none">
           <i class="fas fa-desktop"></i>
           <span class="ctrl-btn__tip">Chia sẻ</span>
         </button>
-        <button class="ctrl-btn" id="btnSlide" onclick="toggleSlidePanel()" title="Slide" style="display:none">
+        <button class="ctrl-btn" id="btnSlide" onclick="toggleSlidePanel()" style="display:none">
           <i class="fas fa-chalkboard"></i>
           <span class="ctrl-btn__tip">Slide</span>
         </button>
-        <button class="ctrl-btn danger" onclick="leaveRoom()" title="Rời lớp">
+        <button class="ctrl-btn danger" onclick="leaveRoom()">
           <i class="fas fa-phone-slash"></i>
           <span class="ctrl-btn__tip">Rời lớp</span>
         </button>
@@ -365,10 +378,7 @@ input,select,textarea{font-family:inherit}
       <div class="stage-main" id="stageMain">
         <div class="main-tile" id="mainTile">
           <video id="mainVideo" autoplay playsinline></video>
-          <div class="main-tile__camoff" id="mainCamOff">
-            <i class="fas fa-video-slash"></i>
-            <span>Camera tắt</span>
-          </div>
+          <div class="main-tile__camoff" id="mainCamOff"><i class="fas fa-video-slash"></i><span>Camera tắt</span></div>
           <div class="main-tile__status" id="mainStatus"></div>
           <div class="main-tile__name" id="mainName">Đang chờ kết nối...</div>
         </div>
@@ -379,52 +389,32 @@ input,select,textarea{font-family:inherit}
 
     <aside class="sidebar">
       <div class="sb-tabs">
-        <button class="sb-tab active" data-tab="people" onclick="switchSbTab('people')">
-          <i class="fas fa-users"></i> Người
-        </button>
-        <button class="sb-tab" data-tab="chat" onclick="switchSbTab('chat')">
-          <i class="fas fa-comments"></i> Chat
-          <span class="tab-badge hidden" id="chatBadge">0</span>
-        </button>
-        <button class="sb-tab" data-tab="notes" onclick="switchSbTab('notes')">
-          <i class="fas fa-bookmark"></i> Ghi chú
-        </button>
+        <button class="sb-tab active" data-tab="people" onclick="switchSbTab('people')"><i class="fas fa-users"></i> Người</button>
+        <button class="sb-tab" data-tab="chat" onclick="switchSbTab('chat')"><i class="fas fa-comments"></i> Chat<span class="tab-badge hidden" id="chatBadge">0</span></button>
+        <button class="sb-tab" data-tab="notes" onclick="switchSbTab('notes')"><i class="fas fa-bookmark"></i> Ghi chú</button>
       </div>
-
       <div class="sb-body">
-        <div class="sb-panel active" id="panelPeople">
-          <div class="panel-people" id="sidebarList"></div>
-        </div>
+        <div class="sb-panel active" id="panelPeople"><div class="panel-people" id="sidebarList"></div></div>
         <div class="sb-panel" id="panelChat">
           <div class="panel-chat">
             <div class="chat-messages" id="chatMessages"></div>
             <div class="chat-input">
-              <textarea id="chatInput" placeholder="Nhập tin nhắn..." rows="1"
-                onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendChat();}"></textarea>
+              <textarea id="chatInput" placeholder="Nhập tin nhắn..." rows="1" onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendChat();}"></textarea>
               <button onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
             </div>
           </div>
         </div>
         <div class="sb-panel" id="panelNotes">
           <div class="panel-notes">
-            <div class="notes-toolbar" id="notesToolbar">
-              <button class="btn btn--ghost" onclick="clearAllNotes()">
-                <i class="fas fa-trash"></i> Xoá hết
-              </button>
-            </div>
+            <div class="notes-toolbar" id="notesToolbar"><button class="btn btn--ghost" onclick="clearAllNotes()"><i class="fas fa-trash"></i> Xoá hết</button></div>
             <div class="notes-list" id="notesList"></div>
             <div class="notes-input" id="notesInput" style="display:none">
               <div class="notes-input__row">
                 <input type="text" id="noteHz" placeholder="Hán tự" class="hz" maxlength="10">
                 <input type="text" id="notePy" placeholder="Pinyin" class="py" maxlength="30">
               </div>
-              <div class="notes-input__row">
-                <input type="text" id="noteMn" placeholder="Nghĩa tiếng Việt" maxlength="50"
-                  onkeydown="if(event.key==='Enter')addNote();">
-              </div>
-              <button onclick="addNote()" id="btnAddNote" disabled>
-                <i class="fas fa-plus"></i> Thêm từ vựng
-              </button>
+              <div class="notes-input__row"><input type="text" id="noteMn" placeholder="Nghĩa tiếng Việt" maxlength="50" onkeydown="if(event.key==='Enter')addNote();"></div>
+              <button onclick="addNote()" id="btnAddNote" disabled><i class="fas fa-plus"></i> Thêm từ vựng</button>
             </div>
           </div>
         </div>
@@ -434,21 +424,14 @@ input,select,textarea{font-family:inherit}
 </div>
 
 <div class="slide-panel" id="slidePanel">
-  <div class="slide-panel__head">
-    <b><i class="fas fa-chalkboard"></i> Quản lý Slide</b>
-    <button onclick="toggleSlidePanel()"><i class="fas fa-times"></i></button>
-  </div>
+  <div class="slide-panel__head"><b><i class="fas fa-chalkboard"></i> Quản lý Slide</b><button onclick="toggleSlidePanel()"><i class="fas fa-times"></i></button></div>
   <div class="slide-panel__body">
-    <label>Thêm slide bằng URL ảnh (mỗi dòng 1 URL)</label>
+    <label>Thêm slide bằng URL ảnh</label>
     <textarea id="slideUrlsInput" placeholder="https://i.imgur.com/slide1.jpg"></textarea>
-    <button class="btn btn--primary btn--block" onclick="addSlidesFromUrls()" style="margin-top:8px">
-      <i class="fas fa-plus"></i> Thêm slide
-    </button>
+    <button class="btn btn--primary btn--block" onclick="addSlidesFromUrls()" style="margin-top:8px"><i class="fas fa-plus"></i> Thêm slide</button>
     <div style="margin-top:14px;font-size:12px;font-weight:700;color:var(--sl);margin-bottom:6px">Hoặc upload từ máy</div>
     <input type="file" id="slideFileInput" accept="image/*" multiple style="display:none" onchange="addSlidesFromFiles(event)">
-    <button class="btn btn--ghost btn--block" onclick="document.getElementById('slideFileInput').click()">
-      <i class="fas fa-upload"></i> Chọn ảnh từ máy
-    </button>
+    <button class="btn btn--ghost btn--block" onclick="document.getElementById('slideFileInput').click()"><i class="fas fa-upload"></i> Chọn ảnh từ máy</button>
     <div class="slide-thumbs" id="slideThumbs"></div>
   </div>
 </div>
@@ -461,14 +444,12 @@ input,select,textarea{font-family:inherit}
 
 <script>
 /* ============================================================
-   ⚙️ CẤU HÌNH — CHỈ SỬA DÒNG NÀY 1 LẦN
+   SIGNALING qua ntfy.sh — miễn phí, không cần đăng ký
    ============================================================ */
-const AGORA_APP_ID = 'dán_app_id_agora_của_bạn_vào_đây';
-/* VD: const AGORA_APP_ID = 'a1b2c3d4e5f64789abcdef0123456789'; */
-
-/* Prefix channel — cố định để học viên không cần biết */
-const CHANNEL_PREFIX = 'hnd-';
+const NTFY_BASE = 'https://ntfy.sh';
+const NTFY_TOPIC_PREFIX = 'handi-room-';
 const CODE_LENGTH = 6;
+const BROADCAST_INTERVAL_MS = 60000; // 1 phút re-broadcast
 
 /* ============================================================
    STATE
@@ -477,7 +458,7 @@ let client = null;
 let localAudioTrack = null, localVideoTrack = null, screenTrack = null;
 let remoteUsers = {};
 let myUid = null, myName = '', myRole = 'student', teacherUid = null;
-let roomStartTime = 0, durationTimer = null;
+let roomStartTime = 0;
 let micOn = false, camOn = true, handUp = false, speakApproved = false;
 let screenSharing = false, slideMode = false;
 let mySlides = [], currentSlideIdx = -1;
@@ -485,22 +466,55 @@ let remoteSlideUrl = null, remoteSlideIdx = 0, remoteSlideTotal = 0;
 let remoteScreenSharingUid = null;
 let chatMessages = [], notes = [];
 let unreadChat = 0, currentSbTab = 'people';
-let myRoomCode = null; // mã 6 ký tự của lớp này
+let myRoomCode = null;
+let myAgoraConfig = null; // {appId, channel, token}
+let broadcastTimer = null;
+let signalingEventSource = null;
 
 const $ = id => document.getElementById(id);
 
 /* ============================================================
-   SINH MÃ PHÒNG 6 KÝ TỰ
+   SINH MÃ 6 KÝ TỰ
    ============================================================ */
 function generateRoomCode(){
-  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; // bỏ O,0,I,1,L
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
   let code = '';
   for(let i = 0; i < CODE_LENGTH; i++) code += chars[Math.floor(Math.random() * chars.length)];
   return code;
 }
 
-function channelFromCode(code){
-  return CHANNEL_PREFIX + code.toLowerCase();
+/* ============================================================
+   NTFY SIGNALING
+   ============================================================ */
+async function ntfyPublish(topic, data){
+  const res = await fetch(`${NTFY_BASE}/${topic}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(data)
+  });
+  if(!res.ok) throw new Error('ntfy publish failed: ' + res.status);
+}
+
+function ntfySubscribe(topic, onMessage, timeoutMs = 20000){
+  return new Promise((resolve, reject) => {
+    const es = new EventSource(`${NTFY_BASE}/${topic}/sse`);
+    const timer = setTimeout(() => {
+      es.close();
+      reject(new Error('Không nhận được phản hồi từ giáo viên. Kiểm tra lại mã.'));
+    }, timeoutMs);
+    es.onmessage = (e) => {
+      try {
+        const data = JSON.parse(e.data);
+        if(data.event === 'message' && data.message){
+          const parsed = JSON.parse(data.message);
+          clearTimeout(timer);
+          es.close();
+          resolve(parsed);
+        }
+      } catch(err){ /* ignore non-message events */ }
+    };
+    es.onerror = () => { /* auto-retry by EventSource */ };
+  });
 }
 
 /* ============================================================
@@ -516,27 +530,66 @@ function switchSetupTab(role){
   }, 80);
 }
 
+/* ============================================================
+   TEACHER: TẠO LỚP
+   ============================================================ */
 async function createClass(){
-  if(!AGORA_APP_ID || AGORA_APP_ID === 'dán_app_id_agora_của_bạn_vào_đây'){
-    toast('Chưa cấu hình AGORA_APP_ID — mở source code sửa dòng đầu tiên', 'err', 6000);
-    return;
-  }
   const name = $('teacherNameInput').value.trim();
+  const appId = $('teacherAppIdInput').value.trim();
+  const channel = $('teacherChannelInput').value.trim();
+  const token = $('teacherTokenInput').value.trim();
+  const title = $('teacherTitleInput').value.trim();
+
   if(!name){ toast('Nhập tên của bạn', 'err'); return; }
+  if(!appId){ toast('Nhập App ID', 'err'); return; }
+  if(!channel){ toast('Nhập tên phòng', 'err'); return; }
+  if(!/^[a-z0-9_\-]+$/i.test(channel)){ toast('Tên phòng chỉ chữ, số, -, _', 'err'); return; }
 
-  const code = generateRoomCode();
-  const channel = channelFromCode(code);
-  myRoomCode = code;
+  const btn = $('btnCreateClass');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang tạo...';
 
-  await joinAgora({ name, channel, role: 'teacher' });
-  setTimeout(() => showCodePanel(code, channel), 500);
+  try {
+    const code = generateRoomCode();
+    myRoomCode = code;
+
+    const credentials = {
+      appId, channel, token: token || null,
+      teacherName: name, title: title || 'Buổi học trực tuyến',
+      createdAt: Date.now()
+    };
+
+    // Publish credentials lên ntfy lần đầu
+    const topic = NTFY_TOPIC_PREFIX + code.toLowerCase();
+    await ntfyPublish(topic, credentials);
+    console.log('[Signaling] Published credentials to', topic);
+
+    // Re-broadcast định kỳ để đảm bảo học viên vào sau vẫn nhận được
+    if(broadcastTimer) clearInterval(broadcastTimer);
+    broadcastTimer = setInterval(() => {
+      ntfyPublish(topic, credentials).catch(() => {});
+    }, BROADCAST_INTERVAL_MS);
+
+    // Join lớp thật
+    myAgoraConfig = { appId, channel, token: token || null };
+    await joinAgora({ name, role: 'teacher' });
+
+    // Hiện panel code
+    setTimeout(() => showCodePanel(code, channel), 500);
+  } catch(e){
+    console.error(e);
+    toast('Lỗi: ' + e.message, 'err', 4000);
+    await cleanup();
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-plus-circle"></i> Tạo lớp & sinh mã 6 ký tự';
+  }
 }
 
+/* ============================================================
+   STUDENT: VÀO LỚP BẰNG CODE
+   ============================================================ */
 async function joinWithCode(){
-  if(!AGORA_APP_ID || AGORA_APP_ID === 'dán_app_id_agora_của_bạn_vào_đây'){
-    toast('Chưa cấu hình AGORA_APP_ID', 'err', 6000);
-    return;
-  }
   const name = $('studentNameInput').value.trim();
   let code = $('studentCodeInput').value.trim().toUpperCase();
   if(!name){ toast('Nhập tên của bạn', 'err'); return; }
@@ -544,16 +597,33 @@ async function joinWithCode(){
   code = code.replace(/[^A-Z0-9]/g, '');
   if(code.length !== CODE_LENGTH){ toast(`Mã phải có ${CODE_LENGTH} ký tự`, 'err'); return; }
 
-  const channel = channelFromCode(code);
-  myRoomCode = code;
-
   const btn = $('btnJoinClass');
   btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang vào...';
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang tìm lớp...';
+
   try {
-    await joinAgora({ name, channel, role: 'student' });
+    const topic = NTFY_TOPIC_PREFIX + code.toLowerCase();
+    console.log('[Signaling] Subscribing to', topic);
+
+    // Chờ nhận credentials từ GV
+    const creds = await ntfySubscribe(topic, null, 20000);
+    console.log('[Signaling] Received credentials:', creds);
+
+    if(!creds || !creds.appId || !creds.channel){
+      throw new Error('Cấu hình lớp không hợp lệ');
+    }
+
+    myRoomCode = code;
+    myAgoraConfig = { appId: creds.appId, channel: creds.channel, token: creds.token };
+
+    // Join Agora
+    await joinAgora({ name, role: 'student' });
+
+    // Hiện toast chào mừng
+    toast(`Đã vào lớp của ${creds.teacherName}`, 'ok', 3000);
   } catch(e){
-    toast('Không vào được lớp', 'err', 4000);
+    console.error(e);
+    toast(e.message || 'Không tìm thấy lớp. Kiểm tra lại mã hoặc chờ GV mở lớp.', 'err', 5000);
   } finally {
     btn.disabled = false;
     btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Vào lớp';
@@ -563,7 +633,10 @@ async function joinWithCode(){
 /* ============================================================
    JOIN AGORA
    ============================================================ */
-async function joinAgora({ name, channel, role }){
+async function joinAgora({ name, role }){
+  if(!myAgoraConfig){ throw new Error('Chưa có cấu hình Agora'); }
+  const { appId, channel, token } = myAgoraConfig;
+
   myName = name;
   myRole = role;
   micOn = (role === 'teacher');
@@ -579,7 +652,7 @@ async function joinAgora({ name, channel, role }){
     catch(e){ console.warn(e); }
   });
 
-  myUid = await client.join(AGORA_APP_ID, channel, null, null);
+  myUid = await client.join(appId, channel, token || null, null);
   console.log('[Agora] UID:', myUid, 'channel:', channel);
 
   try {
@@ -615,16 +688,16 @@ async function joinAgora({ name, channel, role }){
   renderStrip(); renderSidebar(); renderNotes(); updateMainView();
 
   roomStartTime = Date.now();
+
   sendMsg({ type:'name-info', name: myName, role: myRole, uid: myUid });
   if(myRole === 'teacher') teacherUid = myUid;
 
   document.title = `Lớp ${channel} – HanDi`;
-  toast('Đã vào lớp', 'ok');
   setTimeout(() => $('chatInput').focus(), 500);
 }
 
 /* ============================================================
-   SIGNALING
+   SIGNALING (in-room qua Agora Data Stream)
    ============================================================ */
 function sendMsg(obj){
   if(!client) return;
@@ -645,29 +718,14 @@ function handleSignal(uid, msg){
     case 'hand-approve': if(msg.target === myUid) handleMyApproval(true); break;
     case 'hand-reject': if(msg.target === myUid) handleMyApproval(false); break;
     case 'hand-revoke': if(msg.target === myUid) handleRevoke(); break;
-    case 'screenshare-start':
-      remoteScreenSharingUid = msg.uid; updateMainView();
-      if(uid !== myUid) toast(`${msg.name} chia sẻ màn hình`, 'warn', 2500);
-      break;
+    case 'screenshare-start': remoteScreenSharingUid = msg.uid; updateMainView(); if(uid !== myUid) toast(`${msg.name} chia sẻ màn hình`, 'warn', 2500); break;
     case 'screenshare-end': remoteScreenSharingUid = null; updateMainView(); break;
     case 'slide-show': remoteSlideUrl = msg.url; remoteSlideIdx = msg.idx; remoteSlideTotal = msg.total; if(uid !== myUid){ slideMode = true; updateMainView(); } break;
     case 'slide-end': remoteSlideUrl = null; slideMode = false; updateMainView(); break;
-    case 'mute-all':
-      if(myRole === 'student'){ micOn = false; if(localAudioTrack) localAudioTrack.setEnabled(false); updateMicUI(); renderStrip(); toast('GV đã tắt mic tất cả', 'warn'); }
-      break;
-    case 'force-mute':
-      if(msg.target === myUid){ micOn = false; if(localAudioTrack) localAudioTrack.setEnabled(false); updateMicUI(); renderStrip(); toast('Bạn đã bị tắt mic', 'warn'); }
-      break;
-    case 'chat':
-      chatMessages.push({ uid, name: msg.name, role: msg.role, text: msg.text, ts: msg.ts, self: false });
-      renderChat();
-      if(currentSbTab !== 'chat'){ unreadChat++; updateChatBadge(); }
-      break;
-    case 'note-add':
-      notes.push({ hz: msg.hz, py: msg.py, mn: msg.mn });
-      renderNotes();
-      if(uid !== myUid) toast(`📖 GV thêm từ: ${msg.hz}`, 'ok', 2500);
-      break;
+    case 'mute-all': if(myRole === 'student'){ micOn = false; if(localAudioTrack) localAudioTrack.setEnabled(false); updateMicUI(); renderStrip(); toast('GV đã tắt mic tất cả', 'warn'); } break;
+    case 'force-mute': if(msg.target === myUid){ micOn = false; if(localAudioTrack) localAudioTrack.setEnabled(false); updateMicUI(); renderStrip(); toast('Bạn đã bị tắt mic', 'warn'); } break;
+    case 'chat': chatMessages.push({ uid, name: msg.name, role: msg.role, text: msg.text, ts: msg.ts, self:false }); renderChat(); if(currentSbTab !== 'chat'){ unreadChat++; updateChatBadge(); } break;
+    case 'note-add': notes.push({ hz: msg.hz, py: msg.py, mn: msg.mn }); renderNotes(); if(uid !== myUid) toast(`📖 GV thêm từ: ${msg.hz}`, 'ok', 2500); break;
     case 'note-clear': notes = []; renderNotes(); if(uid !== myUid) toast('GV đã xoá hết ghi chú', 'warn'); break;
     case 'note-delete': notes.splice(msg.idx, 1); renderNotes(); break;
   }
@@ -724,8 +782,7 @@ function updateMainView(){
         <span><i class="fas fa-desktop"></i> ${escapeHtml(sharerName)} chia sẻ màn hình</span>
         ${isMe && myRole === 'teacher' ? `<button class="btn btn--danger btn--sm" onclick="toggleScreen()"><i class="fas fa-stop"></i> Dừng</button>` : ''}
       </div>
-      <div class="presentation__stage"><video id="presVideo" autoplay playsinline></video></div>
-    `;
+      <div class="presentation__stage"><video id="presVideo" autoplay playsinline></video></div>`;
     $('stageMain').appendChild(pres);
     if(isMe && screenTrack) screenTrack.play('presVideo');
     else if(remoteUsers[remoteScreenSharingUid]?.videoTrack) remoteUsers[remoteScreenSharingUid].videoTrack.play('presVideo');
@@ -742,8 +799,7 @@ function updateMainView(){
         <span><i class="fas fa-chalkboard"></i> Slide (${remoteSlideIdx+1}/${remoteSlideTotal})</span>
         ${myRole === 'teacher' ? `<button class="btn btn--danger btn--sm" onclick="endSlideshow()"><i class="fas fa-stop"></i> Dừng</button>` : ''}
       </div>
-      <div class="presentation__stage"><img class="slide" src="${escapeAttr(remoteSlideUrl)}" alt="slide"></div>
-    `;
+      <div class="presentation__stage"><img class="slide" src="${escapeAttr(remoteSlideUrl)}" alt="slide"></div>`;
     $('stageMain').appendChild(pres);
     renderStrip();
     return;
@@ -758,10 +814,8 @@ function updateMainView(){
     statusEl.innerHTML = `<span class="status-chip ${micOn?'green':'red'}"><i class="fas fa-microphone${micOn?'':'-slash'}"></i> ${micOn?'Đang nói':'Tắt mic'}</span>`;
   } else if(teacherUid && remoteUsers[teacherUid]){
     const t = remoteUsers[teacherUid];
-    if(t.hasVideo && t.videoTrack){
-      t.videoTrack.play('mainVideo');
-      camOff.classList.remove('show');
-    } else camOff.classList.add('show');
+    if(t.hasVideo && t.videoTrack){ t.videoTrack.play('mainVideo'); camOff.classList.remove('show'); }
+    else camOff.classList.add('show');
     nameEl.innerHTML = `<span class="role-tag teacher">GV</span> ${escapeHtml(t.name)}`;
     statusEl.innerHTML = `<span class="status-chip ${t.hasAudio?'green':'red'}"><i class="fas fa-microphone${t.hasAudio?'':'-slash'}"></i> ${t.hasAudio?'Đang nói':'Tắt mic'}</span>`;
   } else {
@@ -770,7 +824,6 @@ function updateMainView(){
     nameEl.textContent = 'Đang chờ giáo viên vào lớp...';
     statusEl.innerHTML = '';
   }
-
   renderStrip();
 }
 
@@ -791,7 +844,7 @@ function renderStrip(){
   for(const uid in remoteUsers){
     if(uid === mainOwner) continue;
     const u = remoteUsers[uid];
-    tiles.push({ uid, name: u.name, role: u.role, self:false, mic: u.hasAudio, hand: u.hand, hasVideo: u.hasVideo });
+    tiles.push({ uid, name:u.name, role:u.role, self:false, mic:u.hasAudio, hand:u.hand, hasVideo:u.hasVideo });
   }
 
   if(!tiles.length){ strip.innerHTML = ''; strip.style.display = 'none'; return; }
@@ -806,8 +859,7 @@ function renderStrip(){
         ${t.hand?'<div class="strip-tile__badge hand"><i class="fas fa-hand"></i></div>':''}
       </div>
       <div class="strip-tile__name">${escapeHtml(t.name)}</div>
-    </div>
-  `).join('');
+    </div>`).join('');
 
   if(tiles.find(t => t.self) && localVideoTrack) localVideoTrack.play('stripVideo-self');
   for(const uid in remoteUsers){
@@ -849,38 +901,11 @@ function handleHandRaise(uid, msg){
      <button class="btn btn--ghost btn--sm" onclick="rejectStudent(${uid});this.closest('.status-toast').remove()">Từ chối</button>`, 8000);
 }
 
-function approveStudent(uid){
-  if(myRole !== 'teacher') return;
-  if(remoteUsers[uid]){ remoteUsers[uid].hand = false; remoteUsers[uid].approved = true; }
-  sendMsg({ type:'hand-approve', target: uid });
-  renderSidebar(); renderStrip();
-  toast('Đã cho phép', 'ok');
-}
-
-function rejectStudent(uid){
-  if(myRole !== 'teacher') return;
-  if(remoteUsers[uid]){ remoteUsers[uid].hand = false; remoteUsers[uid].approved = false; }
-  sendMsg({ type:'hand-reject', target: uid });
-  renderSidebar(); renderStrip();
-  toast('Đã từ chối', 'warn');
-}
-
-function revokeStudent(uid){
-  if(myRole !== 'teacher') return;
-  if(remoteUsers[uid]) remoteUsers[uid].approved = false;
-  sendMsg({ type:'hand-revoke', target: uid });
-  renderSidebar();
-}
-
-function muteAllStudents(){
-  sendMsg({ type:'mute-all' });
-  toast('Đã tắt mic tất cả', 'ok');
-}
-
-function forceMuteStudent(uid){
-  sendMsg({ type:'force-mute', target: uid });
-  toast('Đã tắt mic', 'ok');
-}
+function approveStudent(uid){ if(myRole !== 'teacher') return; if(remoteUsers[uid]){ remoteUsers[uid].hand = false; remoteUsers[uid].approved = true; } sendMsg({ type:'hand-approve', target: uid }); renderSidebar(); renderStrip(); toast('Đã cho phép', 'ok'); }
+function rejectStudent(uid){ if(myRole !== 'teacher') return; if(remoteUsers[uid]){ remoteUsers[uid].hand = false; remoteUsers[uid].approved = false; } sendMsg({ type:'hand-reject', target: uid }); renderSidebar(); renderStrip(); toast('Đã từ chối', 'warn'); }
+function revokeStudent(uid){ if(myRole !== 'teacher') return; if(remoteUsers[uid]) remoteUsers[uid].approved = false; sendMsg({ type:'hand-revoke', target: uid }); renderSidebar(); }
+function muteAllStudents(){ sendMsg({ type:'mute-all' }); toast('Đã tắt mic tất cả', 'ok'); }
+function forceMuteStudent(uid){ sendMsg({ type:'force-mute', target: uid }); toast('Đã tắt mic', 'ok'); }
 
 function handleMyApproval(approved){
   if(myRole !== 'student') return;
@@ -992,11 +1017,7 @@ async function toggleScreen(){
 /* ============================================================
    SLIDE
    ============================================================ */
-function toggleSlidePanel(){
-  if(myRole !== 'teacher') return;
-  $('slidePanel').classList.toggle('show');
-  renderSlideThumbs();
-}
+function toggleSlidePanel(){ if(myRole !== 'teacher') return; $('slidePanel').classList.toggle('show'); renderSlideThumbs(); }
 
 function addSlidesFromUrls(){
   const raw = $('slideUrlsInput').value.trim();
@@ -1033,8 +1054,7 @@ function renderSlideThumbs(){
       <span class="slide-thumb__num">${i+1}</span>
       <img src="${escapeAttr(s.url)}" onerror="this.parentElement.innerHTML='<div style=padding:10px;color:#dc2626;font-size:11px;text-align:center>Lỗi</div>'">
       <button class="slide-thumb__del" onclick="event.stopPropagation();deleteSlide(${i})"><i class="fas fa-times"></i></button>
-    </div>
-  `).join('') || '<div style="grid-column:1/-1;text-align:center;color:var(--mu);font-size:12.5px;padding:14px">Chưa có slide</div>';
+    </div>`).join('') || '<div style="grid-column:1/-1;text-align:center;color:var(--mu);font-size:12.5px;padding:14px">Chưa có slide</div>';
 }
 
 function showSlide(idx){
@@ -1067,7 +1087,6 @@ function showCodePanel(code, channel){
   $('floatCode').style.display = '';
   $('codeDisplay').textContent = code;
   $('roomCodeDisplay').textContent = channel;
-
   const link = location.origin + location.pathname + '?code=' + code;
   const qrBox = $('qrBox');
   qrBox.innerHTML = '';
@@ -1257,18 +1276,16 @@ function renderNotes(){
       <div class="note-item__hz">${escapeHtml(n.hz)}</div>
       ${n.py ? `<div class="note-item__py">${escapeHtml(n.py)}</div>` : ''}
       <div class="note-item__mn">${escapeHtml(n.mn)}</div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   const hz = $('noteHz'), mn = $('noteMn'), btn = $('btnAddNote');
-  if(!hz || !btn) return;
-  const update = () => { btn.disabled = !(hz.value.trim() && mn.value.trim()); };
-  hz.addEventListener('input', update);
-  mn.addEventListener('input', update);
-
-  // Auto uppercase mã lớp cho student
+  if(hz && mn && btn){
+    const update = () => { btn.disabled = !(hz.value.trim() && mn.value.trim()); };
+    hz.addEventListener('input', update);
+    mn.addEventListener('input', update);
+  }
   const codeInp = $('studentCodeInput');
   if(codeInp){
     codeInp.addEventListener('input', e => {
@@ -1288,13 +1305,14 @@ async function leaveRoom(){
 
 async function cleanup(){
   try {
+    if(broadcastTimer){ clearInterval(broadcastTimer); broadcastTimer = null; }
+    if(signalingEventSource){ signalingEventSource.close(); signalingEventSource = null; }
     if(screenTrack){ screenTrack.stop(); screenTrack.close(); screenTrack = null; }
     if(localVideoTrack){ localVideoTrack.stop(); localVideoTrack.close(); localVideoTrack = null; }
     if(localAudioTrack){ localAudioTrack.stop(); localAudioTrack.close(); localAudioTrack = null; }
     if(client){ await client.leave(); client = null; }
   } catch(e){ console.warn(e); }
   remoteUsers = {};
-  if(durationTimer) clearInterval(durationTimer);
 }
 
 /* ============================================================
@@ -1310,8 +1328,7 @@ function showStatus(type, title, body, actions, ms){
       <b>${escapeHtml(title)}</b>
       <span>${escapeHtml(body || '')}</span>
       ${actions ? '<div class="status-toast__actions">' + actions + '</div>' : ''}
-    </div>
-  `;
+    </div>`;
   $('toastContainer').appendChild(el);
   setTimeout(() => {
     el.style.transition = 'opacity .3s, transform .3s';
@@ -1347,7 +1364,7 @@ function toast(msg, type, ms){
 }
 
 /* ============================================================
-   AUTO-FILL FROM URL ?code=
+   AUTO-FILL FROM URL
    ============================================================ */
 function autoFillFromUrl(){
   const params = new URLSearchParams(location.search);
