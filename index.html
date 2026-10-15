@@ -18,8 +18,9 @@
   --ok:#16a34a;--ok-bg:rgba(22,163,74,.1);
   --warn:#f59e0b;--warn-bg:rgba(245,158,11,.1);
   --info:#3b82f6;--info-bg:rgba(59,130,246,.1);
+  --err:#dc2626;--err-bg:rgba(220,38,38,.08);
   --sb-w:270px;
-  --sb-bg:#1c1008;         /* FIX: sidebar tối hơn */
+  --sb-bg:#1c1008;
   --sb-bg2:#2a1810;
   --sb-text:#cfc1a8;
   --sb-muted:#8a7259;
@@ -33,8 +34,161 @@ img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
 ul{list-style:none}
 button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+input,select,textarea{font-family:inherit}
+.hidden{display:none!important}
 
-/* === SIDEBAR === */
+/* ============================================================
+   VIEWS — Landing / Auth / App
+   ============================================================ */
+.view{display:none}
+.view.active{display:block}
+#appView.active{display:block}
+
+/* ============================================================
+   LANDING PAGE
+   ============================================================ */
+.landing{min-height:100vh;background:linear-gradient(135deg,#1c1008 0%,#2a1810 60%,#3d2817 100%);color:#f5eadb;position:relative;overflow:hidden}
+.landing::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(circle at 80% 20%,rgba(234,88,12,.15),transparent 45%),
+  radial-gradient(circle at 15% 85%,rgba(251,191,36,.08),transparent 50%),
+  repeating-linear-gradient(115deg,transparent,transparent 60px,rgba(255,255,255,.015) 60px,rgba(255,255,255,.015) 61px);
+  pointer-events:none}
+.landing__nav{position:relative;z-index:2;padding:24px 40px;display:flex;justify-content:space-between;align-items:center;max-width:1280px;margin:0 auto}
+.landing__brand{display:flex;align-items:center;gap:14px}
+.landing__logo{width:52px;height:52px;background:linear-gradient(135deg,#ea580c,#c2410c);border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:var(--zh);font-weight:900;font-size:30px;color:#fff;box-shadow:0 8px 24px rgba(234,88,12,.4)}
+.landing__brand-text b{display:block;font-size:18px;font-weight:800;color:#fff;line-height:1.2}
+.landing__brand-text span{font-size:12px;color:#a1887f}
+.landing__actions{display:flex;gap:12px;align-items:center}
+.landing__hero{position:relative;z-index:2;max-width:1280px;margin:0 auto;padding:60px 40px 80px;display:grid;grid-template-columns:1.15fr 1fr;gap:60px;align-items:center}
+.landing__hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(234,88,12,.15);border:1px solid rgba(234,88,12,.35);color:#fbbf24;border-radius:99px;padding:8px 18px;font-size:13px;font-weight:700;letter-spacing:.05em;margin-bottom:24px}
+.landing__h1{font-size:clamp(36px,5vw,58px);font-weight:900;line-height:1.08;letter-spacing:-.03em;color:#fff;margin-bottom:20px}
+.landing__h1 em{color:#fbbf24;font-style:normal;position:relative;display:inline-block}
+.landing__h1 em::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:4px;background:linear-gradient(90deg,#ea580c,transparent);border-radius:99px}
+.landing__lead{font-size:17px;line-height:1.75;color:rgba(245,234,219,.85);margin-bottom:36px;max-width:560px}
+.landing__cta{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:40px}
+.landing__stats{display:flex;flex-wrap:wrap;gap:32px;padding-top:32px;border-top:1px solid rgba(255,255,255,.08)}
+.landing__stat b{display:block;font-size:32px;font-weight:900;color:#fbbf24;line-height:1;letter-spacing:-.02em}
+.landing__stat span{font-size:13px;color:#a1887f;font-weight:600;letter-spacing:.03em}
+.landing__features{display:grid;gap:16px}
+.landing__feat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px 22px;display:flex;gap:16px;align-items:flex-start;transition:all .25s;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.landing__feat:hover{background:rgba(234,88,12,.08);border-color:rgba(234,88,12,.3);transform:translateY(-3px)}
+.landing__feat-icon{flex-shrink:0;width:46px;height:46px;background:linear-gradient(135deg,rgba(234,88,12,.9),rgba(194,65,12,.9));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;box-shadow:0 6px 16px rgba(234,88,12,.3)}
+.landing__feat-body b{display:block;font-size:15.5px;font-weight:800;color:#fff;margin-bottom:4px}
+.landing__feat-body span{font-size:13.5px;color:#a1887f;line-height:1.5}
+.landing__footer{position:relative;z-index:2;max-width:1280px;margin:0 auto;padding:30px 40px;border-top:1px solid rgba(255,255,255,.06);text-align:center;font-size:13px;color:#8a7259}
+
+/* === Buttons for landing === */
+.btn-xl{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:16px 32px;border-radius:12px;font-size:15px;font-weight:800;letter-spacing:.02em;transition:all .25s;border:2px solid transparent;cursor:pointer;white-space:nowrap}
+.btn-xl--primary{background:linear-gradient(135deg,#ea580c,#c2410c);color:#fff;box-shadow:0 12px 32px rgba(234,88,12,.4)}
+.btn-xl--primary:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(234,88,12,.55)}
+.btn-xl--ghost{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.2);color:#fff;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.btn-xl--ghost:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.4);transform:translateY(-3px)}
+.btn-nav{padding:10px 20px;border-radius:10px;font-size:14px;font-weight:700;transition:all .2s;border:2px solid transparent;cursor:pointer}
+.btn-nav--ghost{background:transparent;color:#f5eadb;border-color:rgba(255,255,255,.15)}
+.btn-nav--ghost:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.3)}
+.btn-nav--primary{background:linear-gradient(135deg,#ea580c,#c2410c);color:#fff}
+.btn-nav--primary:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(234,88,12,.4)}
+
+/* ============================================================
+   AUTH VIEW
+   ============================================================ */
+.auth{min-height:100vh;background:linear-gradient(135deg,#1c1008 0%,#2a1810 60%,#3d2817 100%);display:flex;align-items:center;justify-content:center;padding:40px 20px;position:relative;overflow:hidden}
+.auth::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(circle at 30% 20%,rgba(234,88,12,.12),transparent 45%),
+  radial-gradient(circle at 70% 80%,rgba(251,191,36,.06),transparent 50%);
+  pointer-events:none}
+.auth__back{position:absolute;top:24px;left:24px;z-index:3;display:inline-flex;align-items:center;gap:8px;color:#a1887f;font-size:14px;font-weight:600;padding:8px 14px;border-radius:10px;transition:all .2s;cursor:pointer}
+.auth__back:hover{color:#f5eadb;background:rgba(255,255,255,.06)}
+.auth__card{position:relative;z-index:2;background:#fff;border-radius:22px;padding:44px 40px;max-width:480px;width:100%;box-shadow:0 40px 100px rgba(0,0,0,.4),0 0 0 1px rgba(234,88,12,.15);animation:authPop .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes authPop{from{opacity:0;transform:scale(.94) translateY(16px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.auth__brand{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:26px}
+.auth__brand-logo{width:52px;height:52px;background:linear-gradient(135deg,#ea580c,#c2410c);border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:var(--zh);font-weight:900;font-size:30px;color:#fff;box-shadow:0 8px 20px rgba(234,88,12,.35)}
+.auth__tabs{display:flex;gap:4px;background:var(--li);border:1.5px solid var(--bd);border-radius:12px;padding:5px;margin-bottom:26px}
+.auth__tab{flex:1;padding:11px 14px;border-radius:9px;font-size:14px;font-weight:700;color:var(--mu);transition:all .2s;text-align:center}
+.auth__tab.active{background:#fff;color:var(--r);box-shadow:0 3px 10px rgba(61,40,23,.08)}
+.auth__title{font-size:24px;font-weight:800;color:var(--dk);text-align:center;letter-spacing:-.02em;margin-bottom:8px}
+.auth__sub{font-size:14px;color:var(--mu);text-align:center;margin-bottom:26px;line-height:1.5}
+.auth__field{margin-bottom:16px}
+.auth__field label{display:block;font-size:12.5px;font-weight:700;color:var(--sl);margin-bottom:6px;letter-spacing:.02em}
+.auth__input-wrap{position:relative}
+.auth__input-wrap > i.field-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--mu);pointer-events:none}
+.auth__input{width:100%;padding:13px 14px 13px 42px;border:1.5px solid var(--bd);border-radius:11px;font-size:14.5px;background:#fff;color:var(--dk);transition:all .2s}
+.auth__input:focus{outline:0;border-color:var(--r);box-shadow:0 0 0 3px rgba(234,88,12,.12)}
+.auth__input::placeholder{color:#c4b8a4}
+.auth__input-wrap .toggle-pw{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;color:var(--mu);font-size:14px;transition:all .2s}
+.auth__input-wrap .toggle-pw:hover{color:var(--r);background:var(--rg)}
+.auth__row{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;font-size:13px}
+.auth__check{display:inline-flex;align-items:center;gap:8px;color:var(--sl);cursor:pointer;font-weight:600}
+.auth__check input{width:16px;height:16px;accent-color:var(--r);cursor:pointer}
+.auth__link{color:var(--r);font-weight:700}
+.auth__link:hover{color:var(--r2);text-decoration:underline}
+.auth__submit{width:100%;padding:14px;background:linear-gradient(135deg,#ea580c,#c2410c);color:#fff;border-radius:11px;font-size:15px;font-weight:800;letter-spacing:.02em;transition:all .25s;box-shadow:0 8px 20px rgba(234,88,12,.3);display:inline-flex;align-items:center;justify-content:center;gap:10px}
+.auth__submit:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(234,88,12,.45)}
+.auth__submit:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.auth__alert{margin-top:16px;padding:12px 16px;border-radius:10px;font-size:13.5px;line-height:1.5;display:none;align-items:flex-start;gap:10px}
+.auth__alert.show{display:flex}
+.auth__alert.err{background:var(--err-bg);color:var(--err);border:1.5px solid rgba(220,38,38,.25)}
+.auth__alert.ok{background:var(--ok-bg);color:#166534;border:1.5px solid rgba(22,163,74,.25)}
+.auth__alert i{font-size:16px;flex-shrink:0;margin-top:1px}
+.auth__switch{text-align:center;margin-top:22px;font-size:13.5px;color:var(--mu)}
+.auth__switch a{color:var(--r);font-weight:700;cursor:pointer;margin-left:4px}
+.auth__switch a:hover{text-decoration:underline}
+.auth__hint{background:var(--li);border:1.5px dashed var(--bd);border-radius:12px;padding:14px 16px;font-size:12.5px;color:var(--mu);line-height:1.5;margin-top:20px;display:flex;gap:10px;align-items:flex-start}
+.auth__hint i{color:var(--r);font-size:15px;flex-shrink:0;margin-top:2px}
+.auth__hint b{color:var(--r2)}
+
+/* ============================================================
+   USER MENU (topbar)
+   ============================================================ */
+.user-menu{position:relative}
+.user-menu__trigger{display:flex;align-items:center;gap:10px;padding:6px 12px 6px 6px;border-radius:99px;background:var(--li);border:1.5px solid var(--bd);transition:all .2s;cursor:pointer}
+.user-menu__trigger:hover{background:#fff;border-color:var(--r)}
+.user-menu__avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#ea580c,#c2410c);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;text-transform:uppercase;box-shadow:0 3px 8px rgba(234,88,12,.3)}
+.user-menu__name{font-size:13.5px;font-weight:700;color:var(--dk);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.user-menu__caret{font-size:11px;color:var(--mu);transition:transform .2s}
+.user-menu.open .user-menu__caret{transform:rotate(180deg)}
+.user-menu__dropdown{position:absolute;top:calc(100% + 10px);right:0;background:#fff;border-radius:14px;box-shadow:0 20px 50px rgba(61,40,23,.18),0 0 0 1px rgba(234,88,12,.1);padding:8px;min-width:260px;z-index:100;opacity:0;visibility:hidden;transform:translateY(-8px);transition:all .2s}
+.user-menu.open .user-menu__dropdown{opacity:1;visibility:visible;transform:translateY(0)}
+.user-menu__head{padding:14px 14px 12px;border-bottom:1px solid var(--bd);margin-bottom:6px;display:flex;gap:12px;align-items:center}
+.user-menu__head .user-menu__avatar{width:44px;height:44px;font-size:16px}
+.user-menu__head-body{min-width:0;flex:1}
+.user-menu__head-body b{display:block;font-size:14.5px;font-weight:800;color:var(--dk);margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.user-menu__head-body span{font-size:12.5px;color:var(--mu);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.user-menu__item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;font-size:14px;font-weight:600;color:var(--sl);transition:all .15s;cursor:pointer;width:100%;text-align:left}
+.user-menu__item:hover{background:var(--li);color:var(--dk)}
+.user-menu__item i{width:18px;text-align:center;color:var(--mu);font-size:15px}
+.user-menu__item:hover i{color:var(--r)}
+.user-menu__item.danger{color:var(--err)}
+.user-menu__item.danger i{color:var(--err)}
+.user-menu__item.danger:hover{background:var(--err-bg);color:var(--err)}
+.user-menu__divider{height:1px;background:var(--bd);margin:6px 8px}
+
+/* ============================================================
+   MODAL (profile)
+   ============================================================ */
+.modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
+.modal.show{display:flex}
+.modal__backdrop{position:absolute;inset:0;background:rgba(20,12,6,.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:fadeIn .2s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal__content{position:relative;background:#fff;border-radius:20px;padding:36px 32px;max-width:480px;width:100%;box-shadow:0 30px 80px rgba(0,0,0,.35);animation:popIn .28s cubic-bezier(.34,1.56,.64,1);max-height:90vh;overflow-y:auto}
+@keyframes popIn{from{opacity:0;transform:scale(.9) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal__close{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:10px;background:var(--li);color:var(--sl);font-size:16px;display:inline-flex;align-items:center;justify-content:center;transition:all .2s}
+.modal__close:hover{background:var(--r);color:#fff}
+.modal__title{font-size:22px;font-weight:800;color:var(--dk);margin-bottom:6px;letter-spacing:-.02em}
+.modal__sub{font-size:14px;color:var(--mu);margin-bottom:24px}
+.profile-avatar-block{display:flex;flex-direction:column;align-items:center;margin-bottom:24px}
+.profile-avatar-big{width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#ea580c,#c2410c);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:34px;text-transform:uppercase;box-shadow:0 12px 32px rgba(234,88,12,.35);margin-bottom:12px}
+.profile-name{font-size:19px;font-weight:800;color:var(--dk)}
+.profile-email{font-size:13.5px;color:var(--mu);margin-top:2px}
+.profile-info{background:var(--li);border-radius:14px;padding:6px;margin-bottom:20px}
+.profile-info-row{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--bd);font-size:14px}
+.profile-info-row:last-child{border-bottom:0}
+.profile-info-row span{color:var(--mu);font-weight:600}
+.profile-info-row b{color:var(--dk);font-weight:700}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
 .sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sb-w);background:var(--sb-bg);color:var(--sb-text);padding:22px 0;overflow:hidden;z-index:200;display:flex;flex-direction:column;transition:transform .3s ease}
 .main{margin-left:var(--sb-w);min-height:100vh;display:flex;flex-direction:column}
 .sidebar__brand{display:flex;align-items:center;gap:12px;padding:0 22px 22px;border-bottom:1px solid rgba(255,255,255,.05);margin-bottom:20px;flex-shrink:0}
@@ -52,14 +206,14 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .progress-block__head span{font-size:12px;font-weight:700;color:var(--sb-muted)}
 .progress-block__head b{font-size:18px;font-weight:800;color:#f5eadb}
 .progress-block__bar{height:8px;background:rgba(0,0,0,.35);border-radius:99px;overflow:hidden;margin-bottom:10px}
-.progress-block__fill{height:100%;background:linear-gradient(90deg,#ea580c,#f97316);border-radius:99px;transition:width .5s ease;width:0%;box-shadow:0 0 12px rgba(234,88,12,.6)} /* HIGHLIGHT */
+.progress-block__fill{height:100%;background:linear-gradient(90deg,#ea580c,#f97316);border-radius:99px;transition:width .5s ease;width:0%;box-shadow:0 0 12px rgba(234,88,12,.6)}
 .progress-block__stats{display:flex;justify-content:space-between;font-size:11.5px;color:var(--sb-muted)}
 .progress-block__stats span{display:flex;align-items:center;gap:5px}
 .progress-block__stats i{color:var(--gd)}
 .lesson{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;cursor:pointer;transition:background .2s;margin-bottom:4px;position:relative}
 .lesson:hover{background:var(--sb-bg2)}
-.lesson.active{background:rgba(234,88,12,.18);color:#fff;box-shadow:inset 0 0 0 1px rgba(234,88,12,.25)} /* HIGHLIGHT */
-.lesson.active::before{content:"";position:absolute;left:-22px;top:8px;bottom:8px;width:3px;background:var(--r);border-radius:0 3px 3px 0;box-shadow:0 0 10px rgba(234,88,12,.8)} /* HIGHLIGHT */
+.lesson.active{background:rgba(234,88,12,.18);color:#fff;box-shadow:inset 0 0 0 1px rgba(234,88,12,.25)}
+.lesson.active::before{content:"";position:absolute;left:-22px;top:8px;bottom:8px;width:3px;background:var(--r);border-radius:0 3px 3px 0;box-shadow:0 0 10px rgba(234,88,12,.8)}
 .lesson.done .lesson__num{background:var(--ok);color:#fff;border-color:var(--ok)}
 .lesson__num{flex-shrink:0;width:28px;height:28px;border-radius:8px;background:var(--sb-bg2);border:1.5px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--sb-muted);transition:all .2s}
 .lesson.active .lesson__num{background:var(--r);border-color:var(--r);color:#fff}
@@ -73,8 +227,10 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .sidebar__footer a{color:var(--sb-muted);display:flex;align-items:center;gap:8px;padding:8px 0;transition:color .2s}
 .sidebar__footer a:hover{color:var(--r)}
 
-/* === TOPBAR === */
-.topbar{background:#fff;border-bottom:1px solid var(--bd);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;position:sticky;top:0;z-index:50}
+/* ============================================================
+   TOPBAR
+   ============================================================ */
+.topbar{background:#fff;border-bottom:1px solid var(--bd);padding:12px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;position:sticky;top:0;z-index:50;min-height:64px}
 .topbar__title{font-size:15px;font-weight:700;color:var(--dk);display:flex;align-items:center;gap:10px;min-width:0}
 .topbar__title > span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .topbar__title i{color:var(--r);flex-shrink:0}
@@ -84,23 +240,29 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .menu-btn{display:none}
 .content{flex:1;padding:32px;max-width:1100px;width:100%;margin:0 auto}
 
-/* === LESSON HEAD === */
+/* ============================================================
+   LESSON HEAD
+   ============================================================ */
 .lesson-head{margin-bottom:28px}
 .lesson-head__lbl{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--r2);background:var(--rg);border-radius:99px;padding:6px 14px;margin-bottom:14px}
 .lesson-head__title{font-size:clamp(24px,3vw,32px);font-weight:800;color:var(--dk);line-height:1.2;letter-spacing:-.02em;margin-bottom:10px}
 .lesson-head__sub{font-size:15px;color:var(--mu);line-height:1.7;max-width:720px}
 
-/* === TABS === */
+/* ============================================================
+   TABS
+   ============================================================ */
 .tabs{display:flex;gap:6px;background:#fff;padding:6px;border-radius:14px;border:1px solid var(--bd);margin-bottom:24px;overflow-x:auto}
 .tab{flex:1;min-width:max-content;padding:10px 16px;border-radius:10px;font-size:13.5px;font-weight:700;color:var(--sl);display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;white-space:nowrap}
 .tab:hover{background:var(--li);color:var(--dk)}
-.tab.active{background:var(--r);color:#fff;box-shadow:0 4px 16px rgba(234,88,12,.45),0 0 0 2px rgba(234,88,12,.12)} /* HIGHLIGHT */
+.tab.active{background:var(--r);color:#fff;box-shadow:0 4px 16px rgba(234,88,12,.45),0 0 0 2px rgba(234,88,12,.12)}
 .tab i{font-size:13px}
 .tab-panel{display:none}
 .tab-panel.active{display:block;animation:fade .3s ease}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-/* === VOCAB (with emoji) === */
+/* ============================================================
+   VOCAB
+   ============================================================ */
 .vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
 .vocab-card{background:#fff;border:1.5px solid var(--bd);border-radius:16px;padding:18px 16px;text-align:center;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
 .vocab-card:hover{transform:translateY(-4px);box-shadow:var(--sh);border-color:rgba(234,88,12,.3)}
@@ -112,7 +274,9 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .vocab-card:hover .vocab-card__speak{opacity:1}
 .vocab-card__speak:hover{background:var(--r);color:#fff}
 
-/* === FLASHCARD (FIX mobile) === */
+/* ============================================================
+   FLASHCARD
+   ============================================================ */
 .fc-stage{background:#fff;border:1.5px solid var(--bd);border-radius:20px;padding:24px;text-align:center;min-height:340px;display:flex;flex-direction:column;align-items:center;gap:20px}
 .fc-stage__counter{align-self:flex-start;font-size:13px;font-weight:700;color:var(--mu);order:-1}
 .fc-stage__counter b{color:var(--r)}
@@ -131,7 +295,9 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .fc-card__back .fc-card__hint{color:rgba(253,248,241,.4)}
 .fc-controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%}
 
-/* === QUIZ === */
+/* ============================================================
+   QUIZ
+   ============================================================ */
 .quiz{background:#fff;border:1.5px solid var(--bd);border-radius:20px;padding:32px 28px}
 .quiz__head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;flex-wrap:wrap;gap:12px}
 .quiz__progress{font-size:13px;font-weight:700;color:var(--mu)}
@@ -166,7 +332,9 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .result-box__title{font-size:22px;font-weight:800;color:var(--dk);margin-bottom:10px}
 .result-box__desc{font-size:15px;color:var(--mu);line-height:1.7;margin-bottom:26px}
 
-/* === BUTTONS === */
+/* ============================================================
+   BUTTONS
+   ============================================================ */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;border-radius:10px;font-size:14px;font-weight:700;transition:all .2s;border:2px solid transparent;white-space:nowrap}
 .btn:hover{transform:translateY(-2px)}
 .btn--primary{background:var(--r);border-color:var(--r);color:#fff}
@@ -175,7 +343,9 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .btn--ghost:hover{border-color:var(--r);color:var(--r)}
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
-/* === DIALOGUE === */
+/* ============================================================
+   DIALOGUE
+   ============================================================ */
 .dialogue{background:#fff;border:1.5px solid var(--bd);border-radius:20px;padding:28px}
 .dialogue__header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
 .dialogue__title{font-size:17px;font-weight:800;color:var(--dk)}
@@ -203,13 +373,13 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .dialogue__kw .zh{font-family:var(--zh);font-weight:700;font-size:15px}
 .dialogue__kw .py{font-style:italic;font-size:11.5px;opacity:.75}
 
-/* === LIGHTBOX === */
+/* ============================================================
+   LIGHTBOX
+   ============================================================ */
 .lightbox{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
 .lightbox.show{display:flex}
 .lightbox__backdrop{position:absolute;inset:0;background:rgba(20,12,6,.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:fadeIn .2s}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .lightbox__content{position:relative;background:#fff;border-radius:20px;padding:36px 32px 32px;max-width:400px;width:100%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.35);animation:popIn .28s cubic-bezier(.34,1.56,.64,1);border:2px solid var(--gd)}
-@keyframes popIn{from{opacity:0;transform:scale(.85) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
 .lightbox__close{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;background:var(--li);color:var(--sl);font-size:18px;display:inline-flex;align-items:center;justify-content:center;transition:all .2s}
 .lightbox__close:hover{background:var(--r);color:#fff}
 .lightbox__emoji{font-size:56px;line-height:1;margin-bottom:12px;display:block}
@@ -219,7 +389,9 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .lightbox__speak{margin-top:18px;display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:var(--rg);color:var(--r);border-radius:10px;font-weight:700;font-size:13.5px;transition:all .2s}
 .lightbox__speak:hover{background:var(--r);color:#fff}
 
-/* === WRITING (multi-box) === */
+/* ============================================================
+   WRITING
+   ============================================================ */
 .writing{background:#fff;border:1.5px solid var(--bd);border-radius:20px;padding:28px 24px}
 .writing__header{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:20px;flex-wrap:wrap}
 .writing__nav{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:var(--mu)}
@@ -257,7 +429,9 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .writing__score.try .writing__score-num{color:var(--warn)}
 .writing__score-txt{font-size:15px;color:var(--sl);margin-top:6px;font-weight:600}
 
-/* === SPEAKING === */
+/* ============================================================
+   SPEAKING
+   ============================================================ */
 .speaking{background:#fff;border:1.5px solid var(--bd);border-radius:20px;padding:32px 28px}
 .speaking__nav{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:24px;flex-wrap:wrap}
 .speaking__counter{font-size:13px;font-weight:700;color:var(--mu)}
@@ -272,7 +446,7 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .speak-target__meaning{font-size:14.5px;color:var(--mu);line-height:1.5}
 .speak-target__actions{display:flex;justify-content:center;gap:10px;margin-top:18px;flex-wrap:wrap}
 .speak-mic{display:flex;flex-direction:column;align-items:center;gap:14px;margin-bottom:20px}
-.mic-btn{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#ea580c,#c2410c);color:#fff;font-size:42px;display:flex;align-items:center;justify-content:center;position:relative;transition:transform .2s;box-shadow:0 12px 32px rgba(234,88,12,.35);cursor:pointer;border:0;user-select:none;animation:micBreath 3s ease-in-out infinite} /* HIGHLIGHT */
+.mic-btn{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#ea580c,#c2410c);color:#fff;font-size:42px;display:flex;align-items:center;justify-content:center;position:relative;transition:transform .2s;box-shadow:0 12px 32px rgba(234,88,12,.35);cursor:pointer;border:0;user-select:none;animation:micBreath 3s ease-in-out infinite}
 @keyframes micBreath{0%,100%{box-shadow:0 12px 32px rgba(234,88,12,.35)}50%{box-shadow:0 14px 40px rgba(234,88,12,.5),0 0 0 8px rgba(234,88,12,.06)}}
 .mic-btn:hover:not(:disabled){transform:scale(1.05);animation:none;box-shadow:0 14px 40px rgba(234,88,12,.5)}
 .mic-btn:active:not(:disabled){transform:scale(.98)}
@@ -326,8 +500,15 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 .sidebar__overlay{position:fixed;inset:0;background:rgba(20,12,6,.5);z-index:150;opacity:0;visibility:hidden;transition:all .3s}
 .sidebar__overlay.show{opacity:1;visibility:visible}
 
-/* === RESPONSIVE === */
-@media (max-width:1024px){.content{padding:24px 20px}.topbar{padding:12px 20px}}
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:1024px){
+  .content{padding:24px 20px}
+  .topbar{padding:12px 20px}
+  .landing__hero{grid-template-columns:1fr;gap:40px;padding:40px 24px 60px}
+  .landing__nav{padding:20px 24px}
+}
 @media (max-width:900px){
   .sidebar{transform:translateX(-100%);box-shadow:4px 0 24px rgba(0,0,0,.2)}
   .sidebar.open{transform:translateX(0)}
@@ -336,6 +517,8 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
   .topbar{padding:12px 16px}
   .topbar__title{font-size:14px}
   .content{padding:20px 16px}
+  .landing__nav{padding:16px}
+  .landing__brand-text span{display:none}
 }
 @media (max-width:600px){
   .vocab-grid{grid-template-columns:repeat(2,1fr)}
@@ -362,259 +545,484 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
   .dialogue__hanzi{font-size:17px}
   .lightbox__hanzi{font-size:44px}
   .lightbox__emoji{font-size:48px}
+  .landing__hero{padding:32px 20px 50px}
+  .landing__stats{gap:20px}
+  .landing__stat b{font-size:26px}
+  .auth__card{padding:32px 24px}
+  .user-menu__name{display:none}
+  .user-menu__trigger{padding:4px}
+  .user-menu__trigger .user-menu__caret{display:none}
+  .modal__content{padding:28px 20px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
 
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar__brand">
-    <div class="sidebar__logo">汉</div>
-    <div class="sidebar__brand-text"><b>Hán Ngữ HanDi</b><span>Tiếng Trung giao tiếp · AI</span></div>
-  </div>
-  <div class="sidebar__section">
-    <div class="progress-block">
-      <div class="progress-block__head"><span>Tiến độ khóa học</span><b id="progressPercent">0%</b></div>
-      <div class="progress-block__bar"><div class="progress-block__fill" id="progressFill"></div></div>
-      <div class="progress-block__stats">
-        <span><i class="fas fa-book"></i> <b id="doneCount">0</b>/<span id="totalLessons">10</span> bài</span>
-        <span><i class="fas fa-star"></i> <b id="totalStars">0</b> sao</span>
+<!-- ============================================================
+     VIEW 1: LANDING
+     ============================================================ -->
+<div id="landingView" class="view active">
+  <div class="landing">
+    <nav class="landing__nav">
+      <div class="landing__brand">
+        <div class="landing__logo">汉</div>
+        <div class="landing__brand-text">
+          <b>Hán Ngữ HanDi</b>
+          <span>Tiếng Trung giao tiếp · AI</span>
+        </div>
       </div>
-    </div>
-  </div>
-  <div class="sidebar__section sidebar__section--grow">
-    <div class="sidebar__section-title">Bài học</div>
-    <ul id="lessonList"></ul>
-  </div>
-  <div class="sidebar__footer">
-    <a href="#" onclick="resetProgress();return false;"><i class="fas fa-rotate-left"></i> Đặt lại tiến độ</a>
-    <a href="#"><i class="fas fa-circle-question"></i> Trợ giúp</a>
-  </div>
-</aside>
-<div class="sidebar__overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
-
-<div class="main">
-  <header class="topbar">
-    <div class="topbar__title">
-      <button class="icon-btn menu-btn" onclick="toggleSidebar()" aria-label="Mở menu"><i class="fas fa-bars"></i></button>
-      <i class="fas fa-graduation-cap"></i>
-      <span id="topbarTitle">Bài 1 – Chào hỏi cơ bản</span>
-    </div>
-    <div class="topbar__actions">
-      <button class="icon-btn" title="Bật/Tắt phát âm" id="soundToggle"><i class="fas fa-volume-high"></i></button>
-      <button class="icon-btn" title="Đặt lại tiến độ" onclick="resetProgress()"><i class="fas fa-rotate-left"></i></button>
-    </div>
-  </header>
-
-  <main class="content" id="content">
-    <div class="lesson-head">
-      <span class="lesson-head__lbl" id="lessonLbl"><i class="fas fa-book-open"></i> Bài 1 · HSK 1</span>
-      <h1 class="lesson-head__title" id="lessonTitle">Chào hỏi cơ bản</h1>
-      <p class="lesson-head__sub" id="lessonSub"></p>
-    </div>
-
-    <nav class="tabs" role="tablist">
-      <button class="tab active" data-tab="vocab"><i class="fas fa-book"></i> Từ vựng</button>
-      <button class="tab" data-tab="dialogue"><i class="fas fa-comments"></i> Bài khóa</button>
-      <button class="tab" data-tab="flash"><i class="fas fa-clone"></i> Flashcard</button>
-      <button class="tab" data-tab="quiz"><i class="fas fa-circle-question"></i> Trắc nghiệm</button>
-      <button class="tab" data-tab="write"><i class="fas fa-pen-fancy"></i> Tập viết</button>
-      <button class="tab" data-tab="speak"><i class="fas fa-microphone"></i> Luyện nói AI</button>
+      <div class="landing__actions">
+        <button class="btn-nav btn-nav--ghost" onclick="showAuth('login')">Đăng nhập</button>
+        <button class="btn-nav btn-nav--primary" onclick="showAuth('register')">Đăng ký miễn phí</button>
+      </div>
     </nav>
 
-    <!-- VOCAB -->
-    <section class="tab-panel active" data-panel="vocab">
-      <div class="vocab-grid" id="vocabGrid"></div>
-      <div class="complete-banner" id="vocabBanner" style="display:none">
-        <div class="complete-banner__icon"><i class="fas fa-check"></i></div>
-        <div class="complete-banner__body">
-          <b>Bạn đã xem hết từ vựng!</b>
-          <span>Tiếp tục sang phần Bài khóa hoặc Flashcard để luyện tập.</span>
-        </div>
-        <button class="btn" onclick="switchTab('dialogue')">Xem bài khóa <i class="fas fa-arrow-right"></i></button>
-      </div>
-    </section>
-
-    <!-- DIALOGUE -->
-    <section class="tab-panel" data-panel="dialogue">
-      <div class="dialogue">
-        <div class="dialogue__header">
-          <div class="dialogue__title"><i class="fas fa-comments" style="color:var(--r);margin-right:6px"></i> Hội thoại mẫu</div>
-          <button class="dialogue__toggle" id="dialogueToggle" onclick="toggleDialogueReveal()">
-            <i class="fas fa-eye"></i> <span id="dialogueToggleText">Hiện pinyin &amp; nghĩa</span>
+    <div class="landing__hero">
+      <div>
+        <span class="landing__hero-tag"><i class="fas fa-sparkles"></i> NỀN TẢNG HỌC TIẾNG TRUNG THẾ HỆ MỚI</span>
+        <h1 class="landing__h1">Học tiếng Trung <em>giao tiếp</em> cùng AI</h1>
+        <p class="landing__lead">Lộ trình 10 bài học HSK 1–2 với phát âm chuẩn giọng Bắc Kinh, luyện viết chữ Hán theo thứ tự nét, và trợ lý AI chấm điểm phát âm theo thời gian thực — tất cả miễn phí.</p>
+        <div class="landing__cta">
+          <button class="btn-xl btn-xl--primary" onclick="showAuth('register')">
+            <i class="fas fa-rocket"></i> Bắt đầu học ngay
+          </button>
+          <button class="btn-xl btn-xl--ghost" onclick="showAuth('login')">
+            <i class="fas fa-arrow-right-to-bracket"></i> Đã có tài khoản
           </button>
         </div>
-        <div class="dialogue__lines" id="dialogueLines"></div>
-        <div class="dialogue__keywords">
-          <div class="dialogue__kw-lbl"><i class="fas fa-bookmark"></i> Từ khóa cần học — chạm để xem chi tiết, tick để đánh dấu</div>
-          <div id="dialogueKeywords" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+        <div class="landing__stats">
+          <div class="landing__stat"><b>10+</b><span>Bài học HSK 1–2</span></div>
+          <div class="landing__stat"><b>60+</b><span>Từ vựng có phát âm</span></div>
+          <div class="landing__stat"><b>50+</b><span>Câu luyện nói AI</span></div>
         </div>
       </div>
-    </section>
 
-    <!-- FLASHCARD -->
-    <section class="tab-panel" data-panel="flash">
-      <div class="fc-stage">
-        <div class="fc-stage__counter">Thẻ <b id="fcCurrent">1</b> / <span id="fcTotal">6</span></div>
-        <div class="fc-card" id="fcCard" onclick="flipCard()">
-          <div class="fc-card__inner">
-            <div class="fc-card__face fc-card__front">
-              <div class="fc-card__hanzi" id="fcHanzi">你好</div>
-              <div class="fc-card__pinyin" id="fcPinyin"></div>
-              <div class="fc-card__hint">Nhấn để lật</div>
-            </div>
-            <div class="fc-card__face fc-card__back">
-              <div class="fc-card__meaning" id="fcMeaning"></div>
-              <div class="fc-card__pinyin-back" id="fcPinyinBack"></div>
-              <div class="fc-card__example" id="fcExample"></div>
-              <div class="fc-card__hint">Nhấn để lật lại</div>
-            </div>
+      <div class="landing__features">
+        <div class="landing__feat">
+          <div class="landing__feat-icon"><i class="fas fa-microphone"></i></div>
+          <div class="landing__feat-body">
+            <b>Luyện nói với AI chấm điểm</b>
+            <span>Nhận diện giọng nói tiếng Trung, chấm điểm phát âm theo % và chỉ ra chỗ cần sửa.</span>
           </div>
         </div>
-        <div class="fc-controls">
-          <button class="btn btn--ghost" onclick="fcPrev()"><i class="fas fa-chevron-left"></i> Trước</button>
-          <button class="btn btn--ghost" onclick="speakCurrent()"><i class="fas fa-volume-high"></i> Nghe</button>
-          <button class="btn btn--primary" onclick="fcNext()">Tiếp <i class="fas fa-chevron-right"></i></button>
+        <div class="landing__feat">
+          <div class="landing__feat-icon"><i class="fas fa-pen-fancy"></i></div>
+          <div class="landing__feat-body">
+            <b>Tập viết chữ Hán thứ tự nét</b>
+            <span>Xem hoạt ảnh từng nét, tự tay viết theo hướng dẫn và được chấm điểm.</span>
+          </div>
+        </div>
+        <div class="landing__feat">
+          <div class="landing__feat-icon"><i class="fas fa-volume-high"></i></div>
+          <div class="landing__feat-body">
+            <b>Phát âm chuẩn giọng Bắc Kinh</b>
+            <span>Tích hợp công nghệ text-to-speech với giọng người bản xứ Trung Quốc đại lục.</span>
+          </div>
+        </div>
+        <div class="landing__feat">
+          <div class="landing__feat-icon"><i class="fas fa-chart-line"></i></div>
+          <div class="landing__feat-body">
+            <b>Lưu tiến độ theo tài khoản</b>
+            <span>Đăng nhập ở đâu cũng tiếp tục học được từ chỗ đang dở dang.</span>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- QUIZ -->
-    <section class="tab-panel" data-panel="quiz">
-      <div class="quiz" id="quizBox">
-        <div class="quiz__head">
-          <div class="quiz__progress">Câu <b id="qCurrent">1</b>/<span id="qTotal">5</span></div>
-          <div class="quiz__bar"><div class="quiz__fill" id="quizFill" style="width:0%"></div></div>
-        </div>
-        <div class="quiz__question" id="qQuestion"></div>
-        <div class="quiz__options" id="qOptions"></div>
-        <div class="q-feedback" id="qFeedback"></div>
-        <div class="quiz__actions"><button class="btn btn--primary" id="qNext" style="display:none" onclick="nextQuestion()">Câu tiếp <i class="fas fa-arrow-right"></i></button></div>
+    <div class="landing__footer">
+      © 2026 Hán Ngữ HanDi — Made with ❤️ for Vietnamese learners
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     VIEW 2: AUTH
+     ============================================================ -->
+<div id="authView" class="view">
+  <div class="auth">
+    <div class="auth__back" onclick="showView('landing')">
+      <i class="fas fa-arrow-left"></i> Về trang chủ
+    </div>
+    <div class="auth__card">
+      <div class="auth__brand">
+        <div class="auth__brand-logo">汉</div>
       </div>
-      <div class="result-box pass" id="quizResult" style="display:none">
-        <div class="result-box__icon"><i class="fas fa-trophy"></i></div>
-        <div class="result-box__score" id="resultScore">0%</div>
-        <div class="result-box__title" id="resultTitle"></div>
-        <div class="result-box__desc" id="resultDesc"></div>
-        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-          <button class="btn btn--ghost" onclick="restartQuiz()"><i class="fas fa-rotate-right"></i> Làm lại</button>
-          <button class="btn btn--primary" onclick="nextLesson()">Bài tiếp theo <i class="fas fa-arrow-right"></i></button>
+      <div class="auth__tabs">
+        <button class="auth__tab active" data-tab="login" onclick="switchAuthTab('login')">Đăng nhập</button>
+        <button class="auth__tab" data-tab="register" onclick="switchAuthTab('register')">Đăng ký</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <h2 class="auth__title">Chào mừng trở lại 👋</h2>
+        <p class="auth__sub">Đăng nhập để tiếp tục lộ trình học của bạn</p>
+
+        <div class="auth__field">
+          <label for="loginEmail">Email</label>
+          <div class="auth__input-wrap">
+            <i class="fas fa-envelope field-icon"></i>
+            <input type="email" id="loginEmail" class="auth__input" placeholder="email@example.com" autocomplete="email" required>
+          </div>
+        </div>
+
+        <div class="auth__field">
+          <label for="loginPassword">Mật khẩu</label>
+          <div class="auth__input-wrap">
+            <i class="fas fa-lock field-icon"></i>
+            <input type="password" id="loginPassword" class="auth__input" placeholder="••••••••" autocomplete="current-password" required>
+            <button type="button" class="toggle-pw" onclick="togglePw('loginPassword', this)" aria-label="Hiện/ẩn mật khẩu"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+
+        <div class="auth__row">
+          <label class="auth__check">
+            <input type="checkbox" id="loginRemember" checked>
+            <span>Ghi nhớ đăng nhập</span>
+          </label>
+          <a class="auth__link" onclick="forgotPassword(event)">Quên mật khẩu?</a>
+        </div>
+
+        <button type="submit" class="auth__submit" id="loginSubmit">
+          <i class="fas fa-arrow-right-to-bracket"></i> Đăng nhập
+        </button>
+
+        <div class="auth__alert" id="loginAlert"></div>
+
+        <div class="auth__switch">
+          Chưa có tài khoản?<a onclick="switchAuthTab('register')">Đăng ký ngay</a>
+        </div>
+      </form>
+
+      <!-- REGISTER FORM -->
+      <form id="registerForm" onsubmit="handleRegister(event)" style="display:none">
+        <h2 class="auth__title">Tạo tài khoản mới</h2>
+        <p class="auth__sub">Miễn phí — chỉ mất 30 giây để bắt đầu học</p>
+
+        <div class="auth__field">
+          <label for="regName">Họ và tên</label>
+          <div class="auth__input-wrap">
+            <i class="fas fa-user field-icon"></i>
+            <input type="text" id="regName" class="auth__input" placeholder="Nguyễn Văn A" autocomplete="name" required>
+          </div>
+        </div>
+
+        <div class="auth__field">
+          <label for="regEmail">Email</label>
+          <div class="auth__input-wrap">
+            <i class="fas fa-envelope field-icon"></i>
+            <input type="email" id="regEmail" class="auth__input" placeholder="email@example.com" autocomplete="email" required>
+          </div>
+        </div>
+
+        <div class="auth__field">
+          <label for="regPassword">Mật khẩu</label>
+          <div class="auth__input-wrap">
+            <i class="fas fa-lock field-icon"></i>
+            <input type="password" id="regPassword" class="auth__input" placeholder="Tối thiểu 6 ký tự" autocomplete="new-password" minlength="6" required>
+            <button type="button" class="toggle-pw" onclick="togglePw('regPassword', this)" aria-label="Hiện/ẩn mật khẩu"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+
+        <div class="auth__field">
+          <label for="regPassword2">Xác nhận mật khẩu</label>
+          <div class="auth__input-wrap">
+            <i class="fas fa-lock field-icon"></i>
+            <input type="password" id="regPassword2" class="auth__input" placeholder="Nhập lại mật khẩu" autocomplete="new-password" minlength="6" required>
+            <button type="button" class="toggle-pw" onclick="togglePw('regPassword2', this)" aria-label="Hiện/ẩn mật khẩu"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+
+        <div class="auth__row">
+          <label class="auth__check">
+            <input type="checkbox" id="regAgree" required>
+            <span>Tôi đồng ý với <a class="auth__link" onclick="event.preventDefault();event.stopPropagation()">Điều khoản</a></span>
+          </label>
+        </div>
+
+        <button type="submit" class="auth__submit" id="registerSubmit">
+          <i class="fas fa-user-plus"></i> Tạo tài khoản
+        </button>
+
+        <div class="auth__alert" id="registerAlert"></div>
+
+        <div class="auth__switch">
+          Đã có tài khoản?<a onclick="switchAuthTab('login')">Đăng nhập</a>
+        </div>
+
+        <div class="auth__hint">
+          <i class="fas fa-shield-halved"></i>
+          <div>Tài khoản được lưu <b>cục bộ trên trình duyệt của bạn</b> (localStorage). Mật khẩu được mã hoá bằng SHA-256. Không có dữ liệu nào gửi lên server.</div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     VIEW 3: APP
+     ============================================================ -->
+<div id="appView" class="view">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__brand">
+      <div class="sidebar__logo">汉</div>
+      <div class="sidebar__brand-text"><b>Hán Ngữ HanDi</b><span>Tiếng Trung giao tiếp · AI</span></div>
+    </div>
+    <div class="sidebar__section">
+      <div class="progress-block">
+        <div class="progress-block__head"><span>Tiến độ khóa học</span><b id="progressPercent">0%</b></div>
+        <div class="progress-block__bar"><div class="progress-block__fill" id="progressFill"></div></div>
+        <div class="progress-block__stats">
+          <span><i class="fas fa-book"></i> <b id="doneCount">0</b>/<span id="totalLessons">10</span> bài</span>
+          <span><i class="fas fa-star"></i> <b id="totalStars">0</b> sao</span>
         </div>
       </div>
-    </section>
+    </div>
+    <div class="sidebar__section sidebar__section--grow">
+      <div class="sidebar__section-title">Bài học</div>
+      <ul id="lessonList"></ul>
+    </div>
+    <div class="sidebar__footer">
+      <a href="#" onclick="resetProgress();return false;"><i class="fas fa-rotate-left"></i> Đặt lại tiến độ</a>
+      <a href="#" onclick="showProfile();return false;"><i class="fas fa-user-gear"></i> Tài khoản</a>
+    </div>
+  </aside>
+  <div class="sidebar__overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
 
-    <!-- WRITING -->
-    <section class="tab-panel" data-panel="write">
-      <div class="writing">
-        <div class="writing__header">
-          <div class="writing__nav">Chữ <b id="writeCurrent">1</b> / <span id="writeTotal">6</span></div>
-          <div class="writing__tools">
-            <button class="tool-btn" id="btnAnimate" onclick="playStrokeOrder()"><i class="fas fa-play"></i> <span>Xem cách viết</span></button>
-            <button class="tool-btn" id="btnQuiz" onclick="startQuiz()"><i class="fas fa-pen"></i> <span>Luyện viết</span></button>
-            <button class="tool-btn" onclick="clearWriter()" title="Xóa"><i class="fas fa-trash"></i></button>
-          </div>
-        </div>
-
-        <div class="writing__stage-wrap">
-          <div class="writing__stage">
-            <div id="hanziWriterTarget" class="writing__writer"></div>
-          </div>
-        </div>
-
-        <div class="writing__info">
-          <b id="writeHanzi"></b>
-          <span id="writeInfo"></span>
-        </div>
-
-        <div class="writing__controls">
-          <button class="btn btn--ghost" onclick="writeNav(-1)"><i class="fas fa-chevron-left"></i> Chữ trước</button>
-          <button class="btn btn--ghost" onclick="speak(LESSONS[state.currentLesson].vocab[writeIndex].hanzi)"><i class="fas fa-volume-high"></i> Nghe mẫu</button>
-          <button class="btn btn--primary" onclick="writeNav(1)">Chữ tiếp <i class="fas fa-chevron-right"></i></button>
-        </div>
-
-        <div class="writing__score" id="writingScore">
-          <div class="writing__score-emoji" id="writingScoreEmoji">🎉</div>
-          <div class="writing__score-num" id="writingScoreNum">100%</div>
-          <div class="writing__score-txt" id="writingScoreTxt">Hoàn hảo!</div>
-        </div>
-
-        <p class="writing__hint"><i class="fas fa-info-circle"></i> Nhấn "Xem cách viết" để xem hoạt ảnh thứ tự nét, hoặc "Luyện viết" để tự tay viết và được chấm điểm</p>
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar__title">
+        <button class="icon-btn menu-btn" onclick="toggleSidebar()" aria-label="Mở menu"><i class="fas fa-bars"></i></button>
+        <i class="fas fa-graduation-cap"></i>
+        <span id="topbarTitle">Bài 1 – Chào hỏi cơ bản</span>
       </div>
-    </section>
+      <div class="topbar__actions">
+        <button class="icon-btn" title="Bật/Tắt phát âm" id="soundToggle"><i class="fas fa-volume-high"></i></button>
 
-    <!-- SPEAKING -->
-    <section class="tab-panel" data-panel="speak">
-      <div class="speaking" id="speakingBox">
-        <div class="speaking__unsupported" id="speakUnsupported" style="display:none">
-          <i class="fas fa-triangle-exclamation"></i>
-          <div>
-            <b>Trình duyệt chưa hỗ trợ nhận diện giọng nói.</b><br>
-            Vui lòng dùng <b>Google Chrome</b> hoặc <b>Microsoft Edge</b> phiên bản mới nhất.
-          </div>
-        </div>
-
-        <div id="speakMain">
-          <div class="mic-status hidden" id="micStatus">
-            <i class="fas fa-microphone-slash" id="micStatusIcon"></i>
-            <span id="micStatusText">Cần cấp quyền micro</span>
-            <button class="mic-status__btn" id="micStatusBtn" onclick="requestMicPermission()"><i class="fas fa-microphone"></i> Cấp quyền</button>
-          </div>
-
-          <div class="speaking__nav">
-            <div class="speaking__counter">Câu <b id="spkCurrent">1</b> / <span id="spkTotal">5</span></div>
-            <div class="speaking__voice">
-              <i class="fas fa-volume-high"></i>
-              <label for="voiceSelect" style="font-weight:600">Giọng đọc:</label>
-              <select id="voiceSelect" aria-label="Chọn giọng đọc"></select>
-            </div>
-          </div>
-
-          <div class="speak-target">
-            <div class="speak-target__label">Câu cần đọc</div>
-            <div class="speak-target__hanzi" id="spkHanzi" lang="zh">你好</div>
-            <div class="speak-target__pinyin" id="spkPinyin">nǐ hǎo</div>
-            <div class="speak-target__meaning" id="spkMeaning">Xin chào</div>
-            <div class="speak-target__actions">
-              <button class="btn btn--ghost" onclick="playTarget()"><i class="fas fa-volume-high"></i> Nghe mẫu</button>
-              <button class="btn btn--ghost" onclick="playTargetSlow()"><i class="fas fa-turtle"></i> Nghe chậm</button>
-            </div>
-          </div>
-
-          <div class="speak-mic">
-            <button class="mic-btn" id="micBtn" onclick="toggleRecognition()" aria-label="Nhấn để nói">
-              <span class="mic-btn__ring"></span>
-              <i class="fas fa-microphone"></i>
-            </button>
-            <div class="mic-hint" id="micHint">Nhấn để nói<small>Hoặc giữ phím Space để nói nhanh</small></div>
-            <div class="keyhint" id="keyHint"><kbd>SPACE</kbd><span>Giữ để nói · Thả để dừng</span></div>
-          </div>
-
-          <div class="speak-transcript" id="speakTranscript">
-            <div class="speak-transcript__label"><i class="fas fa-waveform"></i> AI nghe được</div>
-            <div class="speak-transcript__text empty" id="transcriptText">Nhấn micro hoặc giữ Space và bắt đầu nói...</div>
-          </div>
-
-          <div class="speak-result" id="speakResult">
-            <div class="speak-result__head">
-              <span class="speak-result__emoji" id="resultEmoji">🎉</span>
-              <span class="speak-result__score" id="resultScore2">100%</span>
-              <div>
-                <div class="speak-result__title" id="resultTitle2">Tuyệt vời!</div>
-                <div class="speak-result__sub" id="resultSub2">Phát âm chuẩn như người bản xứ</div>
+        <!-- USER MENU -->
+        <div class="user-menu" id="userMenu">
+          <button class="user-menu__trigger" onclick="toggleUserMenu(event)">
+            <span class="user-menu__avatar" id="userAvatarMini">A</span>
+            <span class="user-menu__name" id="userNameMini">User</span>
+            <i class="fas fa-chevron-down user-menu__caret"></i>
+          </button>
+          <div class="user-menu__dropdown">
+            <div class="user-menu__head">
+              <span class="user-menu__avatar" id="userAvatarBig">A</span>
+              <div class="user-menu__head-body">
+                <b id="userNameBig">User</b>
+                <span id="userEmailBig">email@example.com</span>
               </div>
             </div>
-            <div class="speak-result__tips" id="resultTips"></div>
-          </div>
-
-          <div class="speaking__controls">
-            <button class="btn btn--ghost" onclick="spkPrev()"><i class="fas fa-chevron-left"></i> Câu trước</button>
-            <button class="btn btn--primary" onclick="spkNext()">Câu tiếp <i class="fas fa-chevron-right"></i></button>
+            <button class="user-menu__item" onclick="showProfile()">
+              <i class="fas fa-user"></i> Thông tin tài khoản
+            </button>
+            <button class="user-menu__item" onclick="showProgressSummary()">
+              <i class="fas fa-chart-simple"></i> Thống kê học tập
+            </button>
+            <button class="user-menu__item" onclick="resetProgress()">
+              <i class="fas fa-rotate-left"></i> Đặt lại tiến độ
+            </button>
+            <div class="user-menu__divider"></div>
+            <button class="user-menu__item danger" onclick="handleLogout()">
+              <i class="fas fa-arrow-right-from-bracket"></i> Đăng xuất
+            </button>
           </div>
         </div>
       </div>
-    </section>
-  </main>
+    </header>
+
+    <main class="content" id="content">
+      <div class="lesson-head">
+        <span class="lesson-head__lbl" id="lessonLbl"><i class="fas fa-book-open"></i> Bài 1 · HSK 1</span>
+        <h1 class="lesson-head__title" id="lessonTitle">Chào hỏi cơ bản</h1>
+        <p class="lesson-head__sub" id="lessonSub"></p>
+      </div>
+
+      <nav class="tabs" role="tablist">
+        <button class="tab active" data-tab="vocab"><i class="fas fa-book"></i> Từ vựng</button>
+        <button class="tab" data-tab="dialogue"><i class="fas fa-comments"></i> Bài khóa</button>
+        <button class="tab" data-tab="flash"><i class="fas fa-clone"></i> Flashcard</button>
+        <button class="tab" data-tab="quiz"><i class="fas fa-circle-question"></i> Trắc nghiệm</button>
+        <button class="tab" data-tab="write"><i class="fas fa-pen-fancy"></i> Tập viết</button>
+        <button class="tab" data-tab="speak"><i class="fas fa-microphone"></i> Luyện nói AI</button>
+      </nav>
+
+      <section class="tab-panel active" data-panel="vocab">
+        <div class="vocab-grid" id="vocabGrid"></div>
+        <div class="complete-banner" id="vocabBanner" style="display:none">
+          <div class="complete-banner__icon"><i class="fas fa-check"></i></div>
+          <div class="complete-banner__body">
+            <b>Bạn đã xem hết từ vựng!</b>
+            <span>Tiếp tục sang phần Bài khóa hoặc Flashcard để luyện tập.</span>
+          </div>
+          <button class="btn" onclick="switchTab('dialogue')">Xem bài khóa <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </section>
+
+      <section class="tab-panel" data-panel="dialogue">
+        <div class="dialogue">
+          <div class="dialogue__header">
+            <div class="dialogue__title"><i class="fas fa-comments" style="color:var(--r);margin-right:6px"></i> Hội thoại mẫu</div>
+            <button class="dialogue__toggle" id="dialogueToggle" onclick="toggleDialogueReveal()">
+              <i class="fas fa-eye"></i> <span id="dialogueToggleText">Hiện pinyin &amp; nghĩa</span>
+            </button>
+          </div>
+          <div class="dialogue__lines" id="dialogueLines"></div>
+          <div class="dialogue__keywords">
+            <div class="dialogue__kw-lbl"><i class="fas fa-bookmark"></i> Từ khóa cần học — chạm để xem chi tiết, tick để đánh dấu</div>
+            <div id="dialogueKeywords" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-panel" data-panel="flash">
+        <div class="fc-stage">
+          <div class="fc-stage__counter">Thẻ <b id="fcCurrent">1</b> / <span id="fcTotal">6</span></div>
+          <div class="fc-card" id="fcCard" onclick="flipCard()">
+            <div class="fc-card__inner">
+              <div class="fc-card__face fc-card__front">
+                <div class="fc-card__hanzi" id="fcHanzi">你好</div>
+                <div class="fc-card__pinyin" id="fcPinyin"></div>
+                <div class="fc-card__hint">Nhấn để lật</div>
+              </div>
+              <div class="fc-card__face fc-card__back">
+                <div class="fc-card__meaning" id="fcMeaning"></div>
+                <div class="fc-card__pinyin-back" id="fcPinyinBack"></div>
+                <div class="fc-card__example" id="fcExample"></div>
+                <div class="fc-card__hint">Nhấn để lật lại</div>
+              </div>
+            </div>
+          </div>
+          <div class="fc-controls">
+            <button class="btn btn--ghost" onclick="fcPrev()"><i class="fas fa-chevron-left"></i> Trước</button>
+            <button class="btn btn--ghost" onclick="speakCurrent()"><i class="fas fa-volume-high"></i> Nghe</button>
+            <button class="btn btn--primary" onclick="fcNext()">Tiếp <i class="fas fa-chevron-right"></i></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-panel" data-panel="quiz">
+        <div class="quiz" id="quizBox">
+          <div class="quiz__head">
+            <div class="quiz__progress">Câu <b id="qCurrent">1</b>/<span id="qTotal">5</span></div>
+            <div class="quiz__bar"><div class="quiz__fill" id="quizFill" style="width:0%"></div></div>
+          </div>
+          <div class="quiz__question" id="qQuestion"></div>
+          <div class="quiz__options" id="qOptions"></div>
+          <div class="q-feedback" id="qFeedback"></div>
+          <div class="quiz__actions"><button class="btn btn--primary" id="qNext" style="display:none" onclick="nextQuestion()">Câu tiếp <i class="fas fa-arrow-right"></i></button></div>
+        </div>
+        <div class="result-box pass" id="quizResult" style="display:none">
+          <div class="result-box__icon"><i class="fas fa-trophy"></i></div>
+          <div class="result-box__score" id="resultScore">0%</div>
+          <div class="result-box__title" id="resultTitle"></div>
+          <div class="result-box__desc" id="resultDesc"></div>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+            <button class="btn btn--ghost" onclick="restartQuiz()"><i class="fas fa-rotate-right"></i> Làm lại</button>
+            <button class="btn btn--primary" onclick="nextLesson()">Bài tiếp theo <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-panel" data-panel="write">
+        <div class="writing">
+          <div class="writing__header">
+            <div class="writing__nav">Chữ <b id="writeCurrent">1</b> / <span id="writeTotal">6</span></div>
+            <div class="writing__tools">
+              <button class="tool-btn" id="btnAnimate" onclick="playStrokeOrder()"><i class="fas fa-play"></i> <span>Xem cách viết</span></button>
+              <button class="tool-btn" id="btnQuiz" onclick="startQuiz()"><i class="fas fa-pen"></i> <span>Luyện viết</span></button>
+              <button class="tool-btn" onclick="clearWriter()" title="Xóa"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+          <div class="writing__stage-wrap">
+            <div class="writing__stage">
+              <div id="hanziWriterTarget" class="writing__writer"></div>
+            </div>
+          </div>
+          <div class="writing__info">
+            <b id="writeHanzi"></b>
+            <span id="writeInfo"></span>
+          </div>
+          <div class="writing__controls">
+            <button class="btn btn--ghost" onclick="writeNav(-1)"><i class="fas fa-chevron-left"></i> Chữ trước</button>
+            <button class="btn btn--ghost" onclick="speak(LESSONS[state.currentLesson].vocab[writeIndex].hanzi)"><i class="fas fa-volume-high"></i> Nghe mẫu</button>
+            <button class="btn btn--primary" onclick="writeNav(1)">Chữ tiếp <i class="fas fa-chevron-right"></i></button>
+          </div>
+          <div class="writing__score" id="writingScore">
+            <div class="writing__score-emoji" id="writingScoreEmoji">🎉</div>
+            <div class="writing__score-num" id="writingScoreNum">100%</div>
+            <div class="writing__score-txt" id="writingScoreTxt">Hoàn hảo!</div>
+          </div>
+          <p class="writing__hint"><i class="fas fa-info-circle"></i> Nhấn "Xem cách viết" để xem hoạt ảnh thứ tự nét, hoặc "Luyện viết" để tự tay viết và được chấm điểm</p>
+        </div>
+      </section>
+
+      <section class="tab-panel" data-panel="speak">
+        <div class="speaking" id="speakingBox">
+          <div class="speaking__unsupported" id="speakUnsupported" style="display:none">
+            <i class="fas fa-triangle-exclamation"></i>
+            <div>
+              <b>Trình duyệt chưa hỗ trợ nhận diện giọng nói.</b><br>
+              Vui lòng dùng <b>Google Chrome</b> hoặc <b>Microsoft Edge</b> phiên bản mới nhất.
+            </div>
+          </div>
+          <div id="speakMain">
+            <div class="mic-status hidden" id="micStatus">
+              <i class="fas fa-microphone-slash" id="micStatusIcon"></i>
+              <span id="micStatusText">Cần cấp quyền micro</span>
+              <button class="mic-status__btn" id="micStatusBtn" onclick="requestMicPermission()"><i class="fas fa-microphone"></i> Cấp quyền</button>
+            </div>
+            <div class="speaking__nav">
+              <div class="speaking__counter">Câu <b id="spkCurrent">1</b> / <span id="spkTotal">5</span></div>
+              <div class="speaking__voice">
+                <i class="fas fa-volume-high"></i>
+                <label for="voiceSelect" style="font-weight:600">Giọng đọc:</label>
+                <select id="voiceSelect" aria-label="Chọn giọng đọc"></select>
+              </div>
+            </div>
+            <div class="speak-target">
+              <div class="speak-target__label">Câu cần đọc</div>
+              <div class="speak-target__hanzi" id="spkHanzi" lang="zh">你好</div>
+              <div class="speak-target__pinyin" id="spkPinyin">nǐ hǎo</div>
+              <div class="speak-target__meaning" id="spkMeaning">Xin chào</div>
+              <div class="speak-target__actions">
+                <button class="btn btn--ghost" onclick="playTarget()"><i class="fas fa-volume-high"></i> Nghe mẫu</button>
+                <button class="btn btn--ghost" onclick="playTargetSlow()"><i class="fas fa-turtle"></i> Nghe chậm</button>
+              </div>
+            </div>
+            <div class="speak-mic">
+              <button class="mic-btn" id="micBtn" onclick="toggleRecognition()" aria-label="Nhấn để nói">
+                <span class="mic-btn__ring"></span>
+                <i class="fas fa-microphone"></i>
+              </button>
+              <div class="mic-hint" id="micHint">Nhấn để nói<small>Hoặc giữ phím Space để nói nhanh</small></div>
+              <div class="keyhint" id="keyHint"><kbd>SPACE</kbd><span>Giữ để nói · Thả để dừng</span></div>
+            </div>
+            <div class="speak-transcript" id="speakTranscript">
+              <div class="speak-transcript__label"><i class="fas fa-waveform"></i> AI nghe được</div>
+              <div class="speak-transcript__text empty" id="transcriptText">Nhấn micro hoặc giữ Space và bắt đầu nói...</div>
+            </div>
+            <div class="speak-result" id="speakResult">
+              <div class="speak-result__head">
+                <span class="speak-result__emoji" id="resultEmoji">🎉</span>
+                <span class="speak-result__score" id="resultScore2">100%</span>
+                <div>
+                  <div class="speak-result__title" id="resultTitle2">Tuyệt vời!</div>
+                  <div class="speak-result__sub" id="resultSub2">Phát âm chuẩn như người bản xứ</div>
+                </div>
+              </div>
+              <div class="speak-result__tips" id="resultTips"></div>
+            </div>
+            <div class="speaking__controls">
+              <button class="btn btn--ghost" onclick="spkPrev()"><i class="fas fa-chevron-left"></i> Câu trước</button>
+              <button class="btn btn--primary" onclick="spkNext()">Câu tiếp <i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
 </div>
 
 <!-- LIGHTBOX -->
@@ -632,9 +1040,316 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
   </div>
 </div>
 
+<!-- PROFILE MODAL -->
+<div class="modal" id="profileModal" role="dialog" aria-modal="true">
+  <div class="modal__backdrop" onclick="closeProfile()"></div>
+  <div class="modal__content">
+    <button class="modal__close" onclick="closeProfile()"><i class="fas fa-xmark"></i></button>
+    <h2 class="modal__title">Thông tin tài khoản</h2>
+    <p class="modal__sub">Thông tin lưu cục bộ trên trình duyệt của bạn</p>
+    <div class="profile-avatar-block">
+      <div class="profile-avatar-big" id="profileAvatar">A</div>
+      <div class="profile-name" id="profileName">User Name</div>
+      <div class="profile-email" id="profileEmail">email@example.com</div>
+    </div>
+    <div class="profile-info" id="profileInfo"></div>
+    <button class="btn btn--ghost" style="width:100%;margin-top:12px" onclick="closeProfile();handleLogout()">
+      <i class="fas fa-arrow-right-from-bracket"></i> Đăng xuất
+    </button>
+  </div>
+</div>
+
 <script>
 /* ============================================================
-   DATA — Thêm emoji + dialogue
+   AUTH SYSTEM — Local storage based
+   ============================================================ */
+const USERS_KEY = 'handi_users_v1';
+const SESSION_KEY = 'handi_session_v1';
+const SALT = 'handi_salt_v1_secure';
+
+let currentUser = null;
+
+/* Hash password với SHA-256 */
+async function hashPassword(password){
+  const data = new TextEncoder().encode(password + SALT);
+  const buf = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+/* Quản lý users */
+function getUsers(){
+  try { return JSON.parse(localStorage.getItem(USERS_KEY) || '{}'); } catch(e){ return {}; }
+}
+function saveUsers(users){
+  try { localStorage.setItem(USERS_KEY, JSON.stringify(users)); } catch(e){}
+}
+
+/* Session */
+function saveSession(userId, remember){
+  const session = { userId, ts: Date.now(), remember };
+  try { localStorage.setItem(SESSION_KEY, JSON.stringify(session)); } catch(e){}
+}
+function loadSession(){
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if(!raw) return null;
+    const s = JSON.parse(raw);
+    // Hết hạn sau 30 ngày (nếu không remember) hoặc 90 ngày (nếu remember)
+    const maxAge = (s.remember ? 90 : 30) * 24 * 60 * 60 * 1000;
+    if(Date.now() - s.ts > maxAge){ localStorage.removeItem(SESSION_KEY); return null; }
+    return s;
+  } catch(e){ return null; }
+}
+function clearSession(){
+  try { localStorage.removeItem(SESSION_KEY); } catch(e){}
+}
+
+/* Avatar initials */
+function getInitials(name){
+  if(!name) return '?';
+  const parts = name.trim().split(/\s+/);
+  if(parts.length === 1) return parts[0].charAt(0).toUpperCase();
+  return (parts[0].charAt(0) + parts[parts.length-1].charAt(0)).toUpperCase();
+}
+
+/* ============================================================
+   VIEW MANAGEMENT
+   ============================================================ */
+function showView(name){
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  if(name === 'landing'){ document.getElementById('landingView').classList.add('active'); }
+  else if(name === 'auth'){ document.getElementById('authView').classList.add('active'); }
+  else if(name === 'app'){
+    document.getElementById('appView').classList.add('active');
+    // Load user data
+    if(currentUser){
+      loadState();
+      loadLesson(state.currentLesson || 0);
+      setTimeout(()=>{ initWriters(); }, 300);
+    }
+  }
+  window.scrollTo({top:0, behavior:'instant'});
+}
+
+function showAuth(tab){
+  showView('auth');
+  switchAuthTab(tab || 'login');
+  setTimeout(()=>{
+    const el = document.getElementById(tab === 'register' ? 'regName' : 'loginEmail');
+    if(el) el.focus();
+  }, 100);
+}
+
+function switchAuthTab(tab){
+  document.querySelectorAll('.auth__tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  document.getElementById('loginForm').style.display = tab === 'login' ? '' : 'none';
+  document.getElementById('registerForm').style.display = tab === 'register' ? '' : 'none';
+  clearAuthAlert('loginAlert');
+  clearAuthAlert('registerAlert');
+}
+
+function togglePw(id, btn){
+  const inp = document.getElementById(id);
+  if(!inp) return;
+  const isPw = inp.type === 'password';
+  inp.type = isPw ? 'text' : 'password';
+  btn.innerHTML = isPw ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
+}
+
+function showAuthAlert(id, msg, type){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.className = 'auth__alert ' + (type || 'err') + ' show';
+  el.innerHTML = `<i class="fas fa-${type === 'ok' ? 'circle-check' : 'circle-exclamation'}"></i><div>${msg}</div>`;
+}
+function clearAuthAlert(id){
+  const el = document.getElementById(id);
+  if(el) el.className = 'auth__alert';
+}
+
+/* ============================================================
+   LOGIN
+   ============================================================ */
+async function handleLogin(e){
+  e.preventDefault();
+  clearAuthAlert('loginAlert');
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const password = document.getElementById('loginPassword').value;
+  const remember = document.getElementById('loginRemember').checked;
+
+  if(!email || !password){
+    showAuthAlert('loginAlert', 'Vui lòng nhập đầy đủ email và mật khẩu.', 'err');
+    return;
+  }
+
+  const submitBtn = document.getElementById('loginSubmit');
+  const orig = submitBtn.innerHTML;
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
+
+  try {
+    const users = getUsers();
+    const user = users[email];
+    if(!user){
+      showAuthAlert('loginAlert', 'Email này chưa được đăng ký. Vui lòng đăng ký tài khoản mới.', 'err');
+      return;
+    }
+    const hash = await hashPassword(password);
+    if(user.hash !== hash){
+      showAuthAlert('loginAlert', 'Mật khẩu không đúng. Vui lòng thử lại.', 'err');
+      return;
+    }
+
+    // Success
+    currentUser = { email, name: user.name, createdAt: user.createdAt };
+    saveSession(email, remember);
+    showAuthAlert('loginAlert', 'Đăng nhập thành công! Đang chuyển hướng...', 'ok');
+    setTimeout(()=>{
+      updateUserUI();
+      showView('app');
+    }, 500);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = orig;
+  }
+}
+
+/* ============================================================
+   REGISTER
+   ============================================================ */
+async function handleRegister(e){
+  e.preventDefault();
+  clearAuthAlert('registerAlert');
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim().toLowerCase();
+  const pw1 = document.getElementById('regPassword').value;
+  const pw2 = document.getElementById('regPassword2').value;
+  const agree = document.getElementById('regAgree').checked;
+
+  if(!name || name.length < 2){
+    showAuthAlert('registerAlert', 'Vui lòng nhập họ tên đầy đủ (tối thiểu 2 ký tự).', 'err');
+    return;
+  }
+  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    showAuthAlert('registerAlert', 'Email không hợp lệ.', 'err');
+    return;
+  }
+  if(pw1.length < 6){
+    showAuthAlert('registerAlert', 'Mật khẩu phải có ít nhất 6 ký tự.', 'err');
+    return;
+  }
+  if(pw1 !== pw2){
+    showAuthAlert('registerAlert', 'Hai mật khẩu không khớp nhau.', 'err');
+    return;
+  }
+  if(!agree){
+    showAuthAlert('registerAlert', 'Vui lòng đồng ý với điều khoản sử dụng.', 'err');
+    return;
+  }
+
+  const submitBtn = document.getElementById('registerSubmit');
+  const orig = submitBtn.innerHTML;
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang tạo tài khoản...';
+
+  try {
+    const users = getUsers();
+    if(users[email]){
+      showAuthAlert('registerAlert', 'Email này đã được đăng ký. Vui lòng đăng nhập hoặc dùng email khác.', 'err');
+      return;
+    }
+    const hash = await hashPassword(pw1);
+    users[email] = { name, hash, createdAt: Date.now() };
+    saveUsers(users);
+
+    currentUser = { email, name, createdAt: users[email].createdAt };
+    saveSession(email, true);
+    showAuthAlert('registerAlert', 'Đăng ký thành công! Đang vào lớp học...', 'ok');
+    setTimeout(()=>{
+      updateUserUI();
+      showView('app');
+    }, 700);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = orig;
+  }
+}
+
+/* ============================================================
+   LOGOUT
+   ============================================================ */
+function handleLogout(){
+  if(!confirm('Bạn có chắc muốn đăng xuất? Tiến độ học tập đã được lưu lại.')) return;
+  currentUser = null;
+  clearSession();
+  closeUserMenu();
+  closeProfile();
+  showView('landing');
+}
+
+/* ============================================================
+   USER UI
+   ============================================================ */
+function updateUserUI(){
+  if(!currentUser) return;
+  const initials = getInitials(currentUser.name);
+  document.getElementById('userAvatarMini').textContent = initials;
+  document.getElementById('userNameMini').textContent = currentUser.name;
+  document.getElementById('userAvatarBig').textContent = initials;
+  document.getElementById('userNameBig').textContent = currentUser.name;
+  document.getElementById('userEmailBig').textContent = currentUser.email;
+}
+
+function toggleUserMenu(e){
+  e.stopPropagation();
+  document.getElementById('userMenu').classList.toggle('open');
+}
+function closeUserMenu(){
+  document.getElementById('userMenu').classList.remove('open');
+}
+document.addEventListener('click', (e)=>{
+  const menu = document.getElementById('userMenu');
+  if(menu && !menu.contains(e.target)) closeUserMenu();
+});
+
+/* ============================================================
+   PROFILE MODAL
+   ============================================================ */
+function showProfile(){
+  if(!currentUser) return;
+  closeUserMenu();
+  const initials = getInitials(currentUser.name);
+  document.getElementById('profileAvatar').textContent = initials;
+  document.getElementById('profileName').textContent = currentUser.name;
+  document.getElementById('profileEmail').textContent = currentUser.email;
+
+  const done = LESSONS.filter(l => getLessonProgress(l.id).done).length;
+  const total = LESSONS.length;
+  const pct = Math.round(done / total * 100);
+  const joined = new Date(currentUser.createdAt).toLocaleDateString('vi-VN', {day:'2-digit', month:'2-digit', year:'numeric'});
+
+  document.getElementById('profileInfo').innerHTML = `
+    <div class="profile-info-row"><span>Ngày tham gia</span><b>${joined}</b></div>
+    <div class="profile-info-row"><span>Bài đã hoàn thành</span><b>${done}/${total}</b></div>
+    <div class="profile-info-row"><span>Tiến độ tổng</span><b>${pct}%</b></div>
+    <div class="profile-info-row"><span>Số sao tích luỹ</span><b>${state.stars || 0} ⭐</b></div>
+  `;
+  document.getElementById('profileModal').classList.add('show');
+}
+function closeProfile(){
+  document.getElementById('profileModal').classList.remove('show');
+}
+
+function showProgressSummary(){
+  closeUserMenu();
+  const done = LESSONS.filter(l => getLessonProgress(l.id).done).length;
+  const total = LESSONS.length;
+  const pct = Math.round(done / total * 100);
+  alert(`📊 Thống kê học tập\n\nBài hoàn thành: ${done}/${total}\nTiến độ: ${pct}%\nSố sao: ${state.stars || 0} ⭐`);
+}
+
+/* ============================================================
+   LESSON DATA (giữ nguyên)
    ============================================================ */
 const LESSONS = [
   {id:1,level:'HSK 1',title:'Chào hỏi cơ bản',sub:'Học cách chào hỏi, cảm ơn, tạm biệt và tự giới thiệu tên bằng tiếng Trung.',
@@ -734,7 +1449,7 @@ const LESSONS = [
        {speaker:'B',hanzi:'没有，我只有一个姐姐。',pinyin:'méi yǒu, wǒ zhǐ yǒu yí ge jiě jie.',meaning:'Không, tôi chỉ có một chị gái.'}
      ],
      keyWords:[
-       {hanzi:'几口人',pinyin:'jǐ kǒu rén',meaning:'Mấy người (trong nhà)',emoji:'👨‍👩‍👧‍👦'},
+       {hanzi:'几口人',pinyin:'jǐ kǒu rén',meaning:'Mấy người',emoji:'👨‍👩‍👧‍👦'},
        {hanzi:'爸爸',pinyin:'bà ba',meaning:'Bố',emoji:'👨'},
        {hanzi:'妈妈',pinyin:'mā ma',meaning:'Mẹ',emoji:'👩'},
        {hanzi:'姐姐',pinyin:'jiě jie',meaning:'Chị gái',emoji:'👧'}
@@ -903,12 +1618,26 @@ const LESSONS = [
 ];
 
 /* ============================================================
-   STATE
+   STATE (per-user)
    ============================================================ */
-const STORAGE_KEY = 'handi_elearning_v6';
 let state = { currentLesson:0, progress:{}, soundOn:true, stars:0, learnedKw:{} };
-function loadState(){ try{const r=localStorage.getItem(STORAGE_KEY); if(r) state={...state,...JSON.parse(r)};}catch(e){} }
-function saveState(){ try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){} }
+function getStorageKey(){
+  return currentUser ? `handi_progress_${currentUser.email}` : null;
+}
+function loadState(){
+  const key = getStorageKey();
+  if(!key) { state = { currentLesson:0, progress:{}, soundOn:true, stars:0, learnedKw:{} }; return; }
+  try {
+    const raw = localStorage.getItem(key);
+    if(raw) state = { ...state, ...JSON.parse(raw) };
+    else state = { currentLesson:0, progress:{}, soundOn:true, stars:0, learnedKw:{} };
+  } catch(e){ state = { currentLesson:0, progress:{}, soundOn:true, stars:0, learnedKw:{} }; }
+}
+function saveState(){
+  const key = getStorageKey();
+  if(!key) return;
+  try { localStorage.setItem(key, JSON.stringify(state)); } catch(e){}
+}
 function getLessonProgress(id){ if(!state.progress[id]) state.progress[id]={viewedVocab:false,quizScore:null,done:false,starGiven:false}; return state.progress[id]; }
 function resetProgress(){
   if(!confirm('Bạn có chắc muốn đặt lại toàn bộ tiến độ học tập?'))return;
@@ -983,10 +1712,11 @@ function speak(text, opts){
 }
 
 /* ============================================================
-   SIDEBAR
+   SIDEBAR / LOAD LESSON
    ============================================================ */
 function renderSidebar(){
   const list = document.getElementById('lessonList');
+  if(!list) return;
   list.innerHTML = LESSONS.map((l,i)=>{
     const p = getLessonProgress(l.id);
     const cls = ['lesson'];
@@ -1010,9 +1740,6 @@ function renderSidebar(){
   document.getElementById('totalStars').textContent = state.stars;
 }
 
-/* ============================================================
-   LOAD LESSON
-   ============================================================ */
 let currentQuizState = { index:0, score:0, answered:false };
 let currentFcState = { index:0, flipped:false };
 let writeIndex = 0;
@@ -1031,9 +1758,6 @@ function loadLesson(idx){
   toggleSidebar(false);
 }
 
-/* ============================================================
-   VOCAB (with emoji)
-   ============================================================ */
 function renderVocab(l){
   document.getElementById('vocabGrid').innerHTML = l.vocab.map(v => `
     <div class="vocab-card" onclick="speak('${v.hanzi}')">
@@ -1047,11 +1771,8 @@ function renderVocab(l){
   document.getElementById('vocabBanner').style.display = 'flex';
 }
 
-/* ============================================================
-   DIALOGUE + LIGHTBOX
-   ============================================================ */
+/* DIALOGUE */
 let dialogueReveal = false;
-
 function renderDialogue(l){
   if(!l.dialogue){
     document.getElementById('dialogueLines').innerHTML = '<p style="color:var(--mu);font-style:italic">Bài học này chưa có hội thoại mẫu.</p>';
@@ -1082,30 +1803,24 @@ function renderDialogue(l){
     </div>`;
   }).join('');
   document.getElementById('dialogueKeywords').innerHTML = kwHtml;
-
-  // Set initial visibility
   updateDialogueReveal();
 }
-
 function updateDialogueReveal(){
   document.querySelectorAll('.dialogue__pinyin, .dialogue__meaning').forEach(el => {
     el.classList.toggle('show', dialogueReveal);
   });
 }
-
 function toggleDialogueReveal(){
   dialogueReveal = !dialogueReveal;
   document.getElementById('dialogueToggle').classList.toggle('active', dialogueReveal);
   document.getElementById('dialogueToggleText').textContent = dialogueReveal ? 'Ẩn pinyin & nghĩa' : 'Hiện pinyin & nghĩa';
   updateDialogueReveal();
 }
-
 function toggleLearned(key, el){
   state.learnedKw[key] = !state.learnedKw[key];
   saveState();
   el.classList.toggle('learned', state.learnedKw[key]);
 }
-
 function openKwLightbox(lessonId, idx){
   const l = LESSONS.find(x => x.id === lessonId);
   const kw = l.dialogue.keyWords[idx];
@@ -1117,23 +1832,18 @@ function openKwLightbox(lessonId, idx){
   document.getElementById('lightbox').classList.add('show');
   document.getElementById('lightbox').setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
-  // Auto speak
   setTimeout(()=>speak(kw.hanzi), 200);
 }
-
 function closeLightbox(){
   document.getElementById('lightbox').classList.remove('show');
   document.getElementById('lightbox').setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
 }
-
 document.addEventListener('keydown', (e)=>{
   if(e.key === 'Escape') closeLightbox();
 });
 
-/* ============================================================
-   FLASHCARD (FIX: reset flipped, add pinyin to back)
-   ============================================================ */
+/* FLASHCARD */
 function renderFlashcard(l){
   currentFcState = { index:0, flipped:false };
   document.getElementById('fcTotal').textContent = l.vocab.length;
@@ -1142,14 +1852,12 @@ function renderFlashcard(l){
 function updateFlashcard(){
   const v = LESSONS[state.currentLesson].vocab[currentFcState.index];
   const card = document.getElementById('fcCard');
-  card.classList.remove('flipped'); // Reset always
-  if(currentFcState.flipped) {
-    setTimeout(()=>card.classList.add('flipped'), 10);
-  }
+  card.classList.remove('flipped');
+  if(currentFcState.flipped) setTimeout(()=>card.classList.add('flipped'), 10);
   document.getElementById('fcHanzi').textContent = v.hanzi;
   document.getElementById('fcPinyin').textContent = v.pinyin;
   document.getElementById('fcMeaning').textContent = v.meaning;
-  document.getElementById('fcPinyinBack').textContent = v.pinyin; // FIX: pinyin on back
+  document.getElementById('fcPinyinBack').textContent = v.pinyin;
   document.getElementById('fcExample').textContent = v.example || '';
   document.getElementById('fcCurrent').textContent = currentFcState.index + 1;
 }
@@ -1164,20 +1872,16 @@ function flipCard(){
 function fcNext(){
   const l = LESSONS[state.currentLesson];
   currentFcState.index = (currentFcState.index + 1) % l.vocab.length;
-  currentFcState.flipped = false;
-  updateFlashcard();
+  currentFcState.flipped = false; updateFlashcard();
 }
 function fcPrev(){
   const l = LESSONS[state.currentLesson];
   currentFcState.index = (currentFcState.index - 1 + l.vocab.length) % l.vocab.length;
-  currentFcState.flipped = false;
-  updateFlashcard();
+  currentFcState.flipped = false; updateFlashcard();
 }
 function speakCurrent(){ speak(LESSONS[state.currentLesson].vocab[currentFcState.index].hanzi); }
 
-/* ============================================================
-   QUIZ
-   ============================================================ */
+/* QUIZ */
 function renderQuiz(l){
   currentQuizState = { index:0, score:0, answered:false };
   document.getElementById('qTotal').textContent = l.quiz.length;
@@ -1235,102 +1939,63 @@ function showQuizResult(){
 function restartQuiz(){ renderQuiz(LESSONS[state.currentLesson]); }
 function nextLesson(){ const next = state.currentLesson + 1; if(next < LESSONS.length) loadLesson(next); else alert('🎉 Chúc mừng! Bạn đã hoàn thành toàn bộ khóa học!'); }
 
-/* ============================================================
-   WRITING — MULTI-BOX cho từ ghép + SCORING
-   ============================================================ */
-let writers = []; // Array of {writer, char}
-let lastQuizScore = null;
-
+/* WRITING */
+let writers = [];
 function initWriters(){
   const target = document.getElementById('hanziWriterTarget');
   if(!target) return;
-  if(typeof HanziWriter === 'undefined'){
-    setTimeout(initWriters, 500);
-    return;
-  }
+  if(typeof HanziWriter === 'undefined'){ setTimeout(initWriters, 500); return; }
   const v = LESSONS[state.currentLesson].vocab[writeIndex];
   const chars = [...v.hanzi];
   const count = chars.length;
-
-  // Compute box size based on count
   const stage = target.closest('.writing__stage');
   const stageW = stage ? stage.clientWidth : 360;
   const available = Math.min(460, stageW - 50);
   const gap = count <= 2 ? 14 : 10;
-
   let boxSize;
   if(count === 1) boxSize = Math.min(240, available);
   else if(count === 2) boxSize = Math.min(180, (available - gap) / 2);
   else if(count === 3) boxSize = Math.min(140, (available - gap*2) / 3);
   else boxSize = Math.min(110, (available - gap*3) / 4);
   boxSize = Math.max(boxSize, 80);
-
   target.innerHTML = '';
   writers = [];
-
   chars.forEach((char, i) => {
     const box = document.createElement('div');
     box.className = 'writing__box';
-    box.style.width = boxSize + 'px';
-    box.style.height = boxSize + 'px';
-
-    const grid = document.createElement('div');
-    grid.className = 'writing__box-grid';
-    box.appendChild(grid);
-
-    const hw = document.createElement('div');
-    hw.className = 'writing__box-hw';
-    box.appendChild(hw);
-
-    const lbl = document.createElement('div');
-    lbl.className = 'writing__box-lbl';
-    lbl.textContent = (i+1) + '/' + count;
-    box.appendChild(lbl);
-
+    box.style.width = boxSize + 'px'; box.style.height = boxSize + 'px';
+    const grid = document.createElement('div'); grid.className = 'writing__box-grid'; box.appendChild(grid);
+    const hw = document.createElement('div'); hw.className = 'writing__box-hw'; box.appendChild(hw);
+    const lbl = document.createElement('div'); lbl.className = 'writing__box-lbl'; lbl.textContent = (i+1) + '/' + count; box.appendChild(lbl);
     target.appendChild(box);
-
     try {
       const innerSize = boxSize - 10;
       const w = HanziWriter.create(hw, char, {
-        width: innerSize,
-        height: innerSize,
-        padding: Math.max(8, innerSize * 0.06),
-        strokeColor: '#3d2817',
-        radicalColor: '#ea580c',
-        highlightColor: '#fbbf24',
-        outlineColor: '#d4c4a8',
-        drawingColor: '#ea580c',
+        width: innerSize, height: innerSize, padding: Math.max(8, innerSize * 0.06),
+        strokeColor: '#3d2817', radicalColor: '#ea580c', highlightColor: '#fbbf24',
+        outlineColor: '#d4c4a8', drawingColor: '#ea580c',
         drawingWidth: Math.max(12, innerSize * 0.1),
-        strokeAnimationSpeed: 1,
-        delayBetweenStrokes: 320,
-        showOutline: true,
-        showCharacter: false,
+        strokeAnimationSpeed: 1, delayBetweenStrokes: 320,
+        showOutline: true, showCharacter: false,
         charDataLoader: function(ch, onComplete){
           const url = 'https://cdn.jsdelivr.net/npm/hanzi-writer-data@2.0/' + encodeURIComponent(ch) + '.json';
           fetch(url).then(r => r.json()).then(onComplete).catch(err => {
-            console.error('HanziWriter load err:', ch, err);
             hw.innerHTML = '<div style="padding:16px;color:#8d6e63;text-align:center;font-size:11px">Không tải được</div>';
           });
         }
       });
       writers.push({ writer: w, char: char });
-    } catch(e){
-      console.error('HanziWriter create err:', e);
-    }
+    } catch(e){}
   });
-
-  // Reset score UI
   document.getElementById('writingScore').classList.remove('show');
 }
-
 function playStrokeOrder(){
   if(!writers.length){ initWriters(); }
   if(!writers.length) return;
   const btn = document.getElementById('btnAnimate');
   btn.classList.add('playing');
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Đang vẽ...</span>';
-  let done = 0;
-  const total = writers.length;
+  let done = 0; const total = writers.length;
   writers.forEach(({writer}) => {
     writer.animateCharacter({
       onComplete: function(){
@@ -1343,55 +2008,38 @@ function playStrokeOrder(){
     });
   });
 }
-
 function startQuiz(){
   if(!writers.length){ initWriters(); }
   if(!writers.length) return;
   const btn = document.getElementById('btnQuiz');
   btn.classList.add('active');
   btn.innerHTML = '<i class="fas fa-pen"></i> <span>Đang luyện...</span>';
-
   const scoreEl = document.getElementById('writingScore');
   scoreEl.classList.remove('show');
-
-  let done = 0;
-  let totalMistakes = 0;
-  let totalCorrect = 0;
-  const total = writers.length;
-
+  let done = 0, totalMistakes = 0; const total = writers.length;
   writers.forEach(({writer}) => {
     writer.quiz({
-      onMistake: function(){ /* real-time feedback shown by HanziWriter */ },
       onComplete: function(summary){
         done++;
         totalMistakes += summary.totalMistakes;
-        totalCorrect += summary.totalStrokes || 0;
         if(done === total){
-          // Compute score
-          const accuracy = totalMistakes === 0 ? 100 :
-                           Math.max(0, Math.round(100 - totalMistakes * 8));
+          const accuracy = totalMistakes === 0 ? 100 : Math.max(0, Math.round(100 - totalMistakes * 8));
           showWritingScore(accuracy, totalMistakes);
-
           btn.classList.remove('active');
           btn.innerHTML = '<i class="fas fa-check"></i> <span>Hoàn thành!</span>';
-          setTimeout(()=>{
-            btn.innerHTML = '<i class="fas fa-pen"></i> <span>Luyện viết</span>';
-          }, 2000);
+          setTimeout(()=>{ btn.innerHTML = '<i class="fas fa-pen"></i> <span>Luyện viết</span>'; }, 2000);
         }
       }
     });
   });
 }
-
 function showWritingScore(score, mistakes){
   const box = document.getElementById('writingScore');
   const num = document.getElementById('writingScoreNum');
   const emoji = document.getElementById('writingScoreEmoji');
   const txt = document.getElementById('writingScoreTxt');
-
   box.classList.remove('great','good','try');
   num.textContent = score + '%';
-
   if(score >= 90){
     box.classList.add('show','great');
     emoji.textContent = '🎉';
@@ -1410,7 +2058,6 @@ function showWritingScore(score, mistakes){
     txt.textContent = `Hãy xem lại cách viết và thử lại nhé! (${mistakes} nét sai)`;
   }
 }
-
 function clearWriter(){
   if(!writers.length){ initWriters(); return; }
   writers.forEach(({writer}) => {
@@ -1421,11 +2068,7 @@ function clearWriter(){
   initWriters();
   document.getElementById('writingScore').classList.remove('show');
 }
-
-function renderWriting(l){
-  writeIndex = 0;
-  updateWriting();
-}
+function renderWriting(l){ writeIndex = 0; updateWriting(); }
 function updateWriting(){
   const v = LESSONS[state.currentLesson].vocab[writeIndex];
   document.getElementById('writeHanzi').textContent = v.hanzi;
@@ -1433,9 +2076,7 @@ function updateWriting(){
   document.getElementById('writeCurrent').textContent = writeIndex + 1;
   document.getElementById('writeTotal').textContent = LESSONS[state.currentLesson].vocab.length;
   document.getElementById('writingScore').classList.remove('show');
-  if(document.querySelector('.tab-panel[data-panel="write"]').classList.contains('active')){
-    initWriters();
-  }
+  if(document.querySelector('.tab-panel[data-panel="write"]').classList.contains('active')) initWriters();
 }
 function writeNav(dir){
   const l = LESSONS[state.currentLesson];
@@ -1444,77 +2085,51 @@ function writeNav(dir){
   setTimeout(()=>speak(l.vocab[writeIndex].hanzi), 120);
 }
 
-/* ============================================================
-   SPEAKING
-   ============================================================ */
+/* SPEAKING */
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = null;
 let isListening = false;
 let recognitionSupported = !!SpeechRecognition;
 let micPermissionGranted = false;
-
 if(recognitionSupported){
   recognition = new SpeechRecognition();
-  recognition.lang = 'zh-CN';
-  recognition.interimResults = true;
-  recognition.continuous = false;
-  recognition.maxAlternatives = 5;
+  recognition.lang = 'zh-CN'; recognition.interimResults = true;
+  recognition.continuous = false; recognition.maxAlternatives = 5;
 }
-
 function updateMicStatus(){
   const bar = document.getElementById('micStatus');
-  const icon = document.getElementById('micStatusIcon');
-  const text = document.getElementById('micStatusText');
-  const btn = document.getElementById('micStatusBtn');
   if(!bar) return;
   if(micPermissionGranted){ bar.classList.add('hidden'); return; }
   bar.classList.remove('hidden');
   bar.className = 'mic-status pending';
-  icon.className = 'fas fa-microphone';
-  text.textContent = 'Cần cấp quyền micro (1 lần duy nhất)';
-  btn.style.display = 'inline-flex';
+  document.getElementById('micStatusIcon').className = 'fas fa-microphone';
+  document.getElementById('micStatusText').textContent = 'Cần cấp quyền micro (1 lần duy nhất)';
+  document.getElementById('micStatusBtn').style.display = 'inline-flex';
 }
-
 async function ensurePermission(silent){
   if(micPermissionGranted) return true;
   if(navigator.permissions && navigator.permissions.query){
     try {
       const st = await navigator.permissions.query({name:'microphone'});
-      if(st.state === 'denied'){
-        if(!silent) alert('Micro đã bị chặn. Vui lòng bật lại trong cài đặt trình duyệt.');
-        return false;
-      }
+      if(st.state === 'denied'){ if(!silent) alert('Micro đã bị chặn.'); return false; }
       if(st.state === 'granted'){ micPermissionGranted = true; updateMicStatus(); return true; }
     } catch(e){}
   }
   try {
-    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
-      if(!silent) alert('Trình duyệt không hỗ trợ micro.');
-      return false;
-    }
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ if(!silent) alert('Trình duyệt không hỗ trợ micro.'); return false; }
     const stream = await navigator.mediaDevices.getUserMedia({audio: true});
     stream.getTracks().forEach(t => t.stop());
-    micPermissionGranted = true;
-    updateMicStatus();
-    return true;
-  } catch(e){
-    if(!silent) alert('Không thể truy cập micro: ' + (e.message || e.name));
-    return false;
-  }
+    micPermissionGranted = true; updateMicStatus(); return true;
+  } catch(e){ if(!silent) alert('Không thể truy cập micro: ' + (e.message || e.name)); return false; }
 }
 async function requestMicPermission(){
   const btn = document.getElementById('micStatusBtn');
   const orig = btn.innerHTML;
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
+  btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
   const ok = await ensurePermission(false);
-  if(ok){
-    btn.innerHTML = '<i class="fas fa-check"></i> Đã cấp quyền';
-    btn.style.background = '#16a34a'; btn.style.color = '#fff';
-    setTimeout(()=>{ updateMicStatus(); }, 900);
-  } else { btn.disabled = false; btn.innerHTML = orig; }
+  if(ok){ btn.innerHTML = '<i class="fas fa-check"></i> Đã cấp quyền'; btn.style.background = '#16a34a'; btn.style.color = '#fff'; setTimeout(()=>{ updateMicStatus(); }, 900); }
+  else { btn.disabled = false; btn.innerHTML = orig; }
 }
-
 function renderSpeaking(l){
   spkIndex = 0;
   if(!recognitionSupported){
@@ -1558,8 +2173,7 @@ async function startListening(){
   const ok = await ensurePermission(true);
   if(!ok){
     document.getElementById('micHint').innerHTML = 'Chưa có quyền micro<small>Nhấn "Cấp quyền" ở trên</small>';
-    updateMicStatus();
-    return;
+    updateMicStatus(); return;
   }
   resetSpeakUI();
   isListening = true;
@@ -1601,12 +2215,8 @@ async function startListening(){
     btn.innerHTML = '<span class="mic-btn__ring"></span><i class="fas fa-microphone"></i>';
     document.getElementById('speakTranscript').classList.remove('listening');
     document.getElementById('keyHint').classList.remove('active');
-    if(finalTranscript){
-      micPermissionGranted = true; updateMicStatus();
-      evaluateSpeech(finalTranscript);
-    } else {
-      document.getElementById('micHint').innerHTML = 'Không nghe rõ<small>Nhấn để thử lại</small>';
-    }
+    if(finalTranscript){ micPermissionGranted = true; updateMicStatus(); evaluateSpeech(finalTranscript); }
+    else { document.getElementById('micHint').innerHTML = 'Không nghe rõ<small>Nhấn để thử lại</small>'; }
   };
   try { recognition.start(); }
   catch(e){
@@ -1616,7 +2226,6 @@ async function startListening(){
     document.getElementById('micHint').innerHTML = 'Không khởi động được micro<small>Nhấn để thử lại</small>';
   }
 }
-
 function cleanText(s){ return (s || '').replace(/[\s\p{P}\p{S}]/gu, '').toLowerCase(); }
 function levenshtein(a, b){
   const m = a.length, n = b.length;
@@ -1624,9 +2233,7 @@ function levenshtein(a, b){
   const dp = Array.from({length:m+1}, ()=> new Array(n+1).fill(0));
   for(let i=0;i<=m;i++) dp[i][0]=i;
   for(let j=0;j<=n;j++) dp[0][j]=j;
-  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++){
-    dp[i][j] = Math.min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1] + (a[i-1]===b[j-1]?0:1));
-  }
+  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++){ dp[i][j] = Math.min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1] + (a[i-1]===b[j-1]?0:1)); }
   return dp[m][n];
 }
 function evaluateSpeech(recognized){
@@ -1674,11 +2281,11 @@ function escapeHTML(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;',
 function spkNext(){ const l = LESSONS[state.currentLesson]; spkIndex = (spkIndex + 1) % l.speaking.length; resetSpeakUI(); updateSpeaking(); }
 function spkPrev(){ const l = LESSONS[state.currentLesson]; spkIndex = (spkIndex - 1 + l.speaking.length) % l.speaking.length; resetSpeakUI(); updateSpeaking(); }
 
-/* === SPACE HOLD === */
+/* SPACE HOLD */
 let spacePressed = false;
 function isSpeakingTabActive(){
   const panel = document.querySelector('.tab-panel[data-panel="speak"]');
-  return panel && panel.classList.contains('active');
+  return panel && panel.classList.contains('active') && document.getElementById('appView').classList.contains('active');
 }
 function isTypingTarget(el){
   if(!el) return false;
@@ -1703,10 +2310,7 @@ document.addEventListener('keyup', (e)=>{
   if(!spacePressed) return;
   spacePressed = false;
   const kh = document.getElementById('keyHint'); if(kh) kh.classList.remove('active');
-  if(isSpeakingTabActive() && isListening && recognition){
-    e.preventDefault();
-    try{ recognition.stop(); }catch(err){}
-  }
+  if(isSpeakingTabActive() && isListening && recognition){ e.preventDefault(); try{ recognition.stop(); }catch(err){} }
 });
 window.addEventListener('blur', ()=>{
   if(spacePressed){
@@ -1716,7 +2320,7 @@ window.addEventListener('blur', ()=>{
   }
 });
 
-/* === TABS === */
+/* TABS */
 function switchTab(name){
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.dataset.panel === name));
@@ -1726,7 +2330,7 @@ function switchTab(name){
 }
 document.querySelectorAll('.tab').forEach(tab => { tab.addEventListener('click', ()=> switchTab(tab.dataset.tab)); });
 
-/* === SIDEBAR + SOUND === */
+/* SIDEBAR TOGGLE */
 function toggleSidebar(force){
   const s = document.getElementById('sidebar'), o = document.getElementById('sidebarOverlay');
   const open = typeof force === 'boolean' ? force : !s.classList.contains('open');
@@ -1740,25 +2344,35 @@ document.getElementById('soundToggle').addEventListener('click', function(){
   if(!state.soundOn && 'speechSynthesis' in window) speechSynthesis.cancel();
 });
 
-/* === INIT === */
+/* ============================================================
+   INIT — auto login nếu có session
+   ============================================================ */
 async function init(){
-  loadState();
-  document.getElementById('soundToggle').innerHTML = state.soundOn ? '<i class="fas fa-volume-high"></i>' : '<i class="fas fa-volume-xmark"></i>';
-  loadLesson(state.currentLesson || 0);
-  // Init writers ngay khi DOM ready (để các nút hoạt động)
-  setTimeout(()=>{ initWriters(); }, 300);
+  const session = loadSession();
+  if(session){
+    const users = getUsers();
+    const user = users[session.userId];
+    if(user){
+      currentUser = { email: session.userId, name: user.name, createdAt: user.createdAt };
+      updateUserUI();
+      showView('app');
+      return;
+    } else {
+      clearSession();
+    }
+  }
+  showView('landing');
+
   if(recognitionSupported && navigator.permissions && navigator.permissions.query){
     try {
       const st = await navigator.permissions.query({name:'microphone'});
-      if(st.state === 'granted'){ micPermissionGranted = true; updateMicStatus(); }
-      st.onchange = ()=>{ if(st.state === 'granted'){ micPermissionGranted = true; updateMicStatus(); } };
+      if(st.state === 'granted'){ micPermissionGranted = true; }
+      st.onchange = ()=>{ if(st.state === 'granted'){ micPermissionGranted = true; if(document.getElementById('micStatus')) updateMicStatus(); } };
     } catch(e){}
   }
-  // Resize handling for writers
+
   window.addEventListener('resize', ()=>{
-    if(document.querySelector('.tab-panel[data-panel="write"]').classList.contains('active')){
-      initWriters();
-    }
+    if(document.querySelector('.tab-panel[data-panel="write"]').classList.contains('active')) initWriters();
   });
 }
 init();
