@@ -24,7 +24,7 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 input,select,textarea{font-family:inherit}
 .hidden{display:none!important}
 
-/* ===== SETUP (giữ nguyên style cũ) ===== */
+/* ===== SETUP ===== */
 .setup-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px 20px;overflow-y:auto;background:linear-gradient(135deg,#1c1008,#3d2817)}
 .setup-card{background:#fff;border-radius:18px;padding:32px 28px;max-width:540px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
 .setup-card h1{font-size:22px;font-weight:900;color:var(--dk);text-align:center;margin-bottom:6px;letter-spacing:-.02em}
@@ -40,8 +40,6 @@ input,select,textarea{font-family:inherit}
 .fg input,.fg select,.fg textarea{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:10px;font-size:14px;background:#fff;color:var(--dk);transition:border .2s}
 .fg input:focus,.fg select:focus,.fg textarea:focus{outline:0;border-color:var(--r);box-shadow:0 0 0 3px rgba(234,88,12,.1)}
 .fg small{display:block;font-size:11.5px;color:var(--mu);margin-top:5px;line-height:1.4}
-.fg small a{color:var(--r);font-weight:700;text-decoration:none}
-.fg textarea{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;resize:vertical;min-height:80px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border-radius:10px;font-size:13.5px;font-weight:700;border:2px solid transparent;cursor:pointer;transition:all .2s;white-space:nowrap}
 .btn--primary{background:linear-gradient(135deg,var(--r),var(--r2));color:#fff;box-shadow:0 6px 16px rgba(234,88,12,.3)}
 .btn--primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 24px rgba(234,88,12,.45)}
@@ -58,14 +56,13 @@ input,select,textarea{font-family:inherit}
 .hint{margin-top:18px;padding:12px 14px;background:#fef3c7;border:1.5px solid #fcd34d;border-radius:10px;font-size:12.5px;color:#92400e;line-height:1.6}
 .hint b{color:#78350f}
 .hint code{background:rgba(120,53,15,.1);padding:1px 6px;border-radius:4px;font-family:ui-monospace,monospace;font-size:11.5px}
+.code-input-big{font-family:ui-monospace,Menlo,monospace!important;font-size:26px!important;font-weight:900!important;letter-spacing:.35em!important;text-align:center!important;text-transform:uppercase;padding:18px!important;background:linear-gradient(135deg,#fff7ed,#fef3c7)!important;border:2px solid var(--r)!important;color:var(--dk)!important}
+.code-input-big::placeholder{font-weight:400;letter-spacing:.15em;color:#c4b8a4}
 
-/* ===== ROOM LAYOUT ===== */
+/* ===== ROOM ===== */
 #appContainer{display:none;flex-direction:column;height:100vh;width:100vw}
 #appContainer.active{display:flex}
-
 .room{flex:1;display:flex;min-height:0;overflow:hidden}
-
-/* ===== STAGE (LEFT) ===== */
 .stage{flex:1;display:flex;flex-direction:column;min-width:0;background:#0f0905;position:relative}
 
 /* Controls floating top-right */
@@ -80,13 +77,10 @@ input,select,textarea{font-family:inherit}
 @keyframes handBtnPulse{0%,100%{box-shadow:0 0 0 0 rgba(251,191,36,.6)}50%{box-shadow:0 0 0 10px rgba(251,191,36,0)}}
 .ctrl-btn__tip{position:absolute;top:calc(100% + 6px);right:0;background:rgba(0,0,0,.9);color:#fff;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s}
 .ctrl-btn:hover .ctrl-btn__tip{opacity:1}
-.ctrl-btn .badge-dot{position:absolute;top:-2px;right:-2px;width:12px;height:12px;background:#fbbf24;border-radius:50%;border:2px solid rgba(0,0,0,.7);display:none}
-.ctrl-btn.has-hand .badge-dot{display:block;animation:handWave .8s infinite}
-@keyframes handWave{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(15deg)}}
 
-/* Code panel floating bottom-right */
-.float-code{position:absolute;bottom:130px;right:12px;z-index:25;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-radius:14px;padding:14px;box-shadow:0 10px 40px rgba(0,0,0,.35);width:280px;transition:all .3s;border:2px solid var(--r)}
-.float-code.collapsed{width:auto;padding:8px 12px;bottom:130px}
+/* Code panel */
+.float-code{position:absolute;bottom:145px;right:12px;z-index:25;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-radius:14px;padding:14px;box-shadow:0 10px 40px rgba(0,0,0,.35);width:290px;transition:all .3s;border:2px solid var(--r)}
+.float-code.collapsed{width:auto;padding:8px 12px}
 .float-code.collapsed .float-code__body{display:none}
 .float-code__head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
 .float-code.collapsed .float-code__head{margin-bottom:0}
@@ -95,21 +89,18 @@ input,select,textarea{font-family:inherit}
 .float-code__collapse{width:24px;height:24px;border-radius:6px;background:var(--li);color:var(--sl);font-size:11px;display:flex;align-items:center;justify-content:center}
 .float-code__collapse:hover{background:var(--r);color:#fff}
 .float-code__body{display:flex;gap:12px;align-items:flex-start}
-.float-code__qr{background:#fff;padding:6px;border-radius:8px;border:1px solid var(--bd);flex-shrink:0;display:flex;align-items:center;justify-content:center;min-width:100px;min-height:100px}
-.float-code__qr img,.float-code__qr canvas{display:block!important;width:100px!important;height:100px!important}
+.float-code__qr{background:#fff;padding:6px;border-radius:8px;border:1px solid var(--bd);flex-shrink:0;display:flex;align-items:center;justify-content:center;min-width:104px;min-height:104px}
+.float-code__qr img,.float-code__qr canvas{display:block!important;width:104px!important;height:104px!important}
 .float-code__info{flex:1;min-width:0}
-.float-code__label{font-size:10px;font-weight:800;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
-.float-code__value{font-family:ui-monospace,Menlo,monospace;font-size:10.5px;font-weight:700;color:var(--dk);background:var(--li);padding:8px 10px;border-radius:7px;word-break:break-all;line-height:1.4;max-height:70px;overflow-y:auto;margin-bottom:6px}
-.float-code__value::-webkit-scrollbar{width:4px}
-.float-code__value::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px}
+.float-code__label{font-size:10px;font-weight:800;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.float-code__value{font-family:ui-monospace,Menlo,monospace;font-size:28px;font-weight:900;color:var(--r);background:linear-gradient(135deg,#fff7ed,#fef3c7);padding:10px 12px;border-radius:8px;letter-spacing:.12em;text-align:center;margin-bottom:8px;border:1.5px solid var(--r)}
 .float-code__room{font-size:11px;color:var(--mu);font-weight:600;margin-bottom:8px}
 .float-code__room b{color:var(--r2)}
 .float-code__actions{display:flex;gap:4px}
 .float-code__actions .btn{flex:1;padding:6px 8px;font-size:11px;border-radius:7px}
 
-/* Main stage video area */
+/* Main tile */
 .stage-main{flex:1;position:relative;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:8px 8px 0}
-
 .main-tile{position:relative;background:#1c1008;border-radius:14px;overflow:hidden;width:100%;height:100%;box-shadow:0 8px 32px rgba(0,0,0,.4)}
 .main-tile video{width:100%;height:100%;object-fit:contain;display:block;background:#0a0603}
 .main-tile__camoff{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,#3d2817,#1c1008);display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:#8d6e63}
@@ -117,25 +108,20 @@ input,select,textarea{font-family:inherit}
 .main-tile__camoff i{font-size:60px;color:#5d4037}
 .main-tile__camoff span{font-size:14px;font-weight:600}
 .main-tile__name{position:absolute;bottom:14px;left:14px;background:rgba(0,0,0,.75);color:#fff;padding:6px 14px;border-radius:99px;font-size:13px;font-weight:700;backdrop-filter:blur(8px);display:flex;align-items:center;gap:8px;z-index:2}
-.main-tile__name .role-tag{font-size:10px;padding:2px 7px;border-radius:99px;font-weight:800;letter-spacing:.04em}
+.main-tile__name .role-tag{font-size:10px;padding:2px 7px;border-radius:99px;font-weight:800}
 .main-tile__name .role-tag.teacher{background:rgba(59,130,246,.9)}
 .main-tile__name .role-tag.student{background:rgba(22,163,74,.9)}
 .main-tile__status{position:absolute;top:14px;left:14px;display:flex;gap:6px;z-index:2}
 .status-chip{background:rgba(0,0,0,.65);color:#fff;padding:5px 11px;border-radius:99px;font-size:11.5px;font-weight:700;display:inline-flex;align-items:center;gap:5px;backdrop-filter:blur(8px)}
 .status-chip.green{background:rgba(22,163,74,.85)}
 .status-chip.red{background:rgba(220,38,38,.85)}
-.status-chip.warn{background:rgba(251,191,36,.95);color:#3d2817}
 
-/* Student strip */
-.strip{height:130px;flex-shrink:0;padding:8px;display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.15) transparent}
+/* Strip */
+.strip{height:130px;flex-shrink:0;padding:8px;display:flex;gap:8px;overflow-x:auto;overflow-y:hidden}
 .strip::-webkit-scrollbar{height:6px}
 .strip::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
-.strip:empty{height:0;padding:0}
 .strip-tile{position:relative;background:#1c1008;border-radius:10px;overflow:hidden;flex-shrink:0;width:180px;height:100%;box-shadow:0 4px 12px rgba(0,0,0,.3);transition:all .2s;border:2px solid transparent}
-.strip-tile:hover{border-color:rgba(234,88,12,.5);transform:translateY(-2px)}
 .strip-tile.self{border-color:rgba(234,88,12,.6)}
-.strip-tile.speaking{border-color:var(--ok);animation:speakPulse 1s infinite}
-@keyframes speakPulse{0%,100%{box-shadow:0 0 0 0 rgba(22,163,74,.6)}50%{box-shadow:0 0 0 8px rgba(22,163,74,0)}}
 .strip-tile.hand{border-color:#fbbf24}
 .strip-tile video{width:100%;height:100%;object-fit:cover;display:block}
 .strip-tile__camoff{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,#3d2817,#1c1008);display:none;align-items:center;justify-content:center;font-size:32px;color:#5d4037}
@@ -145,9 +131,8 @@ input,select,textarea{font-family:inherit}
 .strip-tile__badge{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;backdrop-filter:blur(6px);color:#fff}
 .strip-tile__badge.mic-on{background:rgba(22,163,74,.9)}
 .strip-tile__badge.mic-off{background:rgba(220,38,38,.85)}
-.strip-tile__badge.hand{background:rgba(251,191,36,.95);color:#3d2817;animation:handWave .8s infinite}
+.strip-tile__badge.hand{background:rgba(251,191,36,.95);color:#3d2817}
 
-/* Presentation overlay */
 .presentation{position:absolute;inset:0;display:flex;flex-direction:column;background:#0f0905;z-index:15;border-radius:14px;overflow:hidden;margin:8px}
 .presentation__bar{background:rgba(0,0,0,.5);padding:8px 16px;display:flex;align-items:center;justify-content:space-between;color:#fff;font-size:13px;font-weight:700;flex-shrink:0;backdrop-filter:blur(10px)}
 .presentation__bar i{color:var(--gd)}
@@ -155,20 +140,17 @@ input,select,textarea{font-family:inherit}
 .presentation__stage video{width:100%;height:100%;object-fit:contain;background:#000}
 .presentation__stage img.slide{max-width:100%;max-height:100%;object-fit:contain;background:#000}
 
-/* ===== SIDEBAR (RIGHT) ===== */
+/* Sidebar */
 .sidebar{width:var(--sb-w);background:#fff;border-left:1.5px solid var(--bd);display:flex;flex-direction:column;flex-shrink:0;min-height:0}
 .sb-tabs{display:flex;gap:0;border-bottom:1.5px solid var(--bd);flex-shrink:0;background:var(--li)}
 .sb-tab{flex:1;padding:12px 8px;font-size:12.5px;font-weight:800;color:var(--mu);transition:all .2s;text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:6px;position:relative;border-bottom:3px solid transparent}
 .sb-tab.active{color:var(--r);background:#fff;border-bottom-color:var(--r)}
-.sb-tab:hover:not(.active){color:var(--dk)}
 .sb-tab .tab-badge{position:absolute;top:6px;right:8px;background:var(--err);color:#fff;font-size:9.5px;padding:1px 5px;border-radius:99px;font-weight:800;min-width:16px;text-align:center}
-
 .sb-body{flex:1;overflow:hidden;display:flex;flex-direction:column;min-height:0}
 .sb-panel{display:none;flex-direction:column;flex:1;min-height:0;overflow:hidden}
 .sb-panel.active{display:flex}
 
-/* People panel */
-.panel-people{overflow-y:auto;padding:10px}
+.panel-people{overflow-y:auto;padding:10px;flex:1}
 .panel-people::-webkit-scrollbar{width:6px}
 .panel-people::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
 .part{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--li);border-radius:10px;margin-bottom:8px;transition:all .2s;border:1.5px solid transparent}
@@ -187,7 +169,6 @@ input,select,textarea{font-family:inherit}
 .part__meta .approved-badge{color:var(--ok);font-weight:800}
 .part__actions{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap}
 
-/* Chat panel */
 .panel-chat{flex:1;display:flex;flex-direction:column;min-height:0}
 .chat-messages{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
 .chat-messages::-webkit-scrollbar{width:6px}
@@ -203,15 +184,12 @@ input,select,textarea{font-family:inherit}
 .chat-msg__time{font-size:10.5px;color:var(--mu);font-weight:600}
 .chat-msg__text{font-size:13px;color:var(--sl);line-height:1.45;word-break:break-word;background:var(--li);padding:8px 12px;border-radius:10px;white-space:pre-wrap}
 .chat-msg.self .chat-msg__text{background:linear-gradient(135deg,rgba(234,88,12,.08),rgba(234,88,12,.02));border:1px solid rgba(234,88,12,.2)}
-.chat-msg__text code{background:rgba(0,0,0,.06);padding:1px 5px;border-radius:4px;font-family:ui-monospace,monospace;font-size:12px}
-
 .chat-input{padding:10px 12px;border-top:1.5px solid var(--bd);display:flex;gap:8px;flex-shrink:0}
 .chat-input textarea{flex:1;padding:9px 12px;border:1.5px solid var(--bd);border-radius:10px;font-size:13px;resize:none;min-height:38px;max-height:100px;line-height:1.4;font-family:inherit}
-.chat-input textarea:focus{outline:0;border-color:var(--r);box-shadow:0 0 0 3px rgba(234,88,12,.1)}
-.chat-input button{padding:0 14px;background:var(--r);color:#fff;border-radius:10px;font-size:14px;font-weight:700;transition:all .2s}
+.chat-input textarea:focus{outline:0;border-color:var(--r)}
+.chat-input button{padding:0 14px;background:var(--r);color:#fff;border-radius:10px;font-size:14px;font-weight:700}
 .chat-input button:hover{background:var(--r2)}
 
-/* Notes panel */
 .panel-notes{flex:1;display:flex;flex-direction:column;min-height:0}
 .notes-toolbar{padding:10px 12px;border-bottom:1.5px solid var(--bd);display:flex;gap:6px;flex-shrink:0;background:var(--li)}
 .notes-toolbar .btn{flex:1;font-size:12px;padding:7px 10px}
@@ -219,7 +197,7 @@ input,select,textarea{font-family:inherit}
 .notes-list::-webkit-scrollbar{width:6px}
 .notes-list::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
 .note-item{background:#fff;border:1.5px solid var(--bd);border-radius:10px;padding:10px 12px;position:relative;transition:all .2s;animation:msgIn .25s}
-.note-item:hover{border-color:rgba(234,88,12,.4);box-shadow:0 4px 12px rgba(234,88,12,.08)}
+.note-item:hover{border-color:rgba(234,88,12,.4)}
 .note-item__hz{font-family:var(--zh);font-size:22px;font-weight:700;color:var(--dk);line-height:1.2;margin-bottom:3px}
 .note-item__py{font-size:12.5px;color:var(--r);font-style:italic;font-weight:600;margin-bottom:3px}
 .note-item__mn{font-size:13px;color:var(--sl);font-weight:600;line-height:1.4}
@@ -234,18 +212,15 @@ input,select,textarea{font-family:inherit}
 .notes-input__row input:focus{outline:0;border-color:var(--r)}
 .notes-input__row input.hz{font-family:var(--zh);font-weight:700;font-size:15px}
 .notes-input__row input.py{font-style:italic;color:var(--r)}
-.notes-input button{width:100%;padding:8px;background:var(--r);color:#fff;border-radius:8px;font-size:12.5px;font-weight:700;transition:all .2s}
+.notes-input button{width:100%;padding:8px;background:var(--r);color:#fff;border-radius:8px;font-size:12.5px;font-weight:700}
 .notes-input button:hover{background:var(--r2)}
 .notes-input button:disabled{opacity:.4;cursor:not-allowed}
-.student-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;background:var(--li);border-radius:99px;font-size:11px;font-weight:700;color:var(--mu);margin-bottom:8px}
 
-/* Status toast */
 .status-toast{position:fixed;top:80px;right:20px;background:#fff;border:1.5px solid var(--bd);border-radius:12px;padding:12px 16px;box-shadow:0 10px 30px rgba(0,0,0,.15);z-index:300;display:flex;gap:12px;align-items:flex-start;max-width:340px;animation:slideIn .3s}
 @keyframes slideIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
 .status-toast.success{background:linear-gradient(135deg,#dcfce7,#f0fdf4);border-color:#86efac;color:#166534}
 .status-toast.error{background:linear-gradient(135deg,#fef2f2,#fff1f2);border-color:#fecaca;color:#991b1b}
 .status-toast.warn{background:linear-gradient(135deg,#fef3c7,#fffbeb);border-color:#fcd34d;color:#92400e}
-.status-toast.info{background:linear-gradient(135deg,#dbeafe,#eff6ff);border-color:#93c5fd;color:#1e40af}
 .status-toast i{font-size:18px;flex-shrink:0;margin-top:1px}
 .status-toast__body b{display:block;font-size:13.5px;font-weight:800;margin-bottom:3px}
 .status-toast__body span{font-size:12.5px;line-height:1.5;opacity:.9}
@@ -258,7 +233,6 @@ input,select,textarea{font-family:inherit}
 .toast.err{background:var(--err)}
 .toast.warn{background:#f59e0b;color:var(--dk)}
 
-/* Slide panel */
 .slide-panel{position:fixed;right:calc(var(--sb-w) + 12px);bottom:90px;width:320px;max-height:60vh;background:#fff;border:2px solid var(--r);border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.3);z-index:200;display:none;flex-direction:column;overflow:hidden}
 .slide-panel.show{display:flex}
 .slide-panel__head{background:linear-gradient(135deg,var(--r),var(--r2));color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
@@ -270,24 +244,14 @@ input,select,textarea{font-family:inherit}
 .slide-thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
 .slide-thumb{aspect-ratio:16/9;background:var(--li);border:2px solid var(--bd);border-radius:8px;overflow:hidden;cursor:pointer;position:relative;transition:all .2s}
 .slide-thumb img{width:100%;height:100%;object-fit:cover}
-.slide-thumb:hover{border-color:var(--r);transform:scale(1.05)}
+.slide-thumb:hover{border-color:var(--r)}
 .slide-thumb.active{border-color:var(--r);box-shadow:0 0 0 3px rgba(234,88,12,.2)}
 .slide-thumb__num{position:absolute;top:4px;left:4px;background:rgba(0,0,0,.7);color:#fff;font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px}
 .slide-thumb__del{position:absolute;top:4px;right:4px;background:rgba(220,38,38,.9);color:#fff;width:20px;height:20px;border-radius:50%;font-size:10px;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
 .slide-thumb:hover .slide-thumb__del{opacity:1}
 
-@media(max-width:900px){
-  :root{--sb-w:300px}
-  .strip{height:110px}
-  .strip-tile{width:150px}
-  .float-code{width:240px}
-}
-@media(max-width:700px){
-  .room{flex-direction:column}
-  .sidebar{width:100%;max-height:50vh;border-left:0;border-top:1.5px solid var(--bd)}
-  .strip{height:100px}
-  .strip-tile{width:130px}
-}
+@media(max-width:900px){:root{--sb-w:300px}.strip{height:110px}.strip-tile{width:150px}.float-code{width:250px}}
+@media(max-width:700px){.room{flex-direction:column}.sidebar{width:100%;max-height:50vh;border-left:0;border-top:1.5px solid var(--bd)}}
 </style>
 </head>
 <body>
@@ -316,25 +280,11 @@ input,select,textarea{font-family:inherit}
         <label>Tiêu đề buổi học (tuỳ chọn)</label>
         <input type="text" id="teacherTitleInput" placeholder="VD: Bài 1 – Chào hỏi" maxlength="50">
       </div>
-      <div class="fg">
-        <label>Agora App ID *</label>
-        <input type="text" id="teacherAppIdInput" placeholder="Dán App ID từ Agora Console">
-        <small>Lấy miễn phí tại <a href="https://console.agora.io" target="_blank">console.agora.io</a></small>
-      </div>
-      <div class="fg">
-        <label>Tên phòng *</label>
-        <input type="text" id="teacherChannelInput" placeholder="VD: handi-buoi1" value="handi-class">
-        <small>Không dấu, không khoảng trắng. VD: <code>toan6a</code></small>
-      </div>
-      <div class="fg">
-        <label>Token (tuỳ chọn)</label>
-        <input type="text" id="teacherTokenInput" placeholder="Để trống nếu dùng Testing mode">
-      </div>
       <button class="btn btn--primary btn--block" id="btnCreateClass" onclick="createClass()" style="margin-top:8px">
-        <i class="fas fa-plus-circle"></i> Tạo lớp & sinh code
+        <i class="fas fa-plus-circle"></i> Tạo lớp & sinh mã 6 ký tự
       </button>
       <div class="hint">
-        Sau khi tạo, hệ thống sinh <b>code dài + QR code</b>. Học viên có thể <b>copy code</b> hoặc <b>quét QR</b> để vào lớp. Code + QR luôn hiển thị cho giáo viên trong suốt buổi học.
+        Hệ thống sinh <b>mã 6 ký tự</b> + QR code. Học viên chỉ cần nhập <b>mã 6 ký tự</b> là vào lớp ngay.
       </div>
     </div>
 
@@ -344,15 +294,16 @@ input,select,textarea{font-family:inherit}
         <input type="text" id="studentNameInput" placeholder="VD: Minh" maxlength="30">
       </div>
       <div class="fg">
-        <label>Code vào lớp *</label>
-        <textarea id="studentCodeInput" placeholder="Dán code giáo viên đã gửi, hoặc mở link từ QR..."></textarea>
-        <small>Code do giáo viên gửi — dạng chuỗi bắt đầu bằng <code>HND-</code></small>
+        <label>Mã vào lớp (6 ký tự) *</label>
+        <input type="text" id="studentCodeInput" class="code-input-big"
+               placeholder="ABC123" maxlength="6" autocomplete="off" spellcheck="false">
+        <small>Nhập mã 6 ký tự giáo viên đã gửi, hoặc quét QR</small>
       </div>
       <button class="btn btn--primary btn--block" id="btnJoinClass" onclick="joinWithCode()" style="margin-top:8px">
         <i class="fas fa-sign-in-alt"></i> Vào lớp
       </button>
       <div class="hint">
-        <b>💡 Mẹo:</b> Quét QR từ giáo viên sẽ tự mở link và điền sẵn code.
+        <b>💡 Mẹo:</b> Nếu mở link từ QR, mã sẽ tự động điền — chỉ cần nhập tên.
       </div>
     </div>
   </div>
@@ -361,11 +312,8 @@ input,select,textarea{font-family:inherit}
 <!-- ===== ROOM ===== -->
 <div id="appContainer">
   <div class="room">
-
-    <!-- STAGE -->
     <div class="stage" id="stageArea">
 
-      <!-- Controls floating top-right -->
       <div class="float-ctrl" id="floatCtrl" style="display:none">
         <button class="ctrl-btn" id="btnMic" onclick="toggleMic()" title="Micro">
           <i class="fas fa-microphone-slash"></i>
@@ -378,13 +326,12 @@ input,select,textarea{font-family:inherit}
         <button class="ctrl-btn" id="btnHand" onclick="toggleHand()" title="Giơ tay" style="display:none">
           <i class="fas fa-hand"></i>
           <span class="ctrl-btn__tip">Giơ tay</span>
-          <span class="badge-dot"></span>
         </button>
         <button class="ctrl-btn" id="btnScreen" onclick="toggleScreen()" title="Chia sẻ màn hình" style="display:none">
           <i class="fas fa-desktop"></i>
           <span class="ctrl-btn__tip">Chia sẻ</span>
         </button>
-        <button class="ctrl-btn" id="btnSlide" onclick="toggleSlidePanel()" title="Trình chiếu slide" style="display:none">
+        <button class="ctrl-btn" id="btnSlide" onclick="toggleSlidePanel()" title="Slide" style="display:none">
           <i class="fas fa-chalkboard"></i>
           <span class="ctrl-btn__tip">Slide</span>
         </button>
@@ -394,31 +341,27 @@ input,select,textarea{font-family:inherit}
         </button>
       </div>
 
-      <!-- Code + QR panel (chỉ teacher) -->
       <div class="float-code collapsed" id="floatCode" style="display:none">
         <div class="float-code__head">
-          <div class="float-code__title"><i class="fas fa-qrcode"></i> Mã vào lớp</div>
-          <button class="float-code__collapse" onclick="toggleCodePanel()" title="Ẩn/Hiện">
+          <div class="float-code__title"><i class="fas fa-qrcode"></i> Mã lớp</div>
+          <button class="float-code__collapse" onclick="toggleCodePanel()">
             <i class="fas fa-chevron-up" id="codePanelChevron"></i>
           </button>
         </div>
         <div class="float-code__body">
           <div class="float-code__qr" id="qrBox"></div>
           <div class="float-code__info">
-            <div class="float-code__label">Phòng</div>
-            <div class="float-code__room" id="roomCodeDisplay">—</div>
-            <div class="float-code__label">Code vào lớp</div>
+            <div class="float-code__label">Mã vào lớp</div>
             <div class="float-code__value" id="codeDisplay">—</div>
+            <div class="float-code__room">Phòng: <b id="roomCodeDisplay">—</b></div>
             <div class="float-code__actions">
               <button class="btn btn--primary" onclick="copyCode()"><i class="fas fa-copy"></i> Copy</button>
-              <button class="btn btn--ghost" onclick="copyLink()"><i class="fas fa-link"></i></button>
-              <button class="btn btn--ghost" onclick="shareCode()"><i class="fas fa-share-nodes"></i></button>
+              <button class="btn btn--ghost" onclick="shareCode()"><i class="fas fa-share-nodes"></i> Share</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Main video area -->
       <div class="stage-main" id="stageMain">
         <div class="main-tile" id="mainTile">
           <video id="mainVideo" autoplay playsinline></video>
@@ -431,11 +374,9 @@ input,select,textarea{font-family:inherit}
         </div>
       </div>
 
-      <!-- Student strip -->
       <div class="strip" id="stripStudents"></div>
     </div>
 
-    <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="sb-tabs">
         <button class="sb-tab active" data-tab="people" onclick="switchSbTab('people')">
@@ -451,12 +392,9 @@ input,select,textarea{font-family:inherit}
       </div>
 
       <div class="sb-body">
-        <!-- PEOPLE -->
         <div class="sb-panel active" id="panelPeople">
           <div class="panel-people" id="sidebarList"></div>
         </div>
-
-        <!-- CHAT -->
         <div class="sb-panel" id="panelChat">
           <div class="panel-chat">
             <div class="chat-messages" id="chatMessages"></div>
@@ -467,12 +405,10 @@ input,select,textarea{font-family:inherit}
             </div>
           </div>
         </div>
-
-        <!-- NOTES -->
         <div class="sb-panel" id="panelNotes">
           <div class="panel-notes">
             <div class="notes-toolbar" id="notesToolbar">
-              <button class="btn btn--ghost" onclick="clearAllNotes()" id="btnClearNotes">
+              <button class="btn btn--ghost" onclick="clearAllNotes()">
                 <i class="fas fa-trash"></i> Xoá hết
               </button>
             </div>
@@ -494,11 +430,9 @@ input,select,textarea{font-family:inherit}
         </div>
       </div>
     </aside>
-
   </div>
 </div>
 
-<!-- Slide panel -->
 <div class="slide-panel" id="slidePanel">
   <div class="slide-panel__head">
     <b><i class="fas fa-chalkboard"></i> Quản lý Slide</b>
@@ -527,89 +461,46 @@ input,select,textarea{font-family:inherit}
 
 <script>
 /* ============================================================
+   ⚙️ CẤU HÌNH — CHỈ SỬA DÒNG NÀY 1 LẦN
+   ============================================================ */
+const AGORA_APP_ID = 'dán_app_id_agora_của_bạn_vào_đây';
+/* VD: const AGORA_APP_ID = 'a1b2c3d4e5f64789abcdef0123456789'; */
+
+/* Prefix channel — cố định để học viên không cần biết */
+const CHANNEL_PREFIX = 'hnd-';
+const CODE_LENGTH = 6;
+
+/* ============================================================
    STATE
    ============================================================ */
 let client = null;
-let localAudioTrack = null;
-let localVideoTrack = null;
-let screenTrack = null;
-let remoteUsers = {};   // uid → {user,name,role,hasVideo,hasAudio,hand,approved,videoTrack,audioTrack}
-let myUid = null;
-let myName = '';
-let myRole = 'student';
-let teacherUid = null;   // uid của giáo viên
-let roomStartTime = 0;
-let durationTimer = null;
+let localAudioTrack = null, localVideoTrack = null, screenTrack = null;
+let remoteUsers = {};
+let myUid = null, myName = '', myRole = 'student', teacherUid = null;
+let roomStartTime = 0, durationTimer = null;
 let micOn = false, camOn = true, handUp = false, speakApproved = false;
 let screenSharing = false, slideMode = false;
 let mySlides = [], currentSlideIdx = -1;
 let remoteSlideUrl = null, remoteSlideIdx = 0, remoteSlideTotal = 0;
 let remoteScreenSharingUid = null;
-let chatMessages = [];   // {uid,name,role,text,ts,self}
-let notes = [];          // {hz,py,mn}
-let unreadChat = 0;
-let currentSbTab = 'people';
-let roomConfig = null;   // {code, appId, channel, token, title}
+let chatMessages = [], notes = [];
+let unreadChat = 0, currentSbTab = 'people';
+let myRoomCode = null; // mã 6 ký tự của lớp này
 
 const $ = id => document.getElementById(id);
 
 /* ============================================================
-   ENCODE / DECODE ROOM CODE
+   SINH MÃ PHÒNG 6 KÝ TỰ
    ============================================================ */
-function encodeRoomCode(appId, channel, token){
-  try {
-    const enc = new TextEncoder();
-    let appIdBytes;
-    let isHex = /^[a-f0-9]{32}$/i.test(appId);
-    if(isHex){
-      appIdBytes = new Uint8Array(16);
-      for(let i = 0; i < 32; i += 2) appIdBytes[i/2] = parseInt(appId.substr(i,2), 16);
-    } else {
-      appIdBytes = enc.encode(appId);
-    }
-    const parts = [];
-    parts.push(new Uint8Array([1, isHex ? 1 : 0, appIdBytes.length]));
-    parts.push(appIdBytes);
-    const chBytes = enc.encode(channel);
-    parts.push(new Uint8Array([Math.min(chBytes.length, 255)]));
-    parts.push(chBytes.slice(0, 255));
-    const tkBytes = token ? enc.encode(token) : new Uint8Array(0);
-    parts.push(new Uint8Array([tkBytes.length >> 8, tkBytes.length & 0xff]));
-    if(tkBytes.length) parts.push(tkBytes);
-    const total = parts.reduce((s,p) => s+p.length, 0);
-    const combined = new Uint8Array(total);
-    let off = 0;
-    parts.forEach(p => { combined.set(p, off); off += p.length; });
-    let b64 = btoa(String.fromCharCode(...combined))
-      .replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
-    return 'HND-' + b64;
-  } catch(e){ console.error(e); return null; }
+function generateRoomCode(){
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; // bỏ O,0,I,1,L
+  let code = '';
+  for(let i = 0; i < CODE_LENGTH; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
 }
 
-function decodeRoomCode(code){
-  try {
-    code = code.trim().replace(/\s+/g,'');
-    if(code.startsWith('HND-')) code = code.slice(4);
-    let b64 = code.replace(/-/g,'+').replace(/_/g,'/');
-    while(b64.length % 4) b64 += '=';
-    const binary = atob(b64);
-    const bytes = new Uint8Array([...binary].map(c => c.charCodeAt(0)));
-    let off = 0;
-    if(bytes[off] !== 1) throw new Error('Version không hỗ trợ');
-    off += 1;
-    const isHex = bytes[off] === 1; off += 1;
-    const appIdLen = bytes[off]; off += 1;
-    const appIdBytes = bytes.slice(off, off + appIdLen); off += appIdLen;
-    let appId;
-    if(isHex) appId = Array.from(appIdBytes).map(b => b.toString(16).padStart(2,'0')).join('');
-    else appId = new TextDecoder().decode(appIdBytes);
-    const chLen = bytes[off]; off += 1;
-    const channel = new TextDecoder().decode(bytes.slice(off, off+chLen)); off += chLen;
-    const tkLen = (bytes[off] << 8) | bytes[off+1]; off += 2;
-    let token = '';
-    if(tkLen > 0) token = new TextDecoder().decode(bytes.slice(off, off+tkLen));
-    return { appId, channel, token };
-  } catch(e){ console.error(e); return null; }
+function channelFromCode(code){
+  return CHANNEL_PREFIX + code.toLowerCase();
 }
 
 /* ============================================================
@@ -620,53 +511,50 @@ function switchSetupTab(role){
   $('teacherPanel').classList.toggle('active', role === 'teacher');
   $('studentPanel').classList.toggle('active', role === 'student');
   setTimeout(() => {
-    const inp = role === 'teacher' ? $('teacherNameInput') : $('studentNameInput');
+    const inp = role === 'teacher' ? $('teacherNameInput') : $('studentCodeInput');
     if(inp) inp.focus();
   }, 80);
 }
 
 async function createClass(){
+  if(!AGORA_APP_ID || AGORA_APP_ID === 'dán_app_id_agora_của_bạn_vào_đây'){
+    toast('Chưa cấu hình AGORA_APP_ID — mở source code sửa dòng đầu tiên', 'err', 6000);
+    return;
+  }
   const name = $('teacherNameInput').value.trim();
-  const appId = $('teacherAppIdInput').value.trim();
-  const channel = $('teacherChannelInput').value.trim();
-  const token = $('teacherTokenInput').value.trim();
-  const title = $('teacherTitleInput').value.trim();
-
   if(!name){ toast('Nhập tên của bạn', 'err'); return; }
-  if(!appId){ toast('Nhập App ID', 'err'); return; }
-  if(!channel){ toast('Nhập tên phòng', 'err'); return; }
-  if(!/^[a-z0-9_\-]+$/i.test(channel)){ toast('Tên phòng chỉ chữ, số, -, _', 'err'); return; }
 
-  const code = encodeRoomCode(appId, channel, token);
-  if(!code){ toast('Lỗi sinh code', 'err'); return; }
+  const code = generateRoomCode();
+  const channel = channelFromCode(code);
+  myRoomCode = code;
 
-  roomConfig = { code, appId, channel, token, title, teacherName: name };
-
-  // Join trực tiếp - không hiện modal nữa, vào lớp luôn
-  await joinAgora({ name, appId, channel, token, role: 'teacher' });
-
-  // Sau khi vào lớp, hiện code panel
-  setTimeout(() => showCodePanel(), 500);
+  await joinAgora({ name, channel, role: 'teacher' });
+  setTimeout(() => showCodePanel(code, channel), 500);
 }
 
 async function joinWithCode(){
+  if(!AGORA_APP_ID || AGORA_APP_ID === 'dán_app_id_agora_của_bạn_vào_đây'){
+    toast('Chưa cấu hình AGORA_APP_ID', 'err', 6000);
+    return;
+  }
   const name = $('studentNameInput').value.trim();
-  let raw = $('studentCodeInput').value.trim();
+  let code = $('studentCodeInput').value.trim().toUpperCase();
   if(!name){ toast('Nhập tên của bạn', 'err'); return; }
-  if(!raw){ toast('Dán code vào', 'err'); return; }
-  raw = raw.replace(/\s+/g,'');
-  if(!raw.startsWith('HND-')) raw = 'HND-' + raw;
-  const config = decodeRoomCode(raw);
-  if(!config || !config.appId || !config.channel){ toast('Code không hợp lệ', 'err', 4000); return; }
+  if(!code){ toast('Nhập mã vào lớp', 'err'); return; }
+  code = code.replace(/[^A-Z0-9]/g, '');
+  if(code.length !== CODE_LENGTH){ toast(`Mã phải có ${CODE_LENGTH} ký tự`, 'err'); return; }
+
+  const channel = channelFromCode(code);
+  myRoomCode = code;
 
   const btn = $('btnJoinClass');
   btn.disabled = true;
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang vào...';
   try {
-    roomConfig = { code: raw, ...config };
-    await joinAgora({ name, appId: config.appId, channel: config.channel, token: config.token || '', role: 'student' });
-  } catch(e){ console.error(e); }
-  finally {
+    await joinAgora({ name, channel, role: 'student' });
+  } catch(e){
+    toast('Không vào được lớp', 'err', 4000);
+  } finally {
     btn.disabled = false;
     btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Vào lớp';
   }
@@ -675,7 +563,7 @@ async function joinWithCode(){
 /* ============================================================
    JOIN AGORA
    ============================================================ */
-async function joinAgora({ name, appId, channel, token, role }){
+async function joinAgora({ name, channel, role }){
   myName = name;
   myRole = role;
   micOn = (role === 'teacher');
@@ -688,11 +576,11 @@ async function joinAgora({ name, appId, channel, token, role }){
   client.on('user-left', onUserLeft);
   client.on('stream-message', (uid, data) => {
     try { handleSignal(uid, JSON.parse(new TextDecoder().decode(data))); }
-    catch(e){ console.warn('Bad signal', e); }
+    catch(e){ console.warn(e); }
   });
 
-  myUid = await client.join(appId, channel, token || null, null);
-  console.log('[Agora] UID:', myUid);
+  myUid = await client.join(AGORA_APP_ID, channel, null, null);
+  console.log('[Agora] UID:', myUid, 'channel:', channel);
 
   try {
     [localAudioTrack, localVideoTrack] = await AgoraRTC.createMicrophoneAndCameraTracks(
@@ -705,7 +593,6 @@ async function joinAgora({ name, appId, channel, token, role }){
     toast('Không lấy được mic/camera', 'warn', 3000);
   }
 
-  // Chuyển view
   $('setupScreen').style.display = 'none';
   $('appContainer').classList.add('active');
   $('floatCtrl').style.display = 'flex';
@@ -714,35 +601,25 @@ async function joinAgora({ name, appId, channel, token, role }){
     $('btnScreen').style.display = '';
     $('btnSlide').style.display = '';
     $('btnHand').style.display = 'none';
-    $('floatCode').style.display = '';
     $('notesInput').style.display = '';
     $('notesToolbar').style.display = 'flex';
   } else {
     $('btnScreen').style.display = 'none';
     $('btnSlide').style.display = 'none';
     $('btnHand').style.display = '';
-    $('floatCode').style.display = 'none';
     $('notesInput').style.display = 'none';
     $('notesToolbar').style.display = 'none';
   }
 
   updateMicUI(); updateCamUI(); updateHandUI();
-  renderSelfStripTile();
-  renderSidebar();
-  renderNotes();
-  updateMainView();
+  renderStrip(); renderSidebar(); renderNotes(); updateMainView();
 
   roomStartTime = Date.now();
-  durationTimer = setInterval(() => {}, 1000); // placeholder
-
   sendMsg({ type:'name-info', name: myName, role: myRole, uid: myUid });
-
   if(myRole === 'teacher') teacherUid = myUid;
 
-  document.title = `Lớp học – ${channel}`;
+  document.title = `Lớp ${channel} – HanDi`;
   toast('Đã vào lớp', 'ok');
-
-  // Focus vào chat input
   setTimeout(() => $('chatInput').focus(), 500);
 }
 
@@ -751,9 +628,8 @@ async function joinAgora({ name, appId, channel, token, role }){
    ============================================================ */
 function sendMsg(obj){
   if(!client) return;
-  try {
-    client.sendStreamMessage(new TextEncoder().encode(JSON.stringify(obj)));
-  } catch(e){ console.warn('send fail', e); }
+  try { client.sendStreamMessage(new TextEncoder().encode(JSON.stringify(obj))); }
+  catch(e){ console.warn(e); }
 }
 
 function handleSignal(uid, msg){
@@ -770,23 +646,14 @@ function handleSignal(uid, msg){
     case 'hand-reject': if(msg.target === myUid) handleMyApproval(false); break;
     case 'hand-revoke': if(msg.target === myUid) handleRevoke(); break;
     case 'screenshare-start':
-      remoteScreenSharingUid = msg.uid;
-      updateMainView();
+      remoteScreenSharingUid = msg.uid; updateMainView();
       if(uid !== myUid) toast(`${msg.name} chia sẻ màn hình`, 'warn', 2500);
       break;
-    case 'screenshare-end':
-      remoteScreenSharingUid = null;
-      updateMainView();
-      break;
-    case 'slide-show':
-      remoteSlideUrl = msg.url; remoteSlideIdx = msg.idx; remoteSlideTotal = msg.total;
-      if(uid !== myUid){ slideMode = true; updateMainView(); }
-      break;
-    case 'slide-end':
-      remoteSlideUrl = null; slideMode = false; updateMainView();
-      break;
+    case 'screenshare-end': remoteScreenSharingUid = null; updateMainView(); break;
+    case 'slide-show': remoteSlideUrl = msg.url; remoteSlideIdx = msg.idx; remoteSlideTotal = msg.total; if(uid !== myUid){ slideMode = true; updateMainView(); } break;
+    case 'slide-end': remoteSlideUrl = null; slideMode = false; updateMainView(); break;
     case 'mute-all':
-      if(myRole === 'student'){ micOn = false; if(localAudioTrack) localAudioTrack.setEnabled(false); updateMicUI(); renderStrip(); toast('GV đã tắt mic tất cả', 'warn', 2500); }
+      if(myRole === 'student'){ micOn = false; if(localAudioTrack) localAudioTrack.setEnabled(false); updateMicUI(); renderStrip(); toast('GV đã tắt mic tất cả', 'warn'); }
       break;
     case 'force-mute':
       if(msg.target === myUid){ micOn = false; if(localAudioTrack) localAudioTrack.setEnabled(false); updateMicUI(); renderStrip(); toast('Bạn đã bị tắt mic', 'warn'); }
@@ -794,25 +661,15 @@ function handleSignal(uid, msg){
     case 'chat':
       chatMessages.push({ uid, name: msg.name, role: msg.role, text: msg.text, ts: msg.ts, self: false });
       renderChat();
-      if(currentSbTab !== 'chat'){
-        unreadChat++;
-        updateChatBadge();
-      }
+      if(currentSbTab !== 'chat'){ unreadChat++; updateChatBadge(); }
       break;
     case 'note-add':
       notes.push({ hz: msg.hz, py: msg.py, mn: msg.mn });
       renderNotes();
       if(uid !== myUid) toast(`📖 GV thêm từ: ${msg.hz}`, 'ok', 2500);
       break;
-    case 'note-clear':
-      notes = [];
-      renderNotes();
-      if(uid !== myUid) toast('GV đã xoá hết ghi chú', 'warn');
-      break;
-    case 'note-delete':
-      notes.splice(msg.idx, 1);
-      renderNotes();
-      break;
+    case 'note-clear': notes = []; renderNotes(); if(uid !== myUid) toast('GV đã xoá hết ghi chú', 'warn'); break;
+    case 'note-delete': notes.splice(msg.idx, 1); renderNotes(); break;
   }
 }
 
@@ -827,19 +684,16 @@ async function onUserPublished(user, mediaType){
   if(mediaType === 'audio'){ e.hasAudio = true; e.audioTrack = user.audioTrack; user.audioTrack.play(); }
   renderSidebar(); renderStrip(); updateMainView();
 }
-
 function onUserUnpublished(user, mediaType){
   const e = remoteUsers[user.uid]; if(!e) return;
   if(mediaType === 'video'){ e.hasVideo = false; delete e.videoTrack; }
   if(mediaType === 'audio'){ e.hasAudio = false; delete e.audioTrack; }
   renderSidebar(); renderStrip(); updateMainView();
 }
-
 function onUserJoined(user){
   if(!remoteUsers[user.uid]) remoteUsers[user.uid] = { user, name:'Người dùng '+user.uid, role:'student', hand:false, approved:false };
   renderSidebar(); renderStrip(); updateMainView();
 }
-
 function onUserLeft(user){
   delete remoteUsers[user.uid];
   if(teacherUid === user.uid) teacherUid = null;
@@ -857,19 +711,17 @@ function updateMainView(){
   const nameEl = $('mainName');
   const statusEl = $('mainStatus');
 
-  // Presentation mode (share screen hoặc slide)
-  const oldPres = document.querySelector('.presentation');
-  if(oldPres) oldPres.remove();
+  document.querySelectorAll('.presentation').forEach(el => el.remove());
 
   if(remoteScreenSharingUid){
     mainTile.style.display = 'none';
-    const pres = document.createElement('div');
-    pres.className = 'presentation';
     const isMe = remoteScreenSharingUid === myUid;
     const sharerName = isMe ? (myName + ' (Bạn)') : (remoteUsers[remoteScreenSharingUid]?.name || 'Ai đó');
+    const pres = document.createElement('div');
+    pres.className = 'presentation';
     pres.innerHTML = `
       <div class="presentation__bar">
-        <span><i class="fas fa-desktop"></i> ${escapeHtml(sharerName)} đang chia sẻ màn hình</span>
+        <span><i class="fas fa-desktop"></i> ${escapeHtml(sharerName)} chia sẻ màn hình</span>
         ${isMe && myRole === 'teacher' ? `<button class="btn btn--danger btn--sm" onclick="toggleScreen()"><i class="fas fa-stop"></i> Dừng</button>` : ''}
       </div>
       <div class="presentation__stage"><video id="presVideo" autoplay playsinline></video></div>
@@ -897,32 +749,22 @@ function updateMainView(){
     return;
   }
 
-  // Normal mode: main = teacher
   mainTile.style.display = '';
-  mainTile.style.removeProperty('display');
 
   if(myRole === 'teacher'){
-    // Show self
     if(localVideoTrack) localVideoTrack.play('mainVideo');
     camOff.classList.toggle('show', !camOn);
-    nameEl.innerHTML = `<span class="role-tag teacher">Giáo viên</span> ${escapeHtml(myName)} (Bạn)`;
-    statusEl.innerHTML = `
-      <span class="status-chip ${micOn?'green':'red'}"><i class="fas fa-microphone${micOn?'':'-slash'}"></i> ${micOn?'Đang nói':'Tắt mic'}</span>
-    `;
+    nameEl.innerHTML = `<span class="role-tag teacher">GV</span> ${escapeHtml(myName)} (Bạn)`;
+    statusEl.innerHTML = `<span class="status-chip ${micOn?'green':'red'}"><i class="fas fa-microphone${micOn?'':'-slash'}"></i> ${micOn?'Đang nói':'Tắt mic'}</span>`;
   } else if(teacherUid && remoteUsers[teacherUid]){
     const t = remoteUsers[teacherUid];
     if(t.hasVideo && t.videoTrack){
       t.videoTrack.play('mainVideo');
       camOff.classList.remove('show');
-    } else {
-      camOff.classList.add('show');
-    }
-    nameEl.innerHTML = `<span class="role-tag teacher">Giáo viên</span> ${escapeHtml(t.name)}`;
-    statusEl.innerHTML = `
-      <span class="status-chip ${t.hasAudio?'green':'red'}"><i class="fas fa-microphone${t.hasAudio?'':'-slash'}"></i> ${t.hasAudio?'Đang nói':'Tắt mic'}</span>
-    `;
+    } else camOff.classList.add('show');
+    nameEl.innerHTML = `<span class="role-tag teacher">GV</span> ${escapeHtml(t.name)}`;
+    statusEl.innerHTML = `<span class="status-chip ${t.hasAudio?'green':'red'}"><i class="fas fa-microphone${t.hasAudio?'':'-slash'}"></i> ${t.hasAudio?'Đang nói':'Tắt mic'}</span>`;
   } else {
-    // Chưa có teacher
     mainVideo.srcObject = null;
     camOff.classList.add('show');
     nameEl.textContent = 'Đang chờ giáo viên vào lớp...';
@@ -933,56 +775,40 @@ function updateMainView(){
 }
 
 /* ============================================================
-   STRIP (student mini tiles)
+   STRIP
    ============================================================ */
 function renderStrip(){
   const strip = $('stripStudents');
   const tiles = [];
-
-  // Ai sẽ ở main? → không hiển thị trong strip
   let mainOwner = null;
   if(remoteScreenSharingUid || remoteSlideUrl) mainOwner = 'presentation';
   else if(myRole === 'teacher') mainOwner = 'self';
   else if(teacherUid) mainOwner = teacherUid;
 
-  // Self tile (nếu không ở main)
   if(mainOwner !== 'self' && !screenSharing){
-    tiles.push({ uid: 'self', name: myName + ' (Bạn)', role: myRole, self: true,
-      mic: micOn, hand: handUp, hasVideo: camOn });
+    tiles.push({ uid:'self', name: myName + ' (Bạn)', role: myRole, self:true, mic:micOn, hand:handUp, hasVideo:camOn });
   }
-
-  // Remote tiles
   for(const uid in remoteUsers){
     if(uid === mainOwner) continue;
     const u = remoteUsers[uid];
-    tiles.push({ uid, name: u.name, role: u.role, self: false,
-      mic: u.hasAudio, hand: u.hand, hasVideo: u.hasVideo });
+    tiles.push({ uid, name: u.name, role: u.role, self:false, mic: u.hasAudio, hand: u.hand, hasVideo: u.hasVideo });
   }
 
-  if(!tiles.length){
-    strip.innerHTML = '';
-    strip.style.display = 'none';
-    return;
-  }
+  if(!tiles.length){ strip.innerHTML = ''; strip.style.display = 'none'; return; }
   strip.style.display = 'flex';
 
   strip.innerHTML = tiles.map(t => `
-    <div class="strip-tile ${t.self?'self':''} ${t.hand?'hand':''}" id="strip-${t.uid}">
+    <div class="strip-tile ${t.self?'self':''} ${t.hand?'hand':''}">
       <video id="stripVideo-${t.uid}" autoplay playsinline ${t.self?'muted':''}></video>
-      <div class="strip-tile__camoff ${t.hasVideo?'':'show'}" id="stripCamOff-${t.uid}">
-        <i class="fas fa-user"></i>
-      </div>
+      <div class="strip-tile__camoff ${t.hasVideo?'':'show'}"><i class="fas fa-user"></i></div>
       <div class="strip-tile__badges">
-        <div class="strip-tile__badge ${t.mic?'mic-on':'mic-off'}">
-          <i class="fas fa-microphone${t.mic?'':'-slash'}"></i>
-        </div>
+        <div class="strip-tile__badge ${t.mic?'mic-on':'mic-off'}"><i class="fas fa-microphone${t.mic?'':'-slash'}"></i></div>
         ${t.hand?'<div class="strip-tile__badge hand"><i class="fas fa-hand"></i></div>':''}
       </div>
       <div class="strip-tile__name">${escapeHtml(t.name)}</div>
     </div>
   `).join('');
 
-  // Play tracks
   if(tiles.find(t => t.self) && localVideoTrack) localVideoTrack.play('stripVideo-self');
   for(const uid in remoteUsers){
     if(uid === mainOwner) continue;
@@ -991,10 +817,10 @@ function renderStrip(){
 }
 
 /* ============================================================
-   HAND RAISE / APPROVE
+   HAND RAISE
    ============================================================ */
 function toggleHand(){
-  if(myRole === 'teacher'){ toast('Giáo viên không cần giơ tay', 'warn'); return; }
+  if(myRole === 'teacher'){ toast('GV không cần giơ tay', 'warn'); return; }
   if(!speakApproved && !handUp){
     handUp = true;
     sendMsg({ type:'hand-raise', uid: myUid, name: myName });
@@ -1018,11 +844,9 @@ function handleHandRaise(uid, msg){
   remoteUsers[uid].hand = true;
   remoteUsers[uid].name = msg.name || remoteUsers[uid].name;
   renderSidebar(); renderStrip();
-  showStatus('warn', '✋ '+ (msg.name || 'Học viên') +' giơ tay',
-    'Cho phép phát biểu?',
+  showStatus('warn', '✋ '+ (msg.name || 'HV') +' giơ tay', 'Cho phép phát biểu?',
     `<button class="btn btn--ok btn--sm" onclick="approveStudent(${uid});this.closest('.status-toast').remove()"><i class="fas fa-check"></i> Cho nói</button>
-     <button class="btn btn--ghost btn--sm" onclick="rejectStudent(${uid});this.closest('.status-toast').remove()">Từ chối</button>`,
-    8000);
+     <button class="btn btn--ghost btn--sm" onclick="rejectStudent(${uid});this.closest('.status-toast').remove()">Từ chối</button>`, 8000);
 }
 
 function approveStudent(uid){
@@ -1046,12 +870,11 @@ function revokeStudent(uid){
   if(remoteUsers[uid]) remoteUsers[uid].approved = false;
   sendMsg({ type:'hand-revoke', target: uid });
   renderSidebar();
-  toast('Đã thu hồi', 'warn');
 }
 
 function muteAllStudents(){
   sendMsg({ type:'mute-all' });
-  toast('Đã tắt mic tất cả học viên', 'ok');
+  toast('Đã tắt mic tất cả', 'ok');
 }
 
 function forceMuteStudent(uid){
@@ -1065,11 +888,11 @@ function handleMyApproval(approved){
     speakApproved = true; handUp = false; micOn = true;
     if(localAudioTrack) localAudioTrack.setEnabled(true);
     updateHandUI(); updateMicUI(); renderStrip();
-    showStatus('success', '🎤 Giáo viên đã cho phép bạn nói', 'Mic đã bật', null, 5000);
+    showStatus('success', '🎤 GV đã cho phép bạn nói', 'Mic đã bật', null, 5000);
   } else {
     speakApproved = false; handUp = false;
     updateHandUI(); renderStrip();
-    showStatus('error', '❌ Giáo viên chưa cho phép', 'Bạn có thể giơ tay lại', null, 4000);
+    showStatus('error', '❌ GV chưa cho phép', '', null, 4000);
   }
 }
 
@@ -1078,11 +901,11 @@ function handleRevoke(){
   speakApproved = false; handUp = false; micOn = false;
   if(localAudioTrack) localAudioTrack.setEnabled(false);
   updateHandUI(); updateMicUI(); renderStrip();
-  showStatus('warn', '🔇 Giáo viên đã thu hồi quyền phát biểu', '', null, 4000);
+  showStatus('warn', '🔇 GV đã thu hồi quyền phát biểu', '', null, 4000);
 }
 
 /* ============================================================
-   UI: MIC / CAM / HAND
+   UI CONTROLS
    ============================================================ */
 function updateMicUI(){
   const btn = $('btnMic');
@@ -1107,19 +930,15 @@ function updateHandUI(){
   if(myRole === 'teacher'){ btn.style.display = 'none'; return; }
   btn.style.display = '';
   btn.classList.toggle('hand-active', handUp);
-  if(speakApproved){
-    btn.innerHTML = '<i class="fas fa-comment-dots"></i><span class="ctrl-btn__tip">Đang nói</span>';
-  } else if(handUp){
-    btn.innerHTML = '<i class="fas fa-hand"></i><span class="ctrl-btn__tip">Chờ duyệt</span>';
-  } else {
-    btn.innerHTML = '<i class="fas fa-hand"></i><span class="ctrl-btn__tip">Giơ tay</span>';
-  }
+  if(speakApproved) btn.innerHTML = '<i class="fas fa-comment-dots"></i><span class="ctrl-btn__tip">Đang nói</span>';
+  else if(handUp) btn.innerHTML = '<i class="fas fa-hand"></i><span class="ctrl-btn__tip">Chờ duyệt</span>';
+  else btn.innerHTML = '<i class="fas fa-hand"></i><span class="ctrl-btn__tip">Giơ tay</span>';
 }
 
 function toggleMic(){
   const canSpeak = (myRole === 'teacher') || speakApproved;
-  if(!canSpeak){ toast('Giơ tay và chờ giáo viên duyệt', 'warn', 2500); return; }
-  if(!localAudioTrack){ toast('Không có micro', 'err'); return; }
+  if(!canSpeak){ toast('Giơ tay và chờ GV duyệt', 'warn', 2500); return; }
+  if(!localAudioTrack){ toast('Không có mic', 'err'); return; }
   micOn = !micOn;
   localAudioTrack.setEnabled(micOn);
   updateMicUI(); renderStrip();
@@ -1212,7 +1031,7 @@ function renderSlideThumbs(){
   $('slideThumbs').innerHTML = mySlides.map((s, i) => `
     <div class="slide-thumb ${i === currentSlideIdx ? 'active' : ''}" onclick="showSlide(${i})">
       <span class="slide-thumb__num">${i+1}</span>
-      <img src="${escapeAttr(s.url)}" onerror="this.parentElement.innerHTML='<div style=padding:10px;color:#dc2626;font-size:11px;text-align:center>Lỗi ảnh</div>'">
+      <img src="${escapeAttr(s.url)}" onerror="this.parentElement.innerHTML='<div style=padding:10px;color:#dc2626;font-size:11px;text-align:center>Lỗi</div>'">
       <button class="slide-thumb__del" onclick="event.stopPropagation();deleteSlide(${i})"><i class="fas fa-times"></i></button>
     </div>
   `).join('') || '<div style="grid-column:1/-1;text-align:center;color:var(--mu);font-size:12.5px;padding:14px">Chưa có slide</div>';
@@ -1225,8 +1044,7 @@ function showSlide(idx){
   sendMsg({ type:'slide-show', url, idx, total: mySlides.length });
   remoteSlideUrl = url; remoteSlideIdx = idx; remoteSlideTotal = mySlides.length;
   slideMode = true;
-  renderSlideThumbs();
-  updateMainView();
+  renderSlideThumbs(); updateMainView();
 }
 
 function deleteSlide(idx){
@@ -1239,29 +1057,25 @@ function deleteSlide(idx){
 function endSlideshow(){
   slideMode = false; currentSlideIdx = -1; remoteSlideUrl = null;
   sendMsg({ type:'slide-end' });
-  renderSlideThumbs();
-  updateMainView();
+  renderSlideThumbs(); updateMainView();
 }
 
 /* ============================================================
-   CODE PANEL (QR + code)
+   CODE PANEL
    ============================================================ */
-function showCodePanel(){
-  if(!roomConfig || myRole !== 'teacher') return;
+function showCodePanel(code, channel){
   $('floatCode').style.display = '';
-  $('codeDisplay').textContent = roomConfig.code;
-  $('roomCodeDisplay').innerHTML = `<b>${escapeHtml(roomConfig.channel)}</b>`;
+  $('codeDisplay').textContent = code;
+  $('roomCodeDisplay').textContent = channel;
 
-  // Sinh QR
-  const link = location.origin + location.pathname + '?code=' + encodeURIComponent(roomConfig.code);
+  const link = location.origin + location.pathname + '?code=' + code;
   const qrBox = $('qrBox');
   qrBox.innerHTML = '';
   try {
     new QRCode(qrBox, {
-      text: link,
-      width: 100, height: 100,
+      text: link, width: 104, height: 104,
       colorDark: '#3d2817', colorLight: '#ffffff',
-      correctLevel: QRCode.CorrectLevel.L
+      correctLevel: QRCode.CorrectLevel.M
     });
   } catch(e){ console.warn('QR fail', e); qrBox.textContent = 'QR lỗi'; }
 }
@@ -1269,25 +1083,20 @@ function showCodePanel(){
 function toggleCodePanel(){
   const panel = $('floatCode');
   panel.classList.toggle('collapsed');
-  const chev = $('codePanelChevron');
-  chev.className = panel.classList.contains('collapsed') ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
+  $('codePanelChevron').className = panel.classList.contains('collapsed') ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
 }
 
 function copyCode(){
-  if(!roomConfig) return;
-  navigator.clipboard.writeText(roomConfig.code).then(() => toast('Đã copy code', 'ok')).catch(() => toast('Không copy được', 'err'));
-}
-
-function copyLink(){
-  if(!roomConfig) return;
-  const url = location.origin + location.pathname + '?code=' + encodeURIComponent(roomConfig.code);
-  navigator.clipboard.writeText(url).then(() => toast('Đã copy link', 'ok')).catch(() => toast('Không copy được', 'err'));
+  if(!myRoomCode) return;
+  navigator.clipboard.writeText(myRoomCode)
+    .then(() => toast(`Đã copy mã ${myRoomCode}`, 'ok'))
+    .catch(() => toast('Không copy được', 'err'));
 }
 
 function shareCode(){
-  if(!roomConfig) return;
-  const url = location.origin + location.pathname + '?code=' + encodeURIComponent(roomConfig.code);
-  const text = `Mã vào lớp HanDi:\n${roomConfig.code}\n\nHoặc mở link:\n${url}`;
+  if(!myRoomCode) return;
+  const url = location.origin + location.pathname + '?code=' + myRoomCode;
+  const text = `Vào lớp HanDi:\nMã: ${myRoomCode}\nHoặc mở: ${url}`;
   if(navigator.share) navigator.share({ title:'Lớp học HanDi', text }).catch(()=>{});
   else navigator.clipboard.writeText(text).then(() => toast('Đã copy', 'ok'));
 }
@@ -1300,8 +1109,7 @@ function switchSbTab(tab){
   document.querySelectorAll('.sb-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
   document.querySelectorAll('.sb-panel').forEach(p => p.classList.remove('active'));
   $('panel' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
-  if(tab === 'chat'){ unreadChat = 0; updateChatBadge(); setTimeout(() => $('chatInput').focus(), 100); }
-  if(tab === 'chat') $('chatMessages').scrollTop = $('chatMessages').scrollHeight;
+  if(tab === 'chat'){ unreadChat = 0; updateChatBadge(); setTimeout(() => $('chatInput').focus(), 100); $('chatMessages').scrollTop = $('chatMessages').scrollHeight; }
 }
 
 function updateChatBadge(){
@@ -1314,17 +1122,18 @@ function updateChatBadge(){
    RENDER SIDEBAR
    ============================================================ */
 function renderSidebar(){
-  const items = [{
-    uid: 'self', name: myName + ' (Bạn)', role: myRole,
-    mic: micOn, hand: handUp, approved: speakApproved, self: true
-  }];
+  const items = [{ uid:'self', name: myName + ' (Bạn)', role: myRole, mic:micOn, hand:handUp, approved:speakApproved, self:true }];
   for(const uid in remoteUsers){
     const u = remoteUsers[uid];
-    items.push({ uid, name: u.name, role: u.role || 'student',
-      mic: u.hasAudio, hand: u.hand, approved: u.approved, self: false });
+    items.push({ uid, name:u.name, role:u.role || 'student', mic:u.hasAudio, hand:u.hand, approved:u.approved, self:false });
   }
 
-  $('sidebarList').innerHTML = items.map(it => {
+  let html = '';
+  if(myRole === 'teacher'){
+    html += `<button class="btn btn--ghost btn--xs" onclick="muteAllStudents()" style="width:100%;margin-bottom:10px"><i class="fas fa-volume-xmark"></i> Tắt mic tất cả HV</button>`;
+  }
+
+  html += items.map(it => {
     const initials = getInitials(it.name);
     const isTeacher = it.role === 'teacher';
     let statusHtml = '';
@@ -1332,13 +1141,9 @@ function renderSidebar(){
       if(it.approved) statusHtml = '<span class="approved-badge">🎤 Đang nói</span>';
       else if(it.hand) statusHtml = '<span style="color:#b45309;font-weight:800">✋ Chờ duyệt</span>';
       else statusHtml = '🔇 Mic tắt';
-    } else if(it.hand){
-      statusHtml = '<span class="hand-badge">✋ Giơ tay</span>';
-    } else if(it.approved){
-      statusHtml = '<span class="approved-badge">🎤 Được nói</span>';
-    } else {
-      statusHtml = it.mic ? '🎤 Đang nói' : '🔇 Tắt mic';
-    }
+    } else if(it.hand) statusHtml = '<span class="hand-badge">✋ Giơ tay</span>';
+    else if(it.approved) statusHtml = '<span class="approved-badge">🎤 Được nói</span>';
+    else statusHtml = it.mic ? '🎤 Đang nói' : '🔇 Tắt mic';
 
     let actions = '';
     if(myRole === 'teacher' && !it.self && it.role === 'student'){
@@ -1358,38 +1163,14 @@ function renderSidebar(){
         <div class="mic-dot ${it.mic?'on':''}">${it.mic?'<i class="fas fa-microphone"></i>':'<i class="fas fa-microphone-slash"></i>'}</div>
       </div>
       <div class="part__body">
-        <div class="part__name">
-          ${escapeHtml(it.name)}
-          ${isTeacher?'<span class="tag teacher">GV</span>':''}
-        </div>
+        <div class="part__name">${escapeHtml(it.name)}${isTeacher?'<span class="tag teacher">GV</span>':''}</div>
         <div class="part__meta">${statusHtml}</div>
         ${actions}
       </div>
     </div>`;
   }).join('');
 
-  // Nút mute all cho teacher
-  if(myRole === 'teacher'){
-    const existing = document.querySelector('.mute-all-btn');
-    if(!existing){
-      const btn = document.createElement('button');
-      btn.className = 'btn btn--ghost btn--xs mute-all-btn';
-      btn.style.cssText = 'width:100%;margin-bottom:10px';
-      btn.innerHTML = '<i class="fas fa-volume-xmark"></i> Tắt mic tất cả học viên';
-      btn.onclick = muteAllStudents;
-      const list = $('sidebarList');
-      if(list.firstChild) list.insertBefore(btn, list.firstChild);
-      else list.appendChild(btn);
-    }
-  }
-}
-
-/* ============================================================
-   RENDER STRIP SELF (helper)
-   ============================================================ */
-function renderSelfStripTile(){
-  // Được gọi trong renderStrip()
-  renderStrip();
+  $('sidebarList').innerHTML = html;
 }
 
 /* ============================================================
@@ -1399,21 +1180,18 @@ function sendChat(){
   const input = $('chatInput');
   const text = input.value.trim();
   if(!text) return;
-  const msg = { uid: myUid, name: myName, role: myRole, text, ts: Date.now() };
-  chatMessages.push({ ...msg, self: true });
-  sendMsg({ type: 'chat', ...msg });
+  const msg = { uid:myUid, name:myName, role:myRole, text, ts:Date.now() };
+  chatMessages.push({ ...msg, self:true });
+  sendMsg({ type:'chat', ...msg });
   input.value = '';
   renderChat();
-  if(currentSbTab !== 'chat'){
-    toast('💬 Tin nhắn đã gửi', 'ok', 1500);
-  }
   input.focus();
 }
 
 function renderChat(){
   const el = $('chatMessages');
   if(!chatMessages.length){
-    el.innerHTML = '<div class="notes-empty"><i class="fas fa-comments"></i>Chưa có tin nhắn nào<br>Gõ tin nhắn bên dưới để bắt đầu</div>';
+    el.innerHTML = '<div class="notes-empty"><i class="fas fa-comments"></i>Chưa có tin nhắn<br>Gõ tin nhắn bên dưới</div>';
     return;
   }
   el.innerHTML = chatMessages.map(m => {
@@ -1446,9 +1224,7 @@ function addNote(){
   notes.push(note);
   sendMsg({ type:'note-add', ...note });
   renderNotes();
-  $('noteHz').value = '';
-  $('notePy').value = '';
-  $('noteMn').value = '';
+  $('noteHz').value = ''; $('notePy').value = ''; $('noteMn').value = '';
   $('noteHz').focus();
   toast('Đã thêm từ vựng', 'ok');
 }
@@ -1472,7 +1248,7 @@ function clearAllNotes(){
 function renderNotes(){
   const el = $('notesList');
   if(!notes.length){
-    el.innerHTML = `<div class="notes-empty"><i class="fas fa-bookmark"></i>Chưa có từ vựng nào<br>${myRole === 'teacher' ? 'Ghi từ mới ở dưới' : 'Giáo viên sẽ ghi từ mới ở đây'}</div>`;
+    el.innerHTML = `<div class="notes-empty"><i class="fas fa-bookmark"></i>Chưa có từ vựng<br>${myRole === 'teacher' ? 'Ghi từ mới ở dưới' : 'GV sẽ ghi từ mới ở đây'}</div>`;
     return;
   }
   el.innerHTML = notes.map((n, i) => `
@@ -1485,15 +1261,20 @@ function renderNotes(){
   `).join('');
 }
 
-// Enable nút "Thêm" khi có Hán tự
 document.addEventListener('DOMContentLoaded', () => {
-  const hz = document.getElementById('noteHz');
-  const mn = document.getElementById('noteMn');
-  const btn = document.getElementById('btnAddNote');
+  const hz = $('noteHz'), mn = $('noteMn'), btn = $('btnAddNote');
   if(!hz || !btn) return;
   const update = () => { btn.disabled = !(hz.value.trim() && mn.value.trim()); };
   hz.addEventListener('input', update);
   mn.addEventListener('input', update);
+
+  // Auto uppercase mã lớp cho student
+  const codeInp = $('studentCodeInput');
+  if(codeInp){
+    codeInp.addEventListener('input', e => {
+      e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, CODE_LENGTH);
+    });
+  }
 });
 
 /* ============================================================
@@ -1565,18 +1346,19 @@ function toast(msg, type, ms){
   t._t = setTimeout(() => t.className = 'toast', ms || 2600);
 }
 
-/* Auto-fill from URL */
+/* ============================================================
+   AUTO-FILL FROM URL ?code=
+   ============================================================ */
 function autoFillFromUrl(){
   const params = new URLSearchParams(location.search);
-  const code = params.get('code');
+  const code = (params.get('code') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, CODE_LENGTH);
   const name = params.get('name');
   if(code){
     switchSetupTab('student');
-    const inp = $('studentCodeInput');
-    if(inp) inp.value = code;
+    $('studentCodeInput').value = code;
     if(name) $('studentNameInput').value = name;
     setTimeout(() => $('studentNameInput').focus(), 300);
-    toast('Đã điền code từ link', 'ok', 3000);
+    toast(`Đã điền mã ${code}`, 'ok', 2500);
   }
 }
 
