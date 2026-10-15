@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HanDi CMS — Quản trị nội dung</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --r:#ea580c;--r2:#c2410c;--dk:#3d2817;--sl:#5d4037;--mu:#8d6e63;
+  --li:#faf3e8;--bd:#e7d5be;--ok:#16a34a;--err:#dc2626;--info:#3b82f6;
+  --warn:#f59e0b;--gd:#fbbf24;
+  --sh:0 4px 16px rgba(61,40,23,.08);
+  --sb:#1c1008;--sb2:#2a1810;
+}
+body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:14.5px;
+  line-height:1.5;color:var(--sl);background:#fdf8f1;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+input,select,textarea{font-family:inherit;font-size:14px}
+.view{display:none}.view.active{display:block}
+.hidden{display:none!important}
+
+/* ============ LOGIN ============ */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;
+  background:linear-gradient(135deg,#1c1008,#3d2817)}
+.login{background:#fff;border-radius:18px;padding:40px 34px;max-width:420px;width:100%;
+  box-shadow:0 30px 60px rgba(0,0,0,.3)}
+.login__logo{width:64px;height:64px;margin:0 auto 18px;background:linear-gradient(135deg,#ea580c,#c2410c);
+  border-radius:16px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:34px;font-weight:900}
+.login__title{font-size:22px;font-weight:800;color:var(--dk);text-align:center;margin-bottom:6px}
+.login__sub{font-size:13.5px;color:var(--mu);text-align:center;margin-bottom:26px}
+.login__hint{background:var(--li);border:1.5px dashed var(--bd);border-radius:10px;padding:12px;
+  font-size:12px;color:var(--mu);margin-top:18px;text-align:center;line-height:1.6}
+.login__hint b{color:var(--r2)}
+
+/* ============ LAYOUT ============ */
+.shell{display:flex;min-height:100vh}
+.sb{width:250px;background:var(--sb);color:#cfc1a8;padding:20px 0;flex-shrink:0;
+  display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:10;transition:transform .25s}
+.sb__brand{display:flex;align-items:center;gap:12px;padding:0 20px 22px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:18px}
+.sb__logo{width:40px;height:40px;background:linear-gradient(135deg,#ea580c,#c2410c);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;font-weight:900}
+.sb__brand b{display:block;color:#f5eadb;font-size:14px}
+.sb__brand span{font-size:11px;color:#8a7259}
+.sb__nav{padding:0 12px;flex:1}
+.sb__item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:9px;
+  font-size:13.5px;font-weight:600;color:#cfc1a8;width:100%;text-align:left;transition:all .15s;margin-bottom:2px}
+.sb__item:hover{background:var(--sb2);color:#fff}
+.sb__item.active{background:rgba(234,88,12,.18);color:#fff;font-weight:700;box-shadow:inset 0 0 0 1px rgba(234,88,12,.3)}
+.sb__item i{width:18px;text-align:center;font-size:14px}
+.sb__item--ext{margin-top:10px;border-top:1px solid rgba(255,255,255,.06);padding-top:12px}
+.sb__foot{padding:14px 20px;border-top:1px solid rgba(255,255,255,.06);font-size:12px;color:#8a7259}
+.sb-toggle{display:none}
+
+.main{flex:1;margin-left:250px;min-width:0}
+.topbar{background:#fff;border-bottom:1px solid var(--bd);padding:14px 28px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;position:sticky;top:0;z-index:5}
+.topbar h1{font-size:17px;font-weight:800;color:var(--dk)}
+.topbar__user{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600}
+.topbar__avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#ea580c,#c2410c);
+  color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px}
+.content{padding:26px 28px;max-width:1150px}
+
+/* ============ TABS ============ */
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* ============ BUTTONS ============ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px;
+  border-radius:9px;font-size:13.5px;font-weight:700;transition:all .15s;
+  border:2px solid transparent;white-space:nowrap}
+.btn:hover{transform:translateY(-1px)}
+.btn--primary{background:var(--r);color:#fff}
+.btn--primary:hover{background:var(--r2)}
+.btn--ghost{background:#fff;border-color:var(--bd);color:var(--dk)}
+.btn--ghost:hover{border-color:var(--r);color:var(--r)}
+.btn--danger{background:#fff;border-color:#fecaca;color:var(--err)}
+.btn--danger:hover{background:#fef2f2}
+.btn--ok{background:var(--ok);color:#fff}
+.btn--ok:hover{background:#15803d}
+.btn--sm{padding:7px 12px;font-size:12.5px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* ============ CARDS ============ */
+.card{background:#fff;border:1.5px solid var(--bd);border-radius:14px;padding:22px;margin-bottom:16px}
+.card h2{font-size:16px;font-weight:800;color:var(--dk);margin-bottom:4px}
+.card p{font-size:13px;color:var(--mu);margin-bottom:14px;line-height:1.55}
+.card code{background:var(--li);padding:2px 6px;border-radius:5px;font-size:12px;color:var(--r2);
+  font-family:ui-monospace,Menlo,monospace}
+
+/* ============ FORM ============ */
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12.5px;font-weight:700;color:var(--sl);margin-bottom:5px}
+.field input,.field select,.field textarea{width:100%;padding:10px 12px;border:1.5px solid var(--bd);
+  border-radius:9px;background:#fff;color:var(--dk);transition:border .15s}
+.field input:focus,.field select:focus,.field textarea:focus{outline:0;border-color:var(--r);
+  box-shadow:0 0 0 3px rgba(234,88,12,.1)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:600px){.row,.row-3{grid-template-columns:1fr}}
+
+/* ============ ALERT ============ */
+.alert{padding:12px 16px;border-radius:9px;font-size:13.5px;margin-bottom:14px;display:none;gap:10px;align-items:flex-start;line-height:1.55}
+.alert.show{display:flex}
+.alert.err{background:#fef2f2;color:#991b1b;border:1.5px solid #fecaca}
+.alert.ok{background:#dcfce7;color:#166534;border:1.5px solid #86efac}
+.alert.warn{background:#fffbeb;color:#92400e;border:1.5px solid #fcd34d}
+.alert.info{background:#dbeafe;color:#1e40af;border:1.5px solid #93c5fd}
+.alert i{font-size:16px;flex-shrink:0;margin-top:2px}
+
+/* ============ STATUS BADGE ============ */
+.status-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:99px;
+  font-size:12px;font-weight:800;letter-spacing:.03em;text-transform:uppercase}
+.status-badge.ok{background:#dcfce7;color:#166534}
+.status-badge.warn{background:#fef3c7;color:#92400e}
+.status-badge.err{background:#fef2f2;color:#991b1b}
+.status-badge.loading{background:#e5e7eb;color:#4b5563}
+
+/* ============ LESSON LIST ============ */
+.lesson-row{display:flex;align-items:center;gap:14px;padding:14px 16px;background:#fff;
+  border:1.5px solid var(--bd);border-radius:11px;margin-bottom:10px;transition:all .15s}
+.lesson-row:hover{border-color:rgba(234,88,12,.3);box-shadow:var(--sh)}
+.lesson-row__num{width:36px;height:36px;border-radius:9px;background:var(--li);color:var(--r);
+  font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lesson-row__body{flex:1;min-width:0}
+.lesson-row__title{font-weight:700;color:var(--dk);font-size:14.5px;margin-bottom:3px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lesson-row__meta{font-size:12px;color:var(--mu);display:flex;flex-wrap:wrap;gap:12px}
+.lesson-row__meta i{color:var(--r);margin-right:4px}
+.lesson-row__actions{display:flex;gap:5px;flex-shrink:0}
+.lesson-row__actions .btn{padding:6px 9px;font-size:12px}
+
+/* ============ MODAL ============ */
+.modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
+.modal.show{display:flex}
+.modal__bd{position:absolute;inset:0;background:rgba(20,12,6,.72);backdrop-filter:blur(4px)}
+.modal__box{position:relative;background:#fff;border-radius:16px;padding:26px;max-width:860px;width:100%;
+  max-height:93vh;overflow-y:auto;animation:pop .22s ease}
+@keyframes pop{from{opacity:0;transform:scale(.96) translateY(10px)}to{opacity:1;transform:none}}
+.modal__head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px;
+  padding-bottom:14px;border-bottom:1px solid var(--bd);position:sticky;top:-26px;background:#fff;z-index:2;
+  margin-top:-26px;padding-top:26px}
+.modal__head h2{font-size:19px;font-weight:800;color:var(--dk)}
+.modal__head p{font-size:13px;color:var(--mu);margin-top:2px}
+.modal__close{width:34px;height:34px;border-radius:9px;background:var(--li);color:var(--sl);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.modal__close:hover{background:var(--r);color:#fff}
+.modal__footer{display:flex;gap:10px;justify-content:flex-end;padding-top:16px;
+  border-top:1px solid var(--bd);margin-top:20px;position:sticky;bottom:-26px;background:#fff;
+  padding-bottom:4px;margin-bottom:-26px;padding-top:14px}
+
+/* ============ EDITOR SECTIONS ============ */
+.sec{margin-bottom:16px;border:1.5px solid var(--bd);border-radius:12px;overflow:hidden}
+.sec__head{background:var(--li);padding:12px 16px;display:flex;align-items:center;
+  justify-content:space-between;gap:12px;cursor:pointer;user-select:none}
+.sec__head h3{font-size:14.5px;font-weight:800;color:var(--dk);display:flex;align-items:center;gap:8px}
+.sec__head h3 i{color:var(--r)}
+.sec__head .count{font-size:12px;color:var(--mu);font-weight:600;margin-left:6px}
+.sec__body{padding:14px 16px;background:#fff;display:none}
+.sec.open .sec__body{display:block}
+.sec__head .chev{transition:transform .2s;color:var(--mu)}
+.sec.open .sec__head .chev{transform:rotate(180deg)}
+.sec__actions{display:flex;align-items:center;gap:10px}
+
+.item-box{background:var(--li);border:1.5px solid var(--bd);border-radius:10px;padding:14px;
+  margin-bottom:10px;position:relative}
+.item-box__del{position:absolute;top:10px;right:10px;width:28px;height:28px;border-radius:7px;
+  background:#fff;color:var(--err);display:flex;align-items:center;justify-content:center;font-size:12px;z-index:2}
+.item-box__del:hover{background:var(--err);color:#fff}
+.item-box__head{font-size:11.5px;font-weight:800;color:var(--mu);text-transform:uppercase;
+  letter-spacing:.05em;margin-bottom:10px}
+.item-box .field{margin-bottom:10px}
+.item-box .field:last-child{margin-bottom:0}
+.item-box .row,.item-box .row-3{margin-bottom:10px}
+
+.empty{text-align:center;padding:44px 20px;color:var(--mu)}
+.empty i{font-size:44px;opacity:.3;display:block;margin-bottom:12px}
+.empty b{display:block;color:var(--dk);font-size:16px;margin-bottom:6px}
+
+/* ============ STATS ============ */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:22px}
+.stat{background:#fff;border:1.5px solid var(--bd);border-radius:12px;padding:16px}
+.stat__num{font-size:28px;font-weight:900;color:var(--r);line-height:1;margin-bottom:6px}
+.stat__lbl{font-size:11.5px;color:var(--mu);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+
+/* ============ USERS ============ */
+.user-row{display:flex;align-items:center;gap:14px;padding:13px 16px;border:1.5px solid var(--bd);
+  border-radius:11px;margin-bottom:8px;background:#fff}
+.user-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#ea580c,#c2410c);
+  color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0}
+.user-body{flex:1;min-width:0}
+.user-body b{display:block;font-size:14px;color:var(--dk);margin-bottom:2px}
+.user-body span{font-size:12.5px;color:var(--mu)}
+.role-badge{padding:4px 10px;border-radius:99px;font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.role-badge.admin{background:#fef3c7;color:#92400e}
+.role-badge.teacher{background:#dbeafe;color:#1e40af}
+.role-badge.student{background:#dcfce7;color:#166534}
+
+/* ============ CODE BLOCK ============ */
+.code{background:#1c1008;color:#cfc1a8;padding:14px 16px;border-radius:10px;
+  font-family:ui-monospace,Menlo,monospace;font-size:12px;line-height:1.55;
+  overflow-x:auto;white-space:pre-wrap;word-break:break-all;max-height:280px;overflow-y:auto}
+
+/* ============ PREVIEW ============ */
+.preview-box{background:var(--li);border:1.5px solid var(--bd);border-radius:12px;padding:18px;margin-bottom:14px}
+.preview-box h4{font-size:13px;font-weight:800;color:var(--r2);text-transform:uppercase;
+  letter-spacing:.05em;margin-bottom:10px}
+.preview-vocab{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+.preview-vocab__item{background:#fff;border:1px solid var(--bd);border-radius:9px;padding:10px;text-align:center}
+.preview-vocab__item .emoji{font-size:26px;display:block;margin-bottom:4px}
+.preview-vocab__item .hz{font-family:'Noto Sans SC',sans-serif;font-size:20px;font-weight:700;color:var(--dk)}
+.preview-vocab__item .py{font-size:11.5px;color:var(--r);font-style:italic}
+.preview-vocab__item .mn{font-size:12px;color:var(--mu)}
+
+/* ============ TOAST ============ */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--dk);color:#fff;padding:13px 20px;
+  border-radius:10px;font-size:13.5px;font-weight:600;z-index:999;opacity:0;transform:translateY(20px);
+  transition:all .3s;pointer-events:none;max-width:420px;box-shadow:0 10px 30px rgba(0,0,0,.3);line-height:1.5}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.ok{background:var(--ok)}
+.toast.err{background:var(--err)}
+.toast.info{background:var(--info)}
+.toast.warn{background:var(--warn)}
+
+@media(max-width:900px){
+  .sb{transform:translateX(-100%)}
+  .sb.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .sb-toggle{display:inline-flex}
+  .content{padding:20px 16px}
+  .topbar{padding:12px 16px}
+  .topbar h1{font-size:15px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div id="loginView" class="view active">
+  <div class="login-wrap">
+    <div class="login">
+      <div class="login__logo">汉</div>
+      <h1 class="login__title">HanDi CMS</h1>
+      <p class="login__sub">Quản trị nội dung khoá học</p>
+
+      <div class="alert" id="loginAlert"></div>
+
+      <form id="loginForm" onsubmit="doLogin(event)">
+        <div class="field">
+          <label>Email admin</label>
+          <input type="email" id="loginEmail" required value="admin@handi.vn">
+        </div>
+        <div class="field">
+          <label>Mật khẩu</label>
+          <input type="password" id="loginPass" required value="admin123">
+        </div>
+        <button type="submit" class="btn btn--primary" style="width:100%">
+          <i class="fas fa-arrow-right-to-bracket"></i> Đăng nhập
+        </button>
+      </form>
+
+      <div class="login__hint">
+        Mặc định: <b>admin@handi.vn</b> / <b>admin123</b>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="appView" class="view">
+  <div class="shell">
+    <aside class="sb" id="sidebar">
+      <div class="sb__brand">
+        <div class="sb__logo">汉</div>
+        <div><b>HanDi CMS</b><span>Quản trị nội dung</span></div>
+      </div>
+      <nav class="sb__nav">
+        <button class="sb__item" data-tab="dashboard" onclick="showTab('dashboard')">
+          <i class="fas fa-chart-simple"></i> Tổng quan
+        </button>
+        <button class="sb__item" data-tab="lessons" onclick="showTab('lessons')">
+          <i class="fas fa-book"></i> Bài học
+        </button>
+        <button class="sb__item" data-tab="users" onclick="showTab('users')">
+          <i class="fas fa-users"></i> Người dùng
+        </button>
+        <button class="sb__item" data-tab="settings" onclick="showTab('settings')">
+          <i class="fas fa-gear"></i> Cài đặt & Xuất bản
+        </button>
+        <a class="sb__item sb__item--ext" href="index.html" target="_blank">
+          <i class="fas fa-external-link-alt"></i> Mở app học viên
+        </a>
+      </nav>
+      <div class="sb__foot">© 2026 HanDi CMS</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:12px">
+          <button class="btn btn--ghost btn--sm sb-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1 id="topbarTitle">Tổng quan</h1>
+        </div>
+        <div class="topbar__user">
+          <span class="topbar__avatar" id="topbarAvatar">A</span>
+          <span id="topbarName">Admin</span>
+          <button class="btn btn--ghost btn--sm" onclick="doLogout()" title="Đăng xuất">
+            <i class="fas fa-arrow-right-from-bracket"></i>
+          </button>
+        </div>
+      </header>
+
+      <div class="content">
+        <!-- ============ DASHBOARD ============ -->
+        <section id="tab-dashboard" class="tab-content active">
+          <div id="syncStatusBox" class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+              <div>
+                <h2>Trạng thái đồng bộ với app</h2>
+                <p style="margin-bottom:0" id="syncStatusText">Đang kiểm tra...</p>
+              </div>
+              <span class="status-badge loading" id="syncStatusBadge">
+                <i class="fas fa-spinner fa-spin"></i> Đang kiểm tra
+              </span>
+            </div>
+            <div id="syncActionBox" class="hidden" style="margin-top:14px;padding-top:14px;border-top:1px dashed var(--bd)">
+              <button class="btn btn--primary" onclick="downloadPatchedApp()">
+                <i class="fas fa-file-arrow-down"></i> Tải bản index.html đã vá
+              </button>
+            </div>
+          </div>
+
+          <div class="stats" id="statsBox"></div>
+
+          <div class="card">
+            <h2>Bắt đầu nhanh</h2>
+            <p>Lần đầu dùng? Vào <b>Cài đặt</b> để import 10 bài học sẵn có từ <code>index.html</code>.</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn btn--primary" onclick="showTab('settings')">
+                <i class="fas fa-download"></i> Đến trang Cài đặt
+              </button>
+              <button class="btn btn--ghost" onclick="openLessonModal()">
+                <i class="fas fa-plus"></i> Tạo bài học mới
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ LESSONS ============ -->
+        <section id="tab-lessons" class="tab-content">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+            <input type="text" id="lessonSearch" placeholder="🔍 Tìm bài học..."
+              oninput="renderLessons()"
+              style="padding:10px 14px;border:1.5px solid var(--bd);border-radius:9px;flex:1;max-width:340px">
+            <button class="btn btn--primary" onclick="openLessonModal()">
+              <i class="fas fa-plus"></i> Thêm bài học
+            </button>
+          </div>
+          <div id="lessonList"></div>
+        </section>
+
+        <!-- ============ USERS ============ -->
+        <section id="tab-users" class="tab-content">
+          <div class="card">
+            <h2>Danh sách người dùng</h2>
+            <p>Đọc từ <code>handi_users_v1</code> — chia sẻ chung với app học viên.</p>
+          </div>
+          <div id="userList"></div>
+        </section>
+
+        <!-- ============ SETTINGS ============ -->
+        <section id="tab-settings" class="tab-content">
+          <div class="card">
+            <h2>① Import lessons từ index.html</h2>
+            <p>Tự động đọc mảng <code>LESSONS</code> có sẵn trong <code>index.html</code> và nạp vào CMS.</p>
+            <button class="btn btn--primary" onclick="autoImport()">
+              <i class="fas fa-bolt"></i> Import ngay
+            </button>
+          </div>
+
+          <div class="card">
+            <h2>② Xuất bản — Tải index.html đã vá</h2>
+            <p>
+              File sinh ra sẽ có sẵn: (a) 10 bài học mới nhất, (b) logic đọc từ CMS.
+              Sau khi upload đè lên GitHub, mọi thay đổi CMS trong <b>cùng trình duyệt</b> sẽ xuất hiện
+              ngay trong app mà không cần tải lại file.
+            </p>
+            <button class="btn btn--ok" onclick="downloadPatchedApp()">
+              <i class="fas fa-file-arrow-down"></i> Tải index.html đã vá
+            </button>
+          </div>
+
+          <div class="card">
+            <h2>③ Backup / Restore JSON</h2>
+            <p>Xuất toàn bộ lessons ra file JSON để backup, hoặc import file JSON có sẵn.</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn btn--ghost" onclick="exportJSON()">
+                <i class="fas fa-download"></i> Export JSON
+              </button>
+              <button class="btn btn--ghost" onclick="document.getElementById('importFile').click()">
+                <i class="fas fa-upload"></i> Import JSON
+              </button>
+              <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>④ Copy mảng LESSONS thủ công</h2>
+            <p>Nếu bạn muốn tự paste vào <code>index.html</code> thay vì dùng nút "Tải đã vá".</p>
+            <button class="btn btn--ghost" onclick="copyLessonsCode()" style="margin-bottom:12px">
+              <i class="fas fa-clipboard"></i> Copy mảng LESSONS
+            </button>
+            <div class="code" id="lessonsCode">const LESSONS = [];</div>
+          </div>
+
+          <div class="card" style="border-color:#fecaca">
+            <h2 style="color:var(--err)">⚠️ Vùng nguy hiểm</h2>
+            <p>Xoá toàn bộ lessons trong CMS. Không ảnh hưởng file HTML trên đĩa.</p>
+            <button class="btn btn--danger" onclick="resetLessons()">
+              <i class="fas fa-trash"></i> Reset toàn bộ lessons
+            </button>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ============ LESSON EDITOR MODAL ============ -->
+<div class="modal" id="lessonModal">
+  <div class="modal__bd" onclick="tryCloseLessonModal()"></div>
+  <div class="modal__box">
+    <div class="modal__head">
+      <div>
+        <h2 id="lessonModalTitle">Sửa bài học</h2>
+        <p id="lessonModalSub">Chỉnh sửa nội dung chi tiết</p>
+      </div>
+      <button class="modal__close" onclick="tryCloseLessonModal()"><i class="fas fa-xmark"></i></button>
+    </div>
+
+    <input type="hidden" id="lmId">
+
+    <div class="row-3">
+      <div class="field">
+        <label>Cấp độ</label>
+        <select id="lmLevel">
+          <option>HSK 1</option><option>HSK 2</option><option>HSK 3</option>
+          <option>HSK 4</option><option>Giao tiếp</option><option>Khác</option>
+        </select>
+      </div>
+      <div class="field" style="grid-column:span 2">
+        <label>Tiêu đề bài học</label>
+        <input id="lmTitle" placeholder="VD: Chào hỏi cơ bản">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Mô tả ngắn</label>
+      <input id="lmSub" placeholder="Mô tả 1-2 câu về bài học...">
+    </div>
+
+    <!-- VOCAB -->
+    <div class="sec open" data-sec="vocab">
+      <div class="sec__head" onclick="toggleSec(this)">
+        <h3><i class="fas fa-book"></i> Từ vựng <span class="count" id="cntVocab">(0)</span></h3>
+        <div class="sec__actions">
+          <button class="btn btn--ghost btn--sm" onclick="event.stopPropagation();addVocab()">
+            <i class="fas fa-plus"></i> Thêm
+          </button>
+          <i class="fas fa-chevron-down chev"></i>
+        </div>
+      </div>
+      <div class="sec__body"><div id="vocabList"></div></div>
+    </div>
+
+    <!-- DIALOGUE -->
+    <div class="sec" data-sec="dialogue">
+      <div class="sec__head" onclick="toggleSec(this)">
+        <h3><i class="fas fa-comments"></i> Hội thoại <span class="count" id="cntDlg">(0)</span></h3>
+        <i class="fas fa-chevron-down chev"></i>
+      </div>
+      <div class="sec__body">
+        <h4 style="font-size:12.5px;font-weight:800;color:var(--mu);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Câu hội thoại</h4>
+        <div id="dlgLines"></div>
+        <button class="btn btn--ghost btn--sm" onclick="addDlgLine()" style="margin-bottom:16px">
+          <i class="fas fa-plus"></i> Thêm câu
+        </button>
+        <h4 style="font-size:12.5px;font-weight:800;color:var(--mu);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Từ khoá</h4>
+        <div id="dlgKeywords"></div>
+        <button class="btn btn--ghost btn--sm" onclick="addDlgKw()">
+          <i class="fas fa-plus"></i> Thêm từ khoá
+        </button>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="sec" data-sec="quiz">
+      <div class="sec__head" onclick="toggleSec(this)">
+        <h3><i class="fas fa-circle-question"></i> Trắc nghiệm <span class="count" id="cntQuiz">(0)</span></h3>
+        <div class="sec__actions">
+          <button class="btn btn--ghost btn--sm" onclick="event.stopPropagation();addQuiz()">
+            <i class="fas fa-plus"></i> Thêm
+          </button>
+          <i class="fas fa-chevron-down chev"></i>
+        </div>
+      </div>
+      <div class="sec__body"><div id="quizList"></div></div>
+    </div>
+
+    <!-- SPEAKING -->
+    <div class="sec" data-sec="speaking">
+      <div class="sec__head" onclick="toggleSec(this)">
+        <h3><i class="fas fa-microphone"></i> Luyện nói <span class="count" id="cntSpk">(0)</span></h3>
+        <div class="sec__actions">
+          <button class="btn btn--ghost btn--sm" onclick="event.stopPropagation();addSpk()">
+            <i class="fas fa-plus"></i> Thêm
+          </button>
+          <i class="fas fa-chevron-down chev"></i>
+        </div>
+      </div>
+      <div class="sec__body"><div id="spkList"></div></div>
+    </div>
+
+    <div class="modal__footer">
+      <button class="btn btn--ghost" onclick="tryCloseLessonModal()">Huỷ</button>
+      <button class="btn btn--primary" onclick="saveLesson()">
+        <i class="fas fa-save"></i> Lưu bài học
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PREVIEW MODAL ============ -->
+<div class="modal" id="previewModal">
+  <div class="modal__bd" onclick="closeModal('previewModal')"></div>
+  <div class="modal__box">
+    <div class="modal__head">
+      <div>
+        <h2 id="previewTitle">Xem trước bài học</h2>
+        <p id="previewSub"></p>
+      </div>
+      <button class="modal__close" onclick="closeModal('previewModal')"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div id="previewBody"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   CONSTANTS
+   ============================================================ */
+const K = {
+  USERS: 'handi_users_v1',
+  LESSONS: 'handi_lessons_v1',
+  ADMIN_SESSION: 'handi_admin_session_v1'
+};
+const SALT = 'handi_salt_v1_secure';
+const ADMIN_DEFAULT = { email:'admin@handi.vn', name:'Administrator', pass:'admin123' };
+const MARKER_START = '/* ===== HANDI CMS LESSONS START ===== */';
+const MARKER_END = '/* ===== HANDI CMS LESSONS END ===== */';
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
+  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function escAttr(s){ return esc(s); }
+function initials(n){
+  if(!n) return '?';
+  const p = n.trim().split(/\s+/);
+  return p.length === 1 ? p[0][0].toUpperCase() : (p[0][0] + p[p.length-1][0]).toUpperCase();
+}
+function toast(msg, type, ms){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + (type || '');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.className = 'toast', ms || 2600);
+}
+async function hashPassword(pw){
+  const data = new TextEncoder().encode(pw + SALT);
+  const buf = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+function closeModal(id){ document.getElementById(id).classList.remove('show'); }
+
+/* ============================================================
+   STORAGE
+   ============================================================ */
+function getUsers(){ try { return JSON.parse(localStorage.getItem(K.USERS) || '{}'); } catch(e){ return {}; } }
+function saveUsers(u){ localStorage.setItem(K.USERS, JSON.stringify(u)); }
+function getLessons(){
+  try {
+    const raw = localStorage.getItem(K.LESSONS);
+    if(raw){
+      const arr = JSON.parse(raw);
+      if(Array.isArray(arr)) return arr;
+    }
+  } catch(e){}
+  return [];
+}
+function saveLessons(arr){
+  localStorage.setItem(K.LESSONS, JSON.stringify(arr));
+}
+
+/* ============================================================
+   SEED ADMIN
+   ============================================================ */
+async function seedAdmin(){
+  const users = getUsers();
+  if(!users[ADMIN_DEFAULT.email]){
+    const hash = await hashPassword(ADMIN_DEFAULT.pass);
+    users[ADMIN_DEFAULT.email] = { name:ADMIN_DEFAULT.name, hash, role:'admin', createdAt:Date.now() };
+    saveUsers(users);
+  } else if(!users[ADMIN_DEFAULT.email].role){
+    users[ADMIN_DEFAULT.email].role = 'admin';
+    saveUsers(users);
+  }
+}
+
+/* ============================================================
+   AUTH
+   ============================================================ */
+let CURRENT_ADMIN = null;
+
+async function doLogin(e){
+  e.preventDefault();
+  const alertEl = document.getElementById('loginAlert');
+  alertEl.className = 'alert';
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const pass = document.getElementById('loginPass').value;
+
+  const users = getUsers();
+  const user = users[email];
+  if(!user){ alertEl.className='alert err show'; alertEl.innerHTML='<i class="fas fa-circle-exclamation"></i><div>Email không tồn tại.</div>'; return; }
+
+  const hash = await hashPassword(pass);
+  if(hash !== user.hash){ alertEl.className='alert err show'; alertEl.innerHTML='<i class="fas fa-circle-exclamation"></i><div>Mật khẩu không đúng.</div>'; return; }
+
+  const role = user.role || 'student';
+  if(role !== 'admin'){ alertEl.className='alert err show'; alertEl.innerHTML='<i class="fas fa-circle-exclamation"></i><div>Tài khoản không có quyền admin.</div>'; return; }
+
+  CURRENT_ADMIN = { email, name: user.name };
+  localStorage.setItem(K.ADMIN_SESSION, JSON.stringify(CURRENT_ADMIN));
+  enterApp();
+}
+
+function doLogout(){
+  if(!confirm('Đăng xuất khỏi CMS?')) return;
+  CURRENT_ADMIN = null;
+  localStorage.removeItem(K.ADMIN_SESSION);
+  document.getElementById('appView').classList.remove('active');
+  document.getElementById('loginView').classList.add('active');
+}
+
+function restoreSession(){
+  try {
+    const raw = localStorage.getItem(K.ADMIN_SESSION);
+    if(!raw) return false;
+    const s = JSON.parse(raw);
+    const users = getUsers();
+    if(!users[s.email] || (users[s.email].role || 'student') !== 'admin') return false;
+    CURRENT_ADMIN = s;
+    enterApp();
+    return true;
+  } catch(e){ return false; }
+}
+
+function enterApp(){
+  document.getElementById('loginView').classList.remove('active');
+  document.getElementById('appView').classList.add('active');
+  document.getElementById('topbarName').textContent = CURRENT_ADMIN.name;
+  document.getElementById('topbarAvatar').textContent = initials(CURRENT_ADMIN.name);
+  renderStats();
+  showTab('dashboard');
+  checkAppSync();
+}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+const TAB_TITLES = { dashboard:'Tổng quan', lessons:'Bài học', users:'Người dùng', settings:'Cài đặt & Xuất bản' };
+function showTab(id){
+  document.querySelectorAll('.sb__item[data-tab]').forEach(b => b.classList.toggle('active', b.dataset.tab === id));
+  document.querySelectorAll('.tab-content').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById('tab-' + id);
+  if(el) el.classList.add('active');
+  document.getElementById('topbarTitle').textContent = TAB_TITLES[id] || id;
+  if(id === 'lessons') renderLessons();
+  if(id === 'users') renderUsers();
+  if(id === 'settings') renderLessonsCode();
+  if(id === 'dashboard') checkAppSync();
+  toggleSidebar(false);
+}
+function toggleSidebar(force){
+  const sb = document.getElementById('sidebar');
+  const open = typeof force === 'boolean' ? force : !sb.classList.contains('open');
+  sb.classList.toggle('open', open);
+}
+
+/* ============================================================
+   DASHBOARD / SYNC STATUS
+   ============================================================ */
+function renderStats(){
+  const lessons = getLessons();
+  const users = getUsers();
+  const totalVocab = lessons.reduce((s,l) => s + (l.vocab?.length || 0), 0);
+  const totalQuiz  = lessons.reduce((s,l) => s + (l.quiz?.length || 0), 0);
+  const totalSpk   = lessons.reduce((s,l) => s + (l.speaking?.length || 0), 0);
+  document.getElementById('statsBox').innerHTML = `
+    <div class="stat"><div class="stat__num">${lessons.length}</div><div class="stat__lbl">Bài học</div></div>
+    <div class="stat"><div class="stat__num">${totalVocab}</div><div class="stat__lbl">Từ vựng</div></div>
+    <div class="stat"><div class="stat__num">${totalQuiz}</div><div class="stat__lbl">Câu hỏi</div></div>
+    <div class="stat"><div class="stat__num">${totalSpk}</div><div class="stat__lbl">Câu luyện nói</div></div>
+    <div class="stat"><div class="stat__num">${Object.keys(users).length}</div><div class="stat__lbl">Người dùng</div></div>
+  `;
+}
+
+async function checkAppSync(){
+  const badge = document.getElementById('syncStatusBadge');
+  const text = document.getElementById('syncStatusText');
+  const actionBox = document.getElementById('syncActionBox');
+  if(!badge) return;
+
+  badge.className = 'status-badge loading';
+  badge.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang kiểm tra';
+  text.textContent = 'Đang kiểm tra...';
+  actionBox.classList.add('hidden');
+
+  try {
+    const res = await fetch('index.html?_=' + Date.now(), { cache: 'no-store' });
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const html = await res.text();
+
+    const hasMarker = html.indexOf('HANDI CMS LESSONS START') !== -1;
+    const hasLessons = /(const|let)\s+LESSONS\s*=\s*\[/.test(html);
+
+    if(hasMarker){
+      badge.className = 'status-badge ok';
+      badge.innerHTML = '<i class="fas fa-circle-check"></i> Đã đồng bộ';
+      text.innerHTML = 'App đã hỗ trợ CMS. Mọi thay đổi bạn lưu trong CMS sẽ <b>xuất hiện ngay</b> khi mở app ở cùng trình duyệt này.';
+    } else if(hasLessons){
+      badge.className = 'status-badge warn';
+      badge.innerHTML = '<i class="fas fa-triangle-exclamation"></i> Chưa vá';
+      text.innerHTML = 'App hiện tại <b>chưa đọc lessons từ CMS</b>. Bấm nút bên dưới để tải bản đã vá, rồi upload đè lên GitHub.';
+      actionBox.classList.remove('hidden');
+    } else {
+      badge.className = 'status-badge err';
+      badge.innerHTML = '<i class="fas fa-circle-xmark"></i> Không tìm thấy';
+      text.innerHTML = 'Không tìm thấy mảng <code>LESSONS</code> trong <code>index.html</code>. Kiểm tra lại file có cùng thư mục với CMS không.';
+    }
+  } catch(e){
+    badge.className = 'status-badge err';
+    badge.innerHTML = '<i class="fas fa-circle-xmark"></i> Lỗi truy cập';
+    text.innerHTML = 'Không fetch được <code>index.html</code>: <b>' + esc(e.message) + '</b><br>' +
+      '<small>Nếu bạn đang mở file bằng <code>file://</code>, trình duyệt sẽ chặn. Hãy deploy lên GitHub Pages trước.</small>';
+  }
+}
+
+/* ============================================================
+   LESSON LIST
+   ============================================================ */
+function renderLessons(){
+  const list = getLessons();
+  const q = (document.getElementById('lessonSearch').value || '').toLowerCase().trim();
+  const filtered = q ? list.filter(l =>
+    (l.title || '').toLowerCase().includes(q) || (l.level || '').toLowerCase().includes(q)
+  ) : list;
+
+  const box = document.getElementById('lessonList');
+  if(!list.length){
+    box.innerHTML = `<div class="empty">
+      <i class="fas fa-folder-open"></i>
+      <b>Chưa có bài học nào</b>
+      Vào <b>Cài đặt</b> → <b>Import từ index.html</b>, hoặc bấm "Thêm bài học".
+    </div>`;
+    return;
+  }
+  if(!filtered.length){
+    box.innerHTML = `<div class="empty">
+      <i class="fas fa-search"></i><b>Không tìm thấy bài nào</b>Thử từ khoá khác.
+    </div>`;
+    return;
+  }
+
+  box.innerHTML = filtered.map(l => {
+    const idx = list.indexOf(l);
+    return `<div class="lesson-row">
+      <div class="lesson-row__num">${idx + 1}</div>
+      <div class="lesson-row__body">
+        <div class="lesson-row__title">${esc(l.title || '(chưa có tiêu đề)')}</div>
+        <div class="lesson-row__meta">
+          <span><i class="fas fa-tag"></i>${esc(l.level || '')}</span>
+          <span><i class="fas fa-book"></i>${l.vocab?.length || 0} từ</span>
+          <span><i class="fas fa-circle-question"></i>${l.quiz?.length || 0} câu</span>
+          <span><i class="fas fa-microphone"></i>${l.speaking?.length || 0} câu nói</span>
+        </div>
+      </div>
+      <div class="lesson-row__actions">
+        <button class="btn btn--ghost" onclick="moveLesson(${idx}, -1)" title="Lên"><i class="fas fa-arrow-up"></i></button>
+        <button class="btn btn--ghost" onclick="moveLesson(${idx}, 1)" title="Xuống"><i class="fas fa-arrow-down"></i></button>
+        <button class="btn btn--ghost" onclick="previewLesson(${idx})" title="Xem trước"><i class="fas fa-eye"></i></button>
+        <button class="btn btn--ghost" onclick="duplicateLesson(${idx})" title="Nhân bản"><i class="fas fa-copy"></i></button>
+        <button class="btn btn--ghost" onclick="openLessonModal(${idx})" title="Sửa"><i class="fas fa-pen"></i></button>
+        <button class="btn btn--danger" onclick="deleteLesson(${idx})" title="Xoá"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function moveLesson(idx, dir){
+  const list = getLessons();
+  const to = idx + dir;
+  if(to < 0 || to >= list.length) return;
+  [list[idx], list[to]] = [list[to], list[idx]];
+  list.forEach((l, i) => l.id = i + 1);
+  saveLessons(list);
+  renderLessons();
+  renderStats();
+}
+
+function duplicateLesson(idx){
+  const list = getLessons();
+  const copy = JSON.parse(JSON.stringify(list[idx]));
+  copy.id = list.length + 1;
+  copy.title = (copy.title || '') + ' (bản sao)';
+  list.splice(idx + 1, 0, copy);
+  list.forEach((l, i) => l.id = i + 1);
+  saveLessons(list);
+  renderLessons();
+  renderStats();
+  toast('Đã nhân bản bài học', 'ok');
+}
+
+function deleteLesson(idx){
+  const list = getLessons();
+  if(!confirm(`Xoá bài "${list[idx].title}"?`)) return;
+  list.splice(idx, 1);
+  list.forEach((l, i) => l.id = i + 1);
+  saveLessons(list);
+  renderLessons();
+  renderStats();
+  toast('Đã xoá', 'ok');
+}
+
+function previewLesson(idx){
+  const l = getLessons()[idx];
+  if(!l) return;
+  document.getElementById('previewTitle').textContent = l.title || '(chưa có tiêu đề)';
+  document.getElementById('previewSub').textContent = (l.level || '') + ' — ' + (l.sub || '');
+
+  const vocabHtml = (l.vocab || []).map(v => `
+    <div class="preview-vocab__item">
+      <span class="emoji">${esc(v.emoji || '📖')}</span>
+      <div class="hz">${esc(v.hanzi)}</div>
+      <div class="py">${esc(v.pinyin)}</div>
+      <div class="mn">${esc(v.meaning)}</div>
+    </div>`).join('') || '<p style="color:var(--mu);font-style:italic">Không có từ vựng</p>';
+
+  const dlgHtml = (l.dialogue?.lines || []).map(d =>
+    `<div style="padding:8px 0;border-bottom:1px dashed var(--bd)">
+      <b style="color:var(--r);margin-right:8px">${esc(d.speaker || 'A')}:</b>
+      <span style="font-family:'Noto Sans SC',sans-serif;font-size:16px;color:var(--dk)">${esc(d.hanzi)}</span>
+      <div style="font-size:12px;color:var(--r);font-style:italic">${esc(d.pinyin)}</div>
+      <div style="font-size:12px;color:var(--mu)">${esc(d.meaning)}</div>
+    </div>`).join('') || '<p style="color:var(--mu);font-style:italic">Không có hội thoại</p>';
+
+  const quizHtml = (l.quiz || []).map((q, i) =>
+    `<div style="padding:10px;background:#fff;border:1px solid var(--bd);border-radius:8px;margin-bottom:8px">
+      <b>Câu ${i+1}:</b> ${esc(q.q)}
+      ${q.zh ? `<div style="font-family:'Noto Sans SC',sans-serif;font-size:18px;color:var(--dk);margin-top:4px">${esc(q.zh)}</div>` : ''}
+      <div style="margin-top:6px;font-size:12.5px">
+        ${(q.options || []).map((o, k) =>
+          `<span style="display:inline-block;margin-right:10px;${k === q.correct ? 'color:var(--ok);font-weight:700' : ''}">
+            ${'ABCD'[k]}. ${esc(o)}${k === q.correct ? ' ✓' : ''}
+          </span>`).join('')}
+      </div>
+    </div>`).join('') || '<p style="color:var(--mu);font-style:italic">Không có câu hỏi</p>';
+
+  const spkHtml = (l.speaking || []).map(s =>
+    `<div style="padding:6px 0;border-bottom:1px dashed var(--bd)">
+      <span style="font-family:'Noto Sans SC',sans-serif;font-size:16px;color:var(--dk)">${esc(s.hanzi)}</span>
+      <span style="color:var(--r);font-style:italic;margin-left:8px;font-size:12px">${esc(s.pinyin)}</span>
+      <div style="font-size:12px;color:var(--mu)">${esc(s.meaning)}</div>
+    </div>`).join('') || '<p style="color:var(--mu);font-style:italic">Không có câu luyện nói</p>';
+
+  document.getElementById('previewBody').innerHTML = `
+    <div class="preview-box"><h4>📖 Từ vựng (${(l.vocab || []).length})</h4><div class="preview-vocab">${vocabHtml}</div></div>
+    <div class="preview-box"><h4>💬 Hội thoại (${(l.dialogue?.lines || []).length})</h4>${dlgHtml}</div>
+    <div class="preview-box"><h4>❓ Trắc nghiệm (${(l.quiz || []).length})</h4>${quizHtml}</div>
+    <div class="preview-box"><h4>🎤 Luyện nói (${(l.speaking || []).length})</h4>${spkHtml}</div>
+  `;
+  document.getElementById('previewModal').classList.add('show');
+}
+
+/* ============================================================
+   LESSON EDITOR
+   ============================================================ */
+let editingIdx = -1;
+let editData = null;
+let dirty = false;
+
+function openLessonModal(idx){
+  editingIdx = (typeof idx === 'number') ? idx : -1;
+  const list = getLessons();
+
+  if(editingIdx >= 0){
+    editData = JSON.parse(JSON.stringify(list[editingIdx]));
+    document.getElementById('lessonModalTitle').textContent = 'Sửa bài học';
+    document.getElementById('lessonModalSub').textContent = `Bài #${editingIdx + 1}`;
+  } else {
+    editData = {
+      id: list.length + 1, level:'HSK 1', title:'', sub:'',
+      vocab: [], dialogue: { lines: [], keyWords: [] }, quiz: [], speaking: []
+    };
+    editData.vocab.push({hanzi:'',pinyin:'',meaning:'',example:'',emoji:'📖'});
+    editData.speaking.push({hanzi:'',pinyin:'',meaning:''});
+    document.getElementById('lessonModalTitle').textContent = 'Tạo bài học mới';
+    document.getElementById('lessonModalSub').textContent = 'Điền nội dung chi tiết';
+  }
+
+  if(!editData.dialogue) editData.dialogue = { lines:[], keyWords:[] };
+  if(!editData.dialogue.lines) editData.dialogue.lines = [];
+  if(!editData.dialogue.keyWords) editData.dialogue.keyWords = [];
+  if(!Array.isArray(editData.vocab)) editData.vocab = [];
+  if(!Array.isArray(editData.quiz)) editData.quiz = [];
+  if(!Array.isArray(editData.speaking)) editData.speaking = [];
+
+  document.getElementById('lmId').value = editData.id;
+  document.getElementById('lmLevel').value = editData.level || 'HSK 1';
+  document.getElementById('lmTitle').value = editData.title || '';
+  document.getElementById('lmSub').value = editData.sub || '';
+
+  // Attach dirty listeners (once)
+  ['lmTitle','lmSub','lmLevel'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el && !el.dataset.dirtyBound){
+      el.dataset.dirtyBound = '1';
+      el.addEventListener('input', () => { dirty = true; });
+      el.addEventListener('change', () => { dirty = true; });
+    }
+  });
+
+  dirty = false;
+  renderEditor();
+  document.getElementById('lessonModal').classList.add('show');
+}
+
+function tryCloseLessonModal(){
+  if(dirty && !confirm('Có thay đổi chưa lưu. Đóng và bỏ qua?')) return;
+  document.getElementById('lessonModal').classList.remove('show');
+  editData = null;
+  editingIdx = -1;
+  dirty = false;
+}
+
+function toggleSec(head){ head.parentElement.classList.toggle('open'); }
+
+function updateCnt(){
+  document.getElementById('cntVocab').textContent = `(${editData.vocab.length})`;
+  document.getElementById('cntDlg').textContent = `(${editData.dialogue.lines.length} câu, ${editData.dialogue.keyWords.length} từ khoá)`;
+  document.getElementById('cntQuiz').textContent = `(${editData.quiz.length})`;
+  document.getElementById('cntSpk').textContent = `(${editData.speaking.length})`;
+}
+
+function renderEditor(){
+  updateCnt();
+
+  document.getElementById('vocabList').innerHTML = editData.vocab.map((v,i) => `
+    <div class="item-box">
+      <button class="item-box__del" onclick="delArr('vocab',${i})"><i class="fas fa-xmark"></i></button>
+      <div class="item-box__head">Từ #${i+1}</div>
+      <div class="row-3">
+        <div class="field"><label>Hán tự</label><input value="${escAttr(v.hanzi)}" oninput="setVal('vocab',${i},'hanzi',this.value)" placeholder="你好"></div>
+        <div class="field"><label>Pinyin</label><input value="${escAttr(v.pinyin)}" oninput="setVal('vocab',${i},'pinyin',this.value)" placeholder="nǐ hǎo"></div>
+        <div class="field"><label>Emoji</label><input value="${escAttr(v.emoji)}" oninput="setVal('vocab',${i},'emoji',this.value)" placeholder="👋"></div>
+      </div>
+      <div class="field"><label>Nghĩa</label><input value="${escAttr(v.meaning)}" oninput="setVal('vocab',${i},'meaning',this.value)" placeholder="Xin chào"></div>
+      <div class="field"><label>Ví dụ</label><input value="${escAttr(v.example)}" oninput="setVal('vocab',${i},'example',this.value)" placeholder="你好！"></div>
+    </div>
+  `).join('') || '<div style="padding:12px;color:var(--mu);font-size:13px;font-style:italic;text-align:center">Chưa có từ vựng</div>';
+
+  document.getElementById('dlgLines').innerHTML = editData.dialogue.lines.map((d,i) => `
+    <div class="item-box">
+      <button class="item-box__del" onclick="delArr('dialogue.lines',${i})"><i class="fas fa-xmark"></i></button>
+      <div class="item-box__head">Câu #${i+1}</div>
+      <div class="row-3" style="grid-template-columns:90px 1fr 1fr">
+        <div class="field"><label>Vai</label>
+          <select onchange="setVal('dialogue.lines',${i},'speaker',this.value)">
+            ${['A','B','C','D'].map(s => `<option ${d.speaker===s?'selected':''}>${s}</option>`).join('')}
+          </select>
+        </div>
+        <div class="field"><label>Hán tự</label><input value="${escAttr(d.hanzi)}" oninput="setVal('dialogue.lines',${i},'hanzi',this.value)"></div>
+        <div class="field"><label>Pinyin</label><input value="${escAttr(d.pinyin)}" oninput="setVal('dialogue.lines',${i},'pinyin',this.value)"></div>
+      </div>
+      <div class="field"><label>Nghĩa</label><input value="${escAttr(d.meaning)}" oninput="setVal('dialogue.lines',${i},'meaning',this.value)"></div>
+    </div>
+  `).join('') || '<div style="padding:10px;color:var(--mu);font-size:13px;font-style:italic">Chưa có câu hội thoại</div>';
+
+  document.getElementById('dlgKeywords').innerHTML = editData.dialogue.keyWords.map((kw,i) => `
+    <div class="item-box">
+      <button class="item-box__del" onclick="delArr('dialogue.keyWords',${i})"><i class="fas fa-xmark"></i></button>
+      <div class="item-box__head">Từ khoá #${i+1}</div>
+      <div class="row-3">
+        <div class="field"><label>Hán tự</label><input value="${escAttr(kw.hanzi)}" oninput="setVal('dialogue.keyWords',${i},'hanzi',this.value)"></div>
+        <div class="field"><label>Pinyin</label><input value="${escAttr(kw.pinyin)}" oninput="setVal('dialogue.keyWords',${i},'pinyin',this.value)"></div>
+        <div class="field"><label>Emoji</label><input value="${escAttr(kw.emoji)}" oninput="setVal('dialogue.keyWords',${i},'emoji',this.value)"></div>
+      </div>
+      <div class="field"><label>Nghĩa</label><input value="${escAttr(kw.meaning)}" oninput="setVal('dialogue.keyWords',${i},'meaning',this.value)"></div>
+    </div>
+  `).join('') || '<div style="padding:10px;color:var(--mu);font-size:13px;font-style:italic">Chưa có từ khoá</div>';
+
+  document.getElementById('quizList').innerHTML = editData.quiz.map((q,i) => `
+    <div class="item-box">
+      <button class="item-box__del" onclick="delArr('quiz',${i})"><i class="fas fa-xmark"></i></button>
+      <div class="item-box__head">Câu hỏi #${i+1}</div>
+      <div class="field"><label>Câu hỏi</label><input value="${escAttr(q.q)}" oninput="setVal('quiz',${i},'q',this.value)" placeholder="VD: 你好 nghĩa là gì?"></div>
+      <div class="field"><label>Hán tự hiển thị (tuỳ chọn)</label><input value="${escAttr(q.zh)}" oninput="setVal('quiz',${i},'zh',this.value)" placeholder="你好"></div>
+      <div class="row">
+        ${[0,1,2,3].map(k => `
+          <div class="field"><label>Đáp án ${'ABCD'[k]}</label>
+            <input value="${escAttr((q.options && q.options[k]) || '')}" oninput="setQuizOpt(${i},${k},this.value)">
+          </div>
+        `).join('')}
+      </div>
+      <div class="field"><label>Đáp án đúng</label>
+        <select onchange="setVal('quiz',${i},'correct',+this.value)">
+          ${[0,1,2,3].map(k => `<option value="${k}" ${q.correct===k?'selected':''}>${'ABCD'[k]}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+  `).join('') || '<div style="padding:12px;color:var(--mu);font-size:13px;font-style:italic;text-align:center">Chưa có câu hỏi</div>';
+
+  document.getElementById('spkList').innerHTML = editData.speaking.map((s,i) => `
+    <div class="item-box">
+      <button class="item-box__del" onclick="delArr('speaking',${i})"><i class="fas fa-xmark"></i></button>
+      <div class="item-box__head">Câu #${i+1}</div>
+      <div class="row">
+        <div class="field"><label>Hán tự</label><input value="${escAttr(s.hanzi)}" oninput="setVal('speaking',${i},'hanzi',this.value)"></div>
+        <div class="field"><label>Pinyin</label><input value="${escAttr(s.pinyin)}" oninput="setVal('speaking',${i},'pinyin',this.value)"></div>
+      </div>
+      <div class="field"><label>Nghĩa</label><input value="${escAttr(s.meaning)}" oninput="setVal('speaking',${i},'meaning',this.value)"></div>
+    </div>
+  `).join('') || '<div style="padding:12px;color:var(--mu);font-size:13px;font-style:italic;text-align:center">Chưa có câu luyện nói</div>';
+}
+
+function setVal(path, idx, key, val){
+  dirty = true;
+  const parts = path.split('.');
+  let target = editData;
+  for(let i = 0; i < parts.length; i++){
+    if(!target[parts[i]]) target[parts[i]] = {};
+    target = target[parts[i]];
+  }
+  target[idx][key] = val;
+}
+function setQuizOpt(idx, k, val){
+  dirty = true;
+  if(!editData.quiz[idx].options) editData.quiz[idx].options = ['','','',''];
+  editData.quiz[idx].options[k] = val;
+}
+function delArr(path, idx){
+  if(!confirm('Xoá mục này?')) return;
+  dirty = true;
+  const parts = path.split('.');
+  let target = editData;
+  for(let i = 0; i < parts.length - 1; i++) target = target[parts[i]];
+  target[parts[parts.length-1]].splice(idx, 1);
+  renderEditor();
+}
+
+function addVocab(){ dirty=true; editData.vocab.push({hanzi:'',pinyin:'',meaning:'',example:'',emoji:'📖'}); renderEditor(); }
+function addDlgLine(){ dirty=true; editData.dialogue.lines.push({speaker:'A',hanzi:'',pinyin:'',meaning:''}); renderEditor(); }
+function addDlgKw(){ dirty=true; editData.dialogue.keyWords.push({hanzi:'',pinyin:'',meaning:'',emoji:'📖'}); renderEditor(); }
+function addQuiz(){ dirty=true; editData.quiz.push({q:'',zh:'',options:['','','',''],correct:0}); renderEditor(); }
+function addSpk(){ dirty=true; editData.speaking.push({hanzi:'',pinyin:'',meaning:''}); renderEditor(); }
+
+function saveLesson(){
+  const title = document.getElementById('lmTitle').value.trim();
+  if(title.length < 2){ toast('Tiêu đề quá ngắn', 'err'); return; }
+  if(!editData.vocab.length){ toast('Cần ít nhất 1 từ vựng', 'err'); return; }
+  for(let i = 0; i < editData.vocab.length; i++){
+    const v = editData.vocab[i];
+    if(!v.hanzi || !v.pinyin || !v.meaning){
+      toast(`Từ vựng #${i+1} thiếu thông tin`, 'err'); return;
+    }
+  }
+
+  editData.level = document.getElementById('lmLevel').value;
+  editData.title = title;
+  editData.sub = document.getElementById('lmSub').value.trim();
+
+  const list = getLessons();
+  if(editingIdx >= 0){
+    list[editingIdx] = editData;
+  } else {
+    editData.id = list.length + 1;
+    list.push(editData);
+  }
+  list.forEach((l, i) => l.id = i + 1);
+  saveLessons(list);
+
+  dirty = false;
+  document.getElementById('lessonModal').classList.remove('show');
+  editData = null;
+  editingIdx = -1;
+
+  renderLessons();
+  renderStats();
+  toast('Đã lưu bài học. Mở app để thấy thay đổi (F5 nếu cần).', 'ok', 3500);
+}
+
+/* ============================================================
+   USERS
+   ============================================================ */
+function renderUsers(){
+  const users = getUsers();
+  const list = Object.entries(users).map(([email, u]) => ({email, ...u}));
+  list.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+  document.getElementById('userList').innerHTML = list.map(u => {
+    const role = u.role || 'student';
+    return `<div class="user-row">
+      <span class="user-avatar">${initials(u.name)}</span>
+      <div class="user-body">
+        <b>${esc(u.name || '(chưa có tên)')}</b>
+        <span>${esc(u.email)}</span>
+      </div>
+      <span class="role-badge ${role}">${role}</span>
+      <select onchange="changeRole('${escAttr(u.email)}', this.value)"
+        style="padding:6px 10px;border:1.5px solid var(--bd);border-radius:7px;font-size:12.5px;font-weight:700">
+        ${['student','teacher','admin'].map(r => `<option value="${r}" ${role===r?'selected':''}>${r}</option>`).join('')}
+      </select>
+    </div>`;
+  }).join('') || '<div class="empty"><i class="fas fa-users"></i><b>Chưa có user nào</b>Đăng ký user qua app học viên trước.</div>';
+}
+
+function changeRole(email, role){
+  if(email === CURRENT_ADMIN.email){ toast('Không thể đổi role chính mình', 'err'); return; }
+  const users = getUsers();
+  if(!users[email]) return;
+  users[email].role = role;
+  saveUsers(users);
+  renderUsers();
+  toast(`Đã đổi ${users[email].name} thành ${role}`, 'ok');
+}
+
+/* ============================================================
+   SETTINGS — IMPORT / EXPORT / PATCH
+   ============================================================ */
+async function autoImport(){
+  try {
+    const html = await fetch('index.html?_=' + Date.now(), { cache:'no-store' }).then(r => {
+      if(!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    });
+    const lessons = extractLessonsFromHtml(html);
+    if(!lessons) throw new Error('Không tìm thấy mảng LESSONS trong index.html');
+    if(!lessons.length) throw new Error('Mảng LESSONS rỗng');
+
+    if(getLessons().length && !confirm(`index.html có ${lessons.length} bài. Ghi đè lessons hiện tại trong CMS?`)) return;
+    saveLessons(lessons);
+    renderLessons();
+    renderStats();
+    renderLessonsCode();
+    toast(`Đã import ${lessons.length} bài học`, 'ok');
+  } catch(e){
+    toast('Lỗi import: ' + e.message, 'err', 5000);
+    console.error(e);
+  }
+}
+
+/**
+ * Tìm và trả về mảng lessons được parse từ HTML.
+ * Dùng bracket matching để không bị nhầm với `];` xuất hiện trong string.
+ */
+function extractLessonsFromHtml(html){
+  const m = html.match(/(?:const|let)\s+LESSONS\s*=\s*/);
+  if(!m) return null;
+  const startIdx = m.index + m[0].length;
+  if(html[startIdx] !== '[') return null;
+
+  const bounds = findMatchingBracket(html, startIdx);
+  if(!bounds) return null;
+  const arrLiteral = html.slice(startIdx, bounds + 1);
+  try {
+    return new Function('return ' + arrLiteral)();
+  } catch(e){
+    console.error('Parse LESSONS failed:', e);
+    return null;
+  }
+}
+
+/** Trả về index của dấu ] khớp với [ ở vị trí openIdx. */
+function findMatchingBracket(str, openIdx){
+  let depth = 0, inStr = false, strCh = '', escaped = false;
+  for(let i = openIdx; i < str.length; i++){
+    const ch = str[i];
+    if(inStr){
+      if(escaped){ escaped = false; continue; }
+      if(ch === '\\'){ escaped = true; continue; }
+      if(ch === strCh){ inStr = false; }
+      continue;
+    }
+    if(ch === '"' || ch === "'" || ch === '`'){ inStr = true; strCh = ch; continue; }
+    if(ch === '/' && str[i+1] === '/'){ while(i < str.length && str[i] !== '\n') i++; continue; }
+    if(ch === '/' && str[i+1] === '*'){ i += 2; while(i < str.length-1 && !(str[i]==='*' && str[i+1]==='/')) i++; i++; continue; }
+    if(ch === '[') depth++;
+    else if(ch === ']'){
+      depth--;
+      if(depth === 0) return i;
+    }
+  }
+  return null;
+}
+
+/**
+ * Sinh block mã JS hoàn chỉnh:
+ *   let LESSONS = [...]
+ *   + loader tự đọc từ localStorage
+ *   + storage listener tự reload
+ */
+function buildLessonsBlock(lessons){
+  const json = JSON.stringify(lessons, null, 2);
+  return `${MARKER_START}
+let LESSONS = ${json};
+
+/* === Loader: ưu tiên lessons trong CMS (localStorage) === */
+(function loadLessonsFromCMS(){
+  try {
+    const raw = localStorage.getItem('handi_lessons_v1');
+    if(!raw) return;
+    const arr = JSON.parse(raw);
+    if(!Array.isArray(arr) || !arr.length) return;
+    LESSONS = arr.map(function(l, i){
+      return {
+        id:       l.id || (i + 1),
+        level:    l.level || 'HSK 1',
+        title:    l.title || ('Bài ' + (i + 1)),
+        sub:      l.sub || '',
+        vocab:    Array.isArray(l.vocab) ? l.vocab : [],
+        dialogue: (l.dialogue && Array.isArray(l.dialogue.lines))
+                    ? l.dialogue
+                    : { lines: [], keyWords: [] },
+        quiz:     Array.isArray(l.quiz) ? l.quiz : [],
+        speaking: Array.isArray(l.speaking) ? l.speaking : []
+      };
+    });
+    console.log('[HanDi] Loaded ' + LESSONS.length + ' lessons from CMS');
+  } catch(e){
+    console.warn('[HanDi] CMS load failed:', e);
+  }
+})();
+
+/* Tự reload khi CMS thao tác ở tab khác */
+window.addEventListener('storage', function(e){
+  if(e.key === 'handi_lessons_v1') location.reload();
+});
+${MARKER_END}`;
+}
+
+async function downloadPatchedApp(){
+  const lessons = getLessons();
+  if(!lessons.length){
+    toast('Chưa có lessons trong CMS. Vào Cài đặt → Import trước.', 'err', 4000);
+    return;
+  }
+
+  try {
+    const html = await fetch('index.html?_=' + Date.now(), { cache:'no-store' }).then(r => {
+      if(!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    });
+
+    const block = buildLessonsBlock(lessons);
+    let newHtml;
+
+    // Nếu đã có marker → thay giữa markers
+    const markerRe = new RegExp(
+      MARKER_START.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '[\\s\\S]*?' +
+      MARKER_END.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    );
+    if(markerRe.test(html)){
+      newHtml = html.replace(markerRe, block);
+    } else {
+      // Lần đầu: tìm mảng LESSONS và thay toàn bộ "const LESSONS = [...];"
+      const m = html.match(/(?:const|let)\s+LESSONS\s*=\s*/);
+      if(!m) throw new Error('Không tìm thấy mảng LESSONS trong index.html');
+      const startIdx = m.index;
+      const arrStart = m.index + m[0].length;
+      if(html[arrStart] !== '[') throw new Error('Cấu trúc LESSONS không hợp lệ');
+      const closeBracket = findMatchingBracket(html, arrStart);
+      if(closeBracket === -1) throw new Error('Không tìm thấy dấu ] đóng mảng LESSONS');
+      // Bao gồm cả dấu ; nếu có
+      let endIdx = closeBracket + 1;
+      if(html[endIdx] === ';') endIdx++;
+      newHtml = html.slice(0, startIdx) + block + html.slice(endIdx);
+    }
+
+    if(newHtml === html) throw new Error('Không có gì thay đổi — có thể file đã vá rồi');
+
+    // Download
+    const blob = new Blob([newHtml], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'index.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+    toast(`✅ Đã tải index.html (${lessons.length} bài). Upload đè lên GitHub để cập nhật app.`, 'ok', 5000);
+    setTimeout(checkAppSync, 1500);
+  } catch(e){
+    toast('Lỗi tải file: ' + e.message, 'err', 5000);
+    console.error(e);
+  }
+}
+
+function exportJSON(){
+  const lessons = getLessons();
+  const blob = new Blob([JSON.stringify(lessons, null, 2)], { type:'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'handi-lessons-' + new Date().toISOString().slice(0,10) + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  toast('Đã xuất file JSON', 'ok');
+}
+
+function importJSON(e){
+  const file = e.target.files?.[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      if(!Array.isArray(data)) throw new Error('File phải chứa 1 mảng JSON');
+      if(!confirm(`Đã đọc ${data.length} bài. Ghi đè lessons hiện tại?`)) return;
+      saveLessons(data);
+      renderLessons();
+      renderStats();
+      renderLessonsCode();
+      toast(`Đã import ${data.length} bài`, 'ok');
+    } catch(err){
+      toast('Lỗi đọc file: ' + err.message, 'err');
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+function renderLessonsCode(){
+  const lessons = getLessons();
+  const code = buildLessonsBlock(lessons);
+  const el = document.getElementById('lessonsCode');
+  el.textContent = code.length > 6000
+    ? code.slice(0, 6000) + '\n\n... (đã cắt để hiển thị. Bấm Copy để lấy toàn bộ)'
+    : code;
+}
+
+function copyLessonsCode(){
+  const code = buildLessonsBlock(getLessons());
+  navigator.clipboard.writeText(code).then(() => {
+    toast('Đã copy code vào clipboard', 'ok');
+  }).catch(() => {
+    toast('Trình duyệt chặn clipboard — hãy chọn và copy thủ công', 'err');
+  });
+}
+
+function resetLessons(){
+  if(!confirm('Xoá TOÀN BỘ lessons trong CMS? (Không ảnh hưởng file HTML đã tải)')) return;
+  saveLessons([]);
+  renderLessons();
+  renderStats();
+  renderLessonsCode();
+  toast('Đã reset', 'ok');
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+(async () => {
+  await seedAdmin();
+  if(!restoreSession()){
+    document.getElementById('loginView').classList.add('active');
+  }
+})();
+</script>
+</body>
+</html>
