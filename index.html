@@ -1713,22 +1713,293 @@ async function init(){
     if(document.querySelector('.tab-panel[data-panel="write"]').classList.contains('active')) initWriters();
   });
 }
-  window.addEventListener('resize', () => {
-  if(document.querySelector('.tab-panel[data-panel="write"]').classList.contains('active')) initWriters();
-});
-}
 
 /* ============================================================
    LESSON DATA — có pos (loại từ) + image (tuỳ chọn)
    ============================================================ */
 const LESSONS = [
-  {id:1,level:'HSK 1',title:'Chào hỏi cơ bản',sub:'...',
-   vocab:[...],
-   speaking:[...],
-   quiz:[...],
-   dialogue:{...}
+  // ============ BÀI 1 ============
+  {id:1,level:'HSK 1',title:'Chào hỏi cơ bản',sub:'Học cách chào hỏi, cảm ơn, tạm biệt và tự giới thiệu tên bằng tiếng Trung.',
+   vocab:[
+     {hanzi:'你好',pinyin:'nǐ hǎo',meaning:'Xin chào',pos:'thán từ',example:'你好！我是小明。',image:''},
+     {hanzi:'谢谢',pinyin:'xiè xie',meaning:'Cảm ơn',pos:'động từ',example:'谢谢你！',image:''},
+     {hanzi:'再见',pinyin:'zài jiàn',meaning:'Tạm biệt',pos:'động từ',example:'再见，明天见！',image:''},
+     {hanzi:'我',pinyin:'wǒ',meaning:'Tôi, tớ',pos:'đại từ',example:'我是越南人。',image:''},
+     {hanzi:'你',pinyin:'nǐ',meaning:'Bạn, anh/chị',pos:'đại từ',example:'你叫什么名字？',image:''},
+     {hanzi:'叫',pinyin:'jiào',meaning:'Gọi, tên là',pos:'động từ',example:'我叫小明。',image:''}
+   ],
+   speaking:[{hanzi:'你好',pinyin:'nǐ hǎo',meaning:'Xin chào'},{hanzi:'谢谢',pinyin:'xiè xie',meaning:'Cảm ơn'},{hanzi:'再见',pinyin:'zài jiàn',meaning:'Tạm biệt'},{hanzi:'我叫小明',pinyin:'wǒ jiào Xiǎo Míng',meaning:'Tôi tên là Tiểu Minh'},{hanzi:'很高兴认识你',pinyin:'hěn gāo xìng rèn shi nǐ',meaning:'Rất vui được gặp bạn'}],
+   quiz:[{q:'"你好" có nghĩa là gì?',zh:'你好',options:['Tạm biệt','Xin chào','Cảm ơn','Xin lỗi'],correct:1},{q:'Từ nào có nghĩa là "Cảm ơn"?',options:['再见','谢谢','你好','我'],correct:1},{q:'"nǐ" (你) nghĩa là gì?',options:['Tôi','Bạn','Anh ấy','Cô ấy'],correct:1},{q:'"Tạm biệt" trong tiếng Trung là gì?',options:['你好','谢谢','再见','我叫'],correct:2},{q:'"Tôi tên là..." nói thế nào?',zh:'我叫...',options:['你是...','我叫...','你好...','谢谢...'],correct:1}],
+   dialogue:{
+     lines:[
+       {speaker:'A',hanzi:'你好！',pinyin:'nǐ hǎo!',meaning:'Xin chào!'},
+       {speaker:'B',hanzi:'你好！我叫小明。',pinyin:'nǐ hǎo! wǒ jiào Xiǎo Míng.',meaning:'Xin chào! Tôi tên là Tiểu Minh.'},
+       {speaker:'A',hanzi:'很高兴认识你。',pinyin:'hěn gāo xìng rèn shi nǐ.',meaning:'Rất vui được gặp bạn.'},
+       {speaker:'B',hanzi:'我也很高兴认识你。',pinyin:'wǒ yě hěn gāo xìng rèn shi nǐ.',meaning:'Tôi cũng rất vui được gặp bạn.'}
+     ],
+     keyWords:[
+       {hanzi:'你好',pinyin:'nǐ hǎo',meaning:'Xin chào'},
+       {hanzi:'我叫',pinyin:'wǒ jiào',meaning:'Tôi tên là'},
+       {hanzi:'很高兴',pinyin:'hěn gāo xìng',meaning:'Rất vui'},
+       {hanzi:'认识',pinyin:'rèn shi',meaning:'Quen biết'}
+     ]
+   }
   },
-  // ... bài 2 đến bài 10 ...
+
+  // ============ BÀI 2 ============
+  {id:2,level:'HSK 1',title:'Số đếm 1–10',sub:'Làm quen với các số đếm cơ bản và cách dùng trong câu hỏi tuổi, số điện thoại.',
+   vocab:[
+     {hanzi:'一',pinyin:'yī',meaning:'Số 1',pos:'số từ',example:'一个人 — một người',image:''},
+     {hanzi:'二',pinyin:'èr',meaning:'Số 2',pos:'số từ',example:'二月 — tháng 2',image:''},
+     {hanzi:'三',pinyin:'sān',meaning:'Số 3',pos:'số từ',example:'三个人 — ba người',image:''},
+     {hanzi:'四',pinyin:'sì',meaning:'Số 4',pos:'số từ',example:'四块钱 — bốn tệ',image:''},
+     {hanzi:'五',pinyin:'wǔ',meaning:'Số 5',pos:'số từ',example:'五点半 — 5 giờ rưỡi',image:''},
+     {hanzi:'十',pinyin:'shí',meaning:'Số 10',pos:'số từ',example:'十分 — rất, mười phần',image:''}
+   ],
+   speaking:[{hanzi:'一二三',pinyin:'yī èr sān',meaning:'1 2 3'},{hanzi:'四五',pinyin:'sì wǔ',meaning:'4 5'},{hanzi:'十块钱',pinyin:'shí kuài qián',meaning:'10 tệ'},{hanzi:'现在五点半',pinyin:'xiàn zài wǔ diǎn bàn',meaning:'Bây giờ là 5 rưỡi'},{hanzi:'我有三个朋友',pinyin:'wǒ yǒu sān ge péng you',meaning:'Tôi có 3 người bạn'}],
+   quiz:[{q:'Số "3" trong tiếng Trung là?',options:['一','二','三','四'],correct:2},{q:'"十" là số mấy?',options:['5','7','10','100'],correct:2},{q:'"wǔ" (五) nghĩa là?',options:['2','3','5','6'],correct:2},{q:'"四" đọc là gì?',options:['sì','shí','sān','èr'],correct:0},{q:'Số 2 viết thế nào?',options:['一','二','三','十'],correct:1}],
+   dialogue:{
+     lines:[
+       {speaker:'A',hanzi:'现在几点？',pinyin:'xiàn zài jǐ diǎn?',meaning:'Bây giờ là mấy giờ?'},
+       {speaker:'B',hanzi:'现在三点半。',pinyin:'xiàn zài sān diǎn bàn.',meaning:'Bây giờ là 3 giờ rưỡi.'},
+       {speaker:'A',hanzi:'谢谢！',pinyin:'xiè xie!',meaning:'Cảm ơn!'},
+       {speaker:'B',hanzi:'不客气。',pinyin:'bú kè qi.',meaning:'Không có gì.'}
+     ],
+     keyWords:[
+       {hanzi:'几点',pinyin:'jǐ diǎn',meaning:'Mấy giờ'},
+       {hanzi:'三点',pinyin:'sān diǎn',meaning:'3 giờ'},
+       {hanzi:'半',pinyin:'bàn',meaning:'Rưỡi'},
+       {hanzi:'不客气',pinyin:'bú kè qi',meaning:'Không có gì'}
+     ]
+   }
+  },
+
+  // ============ BÀI 3 ============
+  {id:3,level:'HSK 1',title:'Hỏi tên và quốc tịch',sub:'Cách hỏi tên, giới thiệu quốc tịch và nói mình đến từ đâu.',
+   vocab:[
+     {hanzi:'名字',pinyin:'míng zi',meaning:'Tên',pos:'danh từ',example:'你叫什么名字？',image:''},
+     {hanzi:'什么',pinyin:'shén me',meaning:'Cái gì',pos:'đại từ nghi vấn',example:'这是什么？',image:''},
+     {hanzi:'哪',pinyin:'nǎ',meaning:'Nào',pos:'đại từ nghi vấn',example:'你是哪国人？',image:''},
+     {hanzi:'国',pinyin:'guó',meaning:'Nước, quốc gia',pos:'danh từ',example:'中国 — Trung Quốc',image:''},
+     {hanzi:'越南',pinyin:'Yuè nán',meaning:'Việt Nam',pos:'danh từ riêng',example:'我是越南人。',image:''},
+     {hanzi:'中国',pinyin:'Zhōng guó',meaning:'Trung Quốc',pos:'danh từ riêng',example:'他是中国人。',image:''}
+   ],
+   speaking:[{hanzi:'你叫什么名字？',pinyin:'nǐ jiào shén me míng zi?',meaning:'Bạn tên là gì?'},{hanzi:'我叫小明',pinyin:'wǒ jiào Xiǎo Míng',meaning:'Tôi tên Tiểu Minh'},{hanzi:'你是哪国人？',pinyin:'nǐ shì nǎ guó rén?',meaning:'Bạn là người nước nào?'},{hanzi:'我是越南人',pinyin:'wǒ shì Yuè nán rén',meaning:'Tôi là người Việt Nam'},{hanzi:'我从河内来',pinyin:'wǒ cóng Hé nèi lái',meaning:'Tôi đến từ Hà Nội'}],
+   quiz:[{q:'"名字" nghĩa là gì?',options:['Quốc tịch','Tên','Địa chỉ','Tuổi'],correct:1},{q:'Hỏi "Bạn là người nước nào?" dùng câu nào?',zh:'你是哪国人？',options:['你叫什么名字？','你是哪国人？','你几岁？','你好吗？'],correct:1},{q:'"越南" trong tiếng Trung là?',options:['中国','越南','美国','日本'],correct:1},{q:'"什么" nghĩa là?',options:['Ai','Cái gì','Ở đâu','Khi nào'],correct:1},{q:'"中国" là nước nào?',options:['Việt Nam','Nhật Bản','Trung Quốc','Hàn Quốc'],correct:2}],
+   dialogue:{
+     lines:[
+       {speaker:'A',hanzi:'你叫什么名字？',pinyin:'nǐ jiào shén me míng zi?',meaning:'Bạn tên là gì?'},
+       {speaker:'B',hanzi:'我叫大卫。你呢？',pinyin:'wǒ jiào Dà wèi. nǐ ne?',meaning:'Tôi tên David. Còn bạn?'},
+       {speaker:'A',hanzi:'我叫小明。你是哪国人？',pinyin:'wǒ jiào Xiǎo Míng. nǐ shì nǎ guó rén?',meaning:'Tôi tên Tiểu Minh. Bạn là người nước nào?'},
+       {speaker:'B',hanzi:'我是美国人。',pinyin:'wǒ shì Měi guó rén.',meaning:'Tôi là người Mỹ.'}
+     ],
+     keyWords:[
+       {hanzi:'名字',pinyin:'míng zi',meaning:'Tên'},
+       {hanzi:'哪国人',pinyin:'nǎ guó rén',meaning:'Người nước nào'},
+       {hanzi:'美国',pinyin:'Měi guó',meaning:'Nước Mỹ'},
+       {hanzi:'你呢',pinyin:'nǐ ne',meaning:'Còn bạn?'}
+     ]
+   }
+  },
+
+  // ============ BÀI 4 ============
+  {id:4,level:'HSK 1',title:'Gia đình',sub:'Từ vựng về các thành viên trong gia đình và cách giới thiệu gia đình.',
+   vocab:[
+     {hanzi:'家',pinyin:'jiā',meaning:'Nhà, gia đình',pos:'danh từ',example:'我家有四个人。',image:''},
+     {hanzi:'爸爸',pinyin:'bà ba',meaning:'Bố, ba',pos:'danh từ',example:'我爸爸是老师。',image:''},
+     {hanzi:'妈妈',pinyin:'mā ma',meaning:'Mẹ',pos:'danh từ',example:'妈妈在家。',image:''},
+     {hanzi:'哥哥',pinyin:'gē ge',meaning:'Anh trai',pos:'danh từ',example:'我哥哥在北京工作。',image:''},
+     {hanzi:'姐姐',pinyin:'jiě jie',meaning:'Chị gái',pos:'danh từ',example:'姐姐很漂亮。',image:''},
+     {hanzi:'弟弟',pinyin:'dì di',meaning:'Em trai',pos:'danh từ',example:'弟弟今年八岁。',image:''}
+   ],
+   speaking:[{hanzi:'我家有四个人',pinyin:'wǒ jiā yǒu sì ge rén',meaning:'Nhà tôi có 4 người'},{hanzi:'我爸爸是老师',pinyin:'wǒ bà ba shì lǎo shī',meaning:'Bố tôi là giáo viên'},{hanzi:'妈妈在家',pinyin:'mā ma zài jiā',meaning:'Mẹ ở nhà'},{hanzi:'我有一个哥哥',pinyin:'wǒ yǒu yí ge gē ge',meaning:'Tôi có một anh trai'},{hanzi:'弟弟今年八岁',pinyin:'dì di jīn nián bā suì',meaning:'Em trai tôi năm nay 8 tuổi'}],
+   quiz:[{q:'"妈妈" nghĩa là?',options:['Bố','Mẹ','Chị','Em'],correct:1},{q:'"Anh trai" trong tiếng Trung là?',options:['弟弟','哥哥','姐姐','爸爸'],correct:1},{q:'"家" nghĩa là?',options:['Trường học','Gia đình, nhà','Công ty','Bệnh viện'],correct:1},{q:'"jiě jie" (姐姐) là?',options:['Em gái','Chị gái','Mẹ','Bà'],correct:1},{q:'"弟弟" là ai?',options:['Anh trai','Em trai','Em gái','Bố'],correct:1}],
+   dialogue:{
+     lines:[
+       {speaker:'A',hanzi:'你家有几口人？',pinyin:'nǐ jiā yǒu jǐ kǒu rén?',meaning:'Nhà bạn có mấy người?'},
+       {speaker:'B',hanzi:'我家有四口人。爸爸、妈妈、姐姐和我。',pinyin:'wǒ jiā yǒu sì kǒu rén. bà ba, mā ma, jiě jie hé wǒ.',meaning:'Nhà tôi có 4 người. Bố, mẹ, chị và tôi.'},
+       {speaker:'A',hanzi:'你有哥哥吗？',pinyin:'nǐ yǒu gē ge ma?',meaning:'Bạn có anh trai không?'},
+       {speaker:'B',hanzi:'没有，我只有一个姐姐。',pinyin:'méi yǒu, wǒ zhǐ yǒu yí ge jiě jie.',meaning:'Không, tôi chỉ có một chị gái.'}
+     ],
+     keyWords:[
+       {hanzi:'几口人',pinyin:'jǐ kǒu rén',meaning:'Mấy người'},
+       {hanzi:'爸爸',pinyin:'bà ba',meaning:'Bố'},
+       {hanzi:'妈妈',pinyin:'mā ma',meaning:'Mẹ'},
+       {hanzi:'姐姐',pinyin:'jiě jie',meaning:'Chị gái'}
+     ]
+   }
+  },
+
+  // ============ BÀI 5 ============
+  {id:5,level:'HSK 1',title:'Hỏi giờ',sub:'Cách nói giờ, phút và hỏi thời gian trong tiếng Trung.',
+   vocab:[
+     {hanzi:'几点',pinyin:'jǐ diǎn',meaning:'Mấy giờ',pos:'cụm nghi vấn',example:'现在几点？',image:''},
+     {hanzi:'现在',pinyin:'xiàn zài',meaning:'Bây giờ',pos:'danh từ thời gian',example:'现在八点。',image:''},
+     {hanzi:'点',pinyin:'diǎn',meaning:'Giờ (đơn vị)',pos:'lượng từ',example:'三点 — 3 giờ',image:''},
+     {hanzi:'分',pinyin:'fēn',meaning:'Phút (đơn vị)',pos:'lượng từ',example:'三十分 — 30 phút',image:''},
+     {hanzi:'半',pinyin:'bàn',meaning:'Rưỡi',pos:'số từ',example:'五点半 — 5 giờ rưỡi',image:''},
+     {hanzi:'早上',pinyin:'zǎo shang',meaning:'Buổi sáng',pos:'danh từ thời gian',example:'早上好！',image:''}
+   ],
+   speaking:[{hanzi:'现在几点？',pinyin:'xiàn zài jǐ diǎn?',meaning:'Bây giờ là mấy giờ?'},{hanzi:'现在八点',pinyin:'xiàn zài bā diǎn',meaning:'Bây giờ là 8 giờ'},{hanzi:'八点半',pinyin:'bā diǎn bàn',meaning:'8 giờ rưỡi'},{hanzi:'早上好！',pinyin:'zǎo shang hǎo!',meaning:'Chào buổi sáng!'},{hanzi:'我七点起床',pinyin:'wǒ qī diǎn qǐ chuáng',meaning:'Tôi thức dậy lúc 7 giờ'}],
+   quiz:[{q:'"现在几点？" nghĩa là gì?',options:['Bây giờ là mấy giờ?','Hôm nay thứ mấy?','Bạn bao nhiêu tuổi?','Bạn ở đâu?'],correct:0},{q:'"半" nghĩa là?',options:['Giờ','Phút','Rưỡi','Sáng'],correct:2},{q:'"8 giờ" nói thế nào?',zh:'八点',options:['八点','八分','八半','八早'],correct:0},{q:'"早上" là buổi nào?',options:['Sáng','Chiều','Tối','Đêm'],correct:0},{q:'"分" trong thời gian là gì?',options:['Giờ','Phút','Giây','Ngày'],correct:1}],
+   dialogue:{
+     lines:[
+       {speaker:'A',hanzi:'现在几点？',pinyin:'xiàn zài jǐ diǎn?',meaning:'Bây giờ là mấy giờ?'},
+       {speaker:'B',hanzi:'现在八点。',pinyin:'xiàn zài bā diǎn.',meaning:'Bây giờ là 8 giờ.'},
+       {speaker:'A',hanzi:'早上好！你几点起床？',pinyin:'zǎo shang hǎo! nǐ jǐ diǎn qǐ chuáng?',meaning:'Chào buổi sáng! Bạn thức dậy lúc mấy giờ?'},
+       {speaker:'B',hanzi:'我七点起床。',pinyin:'wǒ qī diǎn qǐ chuáng.',meaning:'Tôi thức dậy lúc 7 giờ.'}
+     ],
+     keyWords:[
+       {hanzi:'几点',pinyin:'jǐ diǎn',meaning:'Mấy giờ'},
+       {hanzi:'现在',pinyin:'xiàn zài',meaning:'Bây giờ'},
+       {hanzi:'起床',pinyin:'qǐ chuáng',meaning:'Thức dậy'},
+       {hanzi:'早上好',pinyin:'zǎo shang hǎo',meaning:'Chào buổi sáng'}
+     ]
+   }
+  },
+
+  // ============ BÀI 6 ============
+  {id:6,level:'HSK 2',title:'Mua sắm & Hỏi giá',sub:'Từ vựng và mẫu câu khi mua sắm, hỏi giá, trả giá và thanh toán.',
+   vocab:[
+     {hanzi:'多少钱',pinyin:'duō shao qián',meaning:'Bao nhiêu tiền',pos:'cụm nghi vấn',example:'这个多少钱？',image:''},
+     {hanzi:'这个',pinyin:'zhè ge',meaning:'Cái này',pos:'đại từ chỉ định',example:'这个很好。',image:''},
+     {hanzi:'块',pinyin:'kuài',meaning:'Tệ (đơn vị tiền)',pos:'lượng từ',example:'十块钱。',image:''},
+     {hanzi:'买',pinyin:'mǎi',meaning:'Mua',pos:'động từ',example:'我要买这个。',image:''},
+     {hanzi:'贵',pinyin:'guì',meaning:'Đắt',pos:'tính từ',example:'太贵了！',image:''},
+     {hanzi:'便宜',pinyin:'pián yi',meaning:'Rẻ',pos:'tính từ',example:'便宜一点吧。',image:''}
+   ],
+   speaking:[{hanzi:'这个多少钱？',pinyin:'zhè ge duō shao qián?',meaning:'Cái này bao nhiêu tiền?'},{hanzi:'太贵了！',pinyin:'tài guì le!',meaning:'Đắt quá!'},{hanzi:'便宜一点吧',pinyin:'pián yi yì diǎn ba',meaning:'Bớt chút đi'},{hanzi:'我要买这个',pinyin:'wǒ yào mǎi zhè ge',meaning:'Tôi muốn mua cái này'},{hanzi:'可以刷卡吗？',pinyin:'kě yǐ shuā kǎ ma?',meaning:'Có thể quẹt thẻ không?'}],
+   quiz:[{q:'"多少钱？" dùng để hỏi gì?',options:['Hỏi giờ','Hỏi giá','Hỏi tuổi','Hỏi tên'],correct:1},{q:'"贵" nghĩa là?',options:['Rẻ','Đắt','Đẹp','Xấu'],correct:1},{q:'"买" nghĩa là gì?',options:['Bán','Mua','Xem','Trả'],correct:1},{q:'"便宜" có nghĩa là?',options:['Đắt','Rẻ','Tốt','Mới'],correct:1},{q:'"这个" nghĩa là?',options:['Cái kia','Cái này','Cái đó','Cái nào'],correct:1}],
+   dialogue:{
+     lines:[
+       {speaker:'A',hanzi:'这个多少钱？',pinyin:'zhè ge duō shao qián?',meaning:'Cái này bao nhiêu tiền?'},
+       {speaker:'B',hanzi:'二十块钱。',pinyin:'èr shí kuài qián.',meaning:'20 tệ.'},
+       {speaker:'A',hanzi:'太贵了！便宜一点吧。',pinyin:'tài guì le! pián yi yì diǎn ba.',meaning:'Đắt quá! Bớt chút đi.'},
+       {speaker:'B',hanzi:'好吧，十八块。',pinyin:'hǎo ba, shí bā kuài.',meaning:'Được rồi, 18 tệ.'},
+       {speaker:'A',hanzi:'好的，我买这个。',pinyin:'hǎo de, wǒ mǎi zhè ge.',meaning:'Được, tôi mua cái này.'}
+     ],
+     keyWords:[
+       {hanzi:'多少钱',pinyin:'duō shao qián',meaning:'Bao nhiêu tiền'},
+       {hanzi:'太贵了',pinyin:'tài guì le',meaning:'Đắt quá'},
+       {hanzi:'便宜一点',pinyin:'pián yi yì diǎn',meaning:'Bớt chút'},
+       {hanzi:'买',pinyin:'mǎi',meaning:'Mua'}
+     ]
+   }
+  },
+
+  // ============ BÀI 7 ============
+  {id:7,level:'HSK 2',title:'Sở thích',sub:'Nói về sở thích cá nhân: đọc sách, nghe nhạc, thể thao, du lịch...',
+   vocab:[
+     {hanzi:'喜欢',pinyin:'xǐ huan',meaning:'Thích',pos:'động từ',example:'我喜欢看书。',image:''},
+     {hanzi:'看书',pinyin:'kàn shū',meaning:'Đọc sách',pos:'động từ',example:'我每天看书。',image:''},
+     {hanzi:'听音乐',pinyin:'tīng yīn yuè',meaning:'Nghe nhạc',pos:'động từ',example:'我喜欢听音乐。',image:''},
+     {hanzi:'运动',pinyin:'yùn dòng',meaning:'Vận động, thể thao',pos:'động từ / danh từ',example:'我喜欢运动。',image:''},
+     {hanzi:'旅游',pinyin:'lǚ yóu',meaning:'Du lịch',pos:'động từ / danh từ',example:'我喜欢旅游。',image:''},
+     {hanzi:'电影',pinyin:'diàn yǐng',meaning:'Phim',pos:'danh từ',example:'我们去看电影吧。',image:''}
+   ],
+   speaking:[{hanzi:'我喜欢看书',pinyin:'wǒ xǐ huan kàn shū',meaning:'Tôi thích đọc sách'},{hanzi:'你喜欢什么？',pinyin:'nǐ xǐ huan shén me?',meaning:'Bạn thích gì?'},{hanzi:'我喜欢听音乐',pinyin:'wǒ xǐ huan tīng yīn yuè',meaning:'Tôi thích nghe nhạc'},{hanzi:'周末我去旅游',pinyin:'zhōu mò wǒ qù lǚ yóu',meaning:'Cuối tuần tôi đi du lịch'},{hanzi:'我们去看电影吧',pinyin:'wǒ men qù kàn diàn yǐng ba',meaning:'Chúng ta đi xem phim nhé'}],
+   quiz:[{q:'"喜欢" nghĩa là gì?',options:['Ghét','Thích','Cần','Muốn'],correct:1},{q:'"看书" nghĩa là?',options:['Xem phim','Đọc sách','Nghe nhạc','Viết thư'],correct:1},{q:'"Du lịch" trong tiếng Trung là?',options:['运动','旅游','电影','音乐'],correct:1},{q:'"听音乐" nghĩa là?',options:['Nghe nhạc','Xem phim','Đọc sách','Chơi game'],correct:0},{q:'"你喜欢什么？" nghĩa là?',options:['Bạn thích gì?','Bạn tên gì?','Bạn ở đâu?','Bạn khỏe không?'],correct:0}],
+   dialogue:{
+     lines:[
+       {speaker:'A',hanzi:'你喜欢什么？',pinyin:'nǐ xǐ huan shén me?',meaning:'Bạn thích gì?'},
+       {speaker:'B',hanzi:'我喜欢看书和听音乐。',pinyin:'wǒ xǐ huan kàn shū hé tīng yīn yuè.',meaning:'Tôi thích đọc sách và nghe nhạc.'},
+       {speaker:'A',hanzi:'我也喜欢看书！你喜欢看电影吗？',pinyin:'wǒ yě xǐ huan kàn shū! nǐ xǐ huan kàn diàn yǐng ma?',meaning:'Tôi cũng thích đọc sách! Bạn thích xem phim không?'},
+       {speaker:'B',hanzi:'喜欢，我们周末去看电影吧。',pinyin:'xǐ huan, wǒ men zhōu mò qù kàn diàn yǐng ba.',meaning:'Thích, cuối tuần chúng ta đi xem phim nhé.'}
+     ],
+     keyWords:[
+       {hanzi:'喜欢',pinyin:'xǐ huan',meaning:'Thích'},
+       {hanzi:'看书',pinyin:'kàn shū',meaning:'Đọc sách'},
+       {hanzi:'听音乐',pinyin:'tīng yīn yuè',meaning:'Nghe nhạc'},
+       {hanzi:'看电影',pinyin:'kàn diàn yǐng',meaning:'Xem phim'}
+     ]
+   }
+  },
+
+  // ============ BÀI 8 ============
+  {id:8,level:'HSK 2',title:'Ở nhà hàng',sub:'Gọi món, gọi phục vụ và thanh toán khi đi ăn nhà hàng.',
+   vocab:[
+     {hanzi:'服务员',pinyin:'fú wù yuán',meaning:'Phục vụ viên',pos:'danh từ',example:'服务员，买单！',image:''},
+     {hanzi:'菜单',pinyin:'cài dān',meaning:'Thực đơn',pos:'danh từ',example:'请给我菜单。',image:''},
+     {hanzi:'点菜',pinyin:'diǎn cài',meaning:'Gọi món',pos:'động từ',example:'我要点菜。',image:''},
+     {hanzi:'好吃',pinyin:'hǎo chī',meaning:'Ngon',pos:'tính từ',example:'这个菜很好吃。',image:''},
+     {hanzi:'买单',pinyin:'mǎi dān',meaning:'Thanh toán',pos:'động từ',example:'服务员，买单！',image:''},
+     {hanzi:'筷子',pinyin:'kuài zi',meaning:'Đũa',pos:'danh từ',example:'请给我一双筷子。',image:''}
+   ],
+   speaking:[{hanzi:'服务员！',pinyin:'fú wù yuán!',meaning:'Phục vụ ơi!'},{hanzi:'请给我菜单',pinyin:'qǐng gěi wǒ cài dān',meaning:'Cho tôi xin thực đơn'},{hanzi:'我要一份宫保鸡丁',pinyin:'wǒ yào yí fèn Gōng bǎo jī dīng',meaning:'Tôi muốn một phần Kung Pao gà'},{hanzi:'这个菜很好吃',pinyin:'zhè ge cài hěn hǎo chī',meaning:'Món này rất ngon'},{hanzi:'服务员，买单！',pinyin:'fú wù yuán, mǎi dān!',meaning:'Phục vụ ơi, thanh toán!'}],
+   quiz:[{q:'"服务员" nghĩa là?',options:['Đầu bếp','Phục vụ viên','Khách hàng','Quản lý'],correct:1},{q:'"菜单" là gì?',options:['Bàn ăn','Thực đơn','Bếp','Ly nước'],correct:1},{q:'"买单" nghĩa là?',options:['Đặt bàn','Thanh toán','Gọi món','Đổi bàn'],correct:1},{q:'"好吃" nghĩa là?',options:['Đẹp','Ngon','Mặn','Nhạt'],correct:1},{q:'"筷子" là gì?',options:['Muỗng','Đũa','Dao','Dĩa'],correct:1}],
+   dialogue:{
+     lines:[
+       {speaker:'A',hanzi:'服务员，请给我菜单。',pinyin:'fú wù yuán, qǐng gěi wǒ cài dān.',meaning:'Phục vụ ơi, cho tôi xin thực đơn.'},
+       {speaker:'B',hanzi:'好的，给您。',pinyin:'hǎo de, gěi nín.',meaning:'Vâng, đây ạ.'},
+       {speaker:'A',hanzi:'我要一份宫保鸡丁。',pinyin:'wǒ yào yí fèn Gōng bǎo jī dīng.',meaning:'Tôi muốn một phần Kung Pao gà.'},
+       {speaker:'B',hanzi:'好的，请稍等。',pinyin:'hǎo de, qǐng shāo děng.',meaning:'Vâng, xin đợi chút.'},
+       {speaker:'A',hanzi:'服务员，买单！',pinyin:'fú wù yuán, mǎi dān!',meaning:'Phục vụ ơi, thanh toán!'}
+     ],
+     keyWords:[
+       {hanzi:'服务员',pinyin:'fú wù yuán',meaning:'Phục vụ viên'},
+       {hanzi:'菜单',pinyin:'cài dān',meaning:'Thực đơn'},
+       {hanzi:'点菜',pinyin:'diǎn cài',meaning:'Gọi món'},
+       {hanzi:'买单',pinyin:'mǎi dān',meaning:'Thanh toán'}
+     ]
+   }
+  },
+
+  // ============ BÀI 9 ============
+  {id:9,level:'HSK 2',title:'Chỉ đường',sub:'Hỏi đường, chỉ đường và tìm địa điểm bằng tiếng Trung.',
+   vocab:[
+     {hanzi:'请问',pinyin:'qǐng wèn',meaning:'Xin hỏi',pos:'cụm từ',example:'请问，地铁站在哪里？',image:''},
+     {hanzi:'哪里',pinyin:'nǎ lǐ',meaning:'Ở đâu',pos:'đại từ nghi vấn',example:'洗手间在哪里？',image:''},
+     {hanzi:'一直走',pinyin:'yì zhí zǒu',meaning:'Đi thẳng',pos:'động từ',example:'一直走，就到了。',image:''},
+     {hanzi:'左转',pinyin:'zuǒ zhuǎn',meaning:'Rẽ trái',pos:'động từ',example:'前面左转。',image:''},
+     {hanzi:'右转',pinyin:'yòu zhuǎn',meaning:'Rẽ phải',pos:'động từ',example:'在路口右转。',image:''},
+     {hanzi:'地铁站',pinyin:'dì tiě zhàn',meaning:'Ga tàu điện ngầm',pos:'danh từ',example:'地铁站远不远？',image:''}
+   ],
+   speaking:[{hanzi:'请问，地铁站在哪里？',pinyin:'qǐng wèn, dì tiě zhàn zài nǎ lǐ?',meaning:'Xin hỏi, ga tàu điện ngầm ở đâu?'},{hanzi:'一直走',pinyin:'yì zhí zǒu',meaning:'Đi thẳng'},{hanzi:'前面左转',pinyin:'qián miàn zuǒ zhuǎn',meaning:'Phía trước rẽ trái'},{hanzi:'在路口右转',pinyin:'zài lù kǒu yòu zhuǎn',meaning:'Rẽ phải ở ngã tư'},{hanzi:'谢谢你的帮助',pinyin:'xiè xie nǐ de bāng zhù',meaning:'Cảm ơn sự giúp đỡ của bạn'}],
+   quiz:[{q:'"请问" nghĩa là?',options:['Xin chào','Xin hỏi','Cảm ơn','Tạm biệt'],correct:1},{q:'"哪里" nghĩa là?',options:['Ở đâu','Cái gì','Ai','Khi nào'],correct:0},{q:'"一直走" nghĩa là?',options:['Dừng lại','Đi thẳng','Quay lại','Rẽ trái'],correct:1},{q:'"左转" là gì?',options:['Rẽ phải','Rẽ trái','Đi thẳng','Quay đầu'],correct:1},{q:'"地铁站" là gì?',options:['Bến xe','Sân bay','Ga tàu điện ngầm','Bến tàu'],correct:2}],
+   dialogue:{
+     lines:[
+       {speaker:'A',hanzi:'请问，地铁站在哪里？',pinyin:'qǐng wèn, dì tiě zhàn zài nǎ lǐ?',meaning:'Xin hỏi, ga tàu điện ngầm ở đâu?'},
+       {speaker:'B',hanzi:'一直走，前面左转就到了。',pinyin:'yì zhí zǒu, qián miàn zuǒ zhuǎn jiù dào le.',meaning:'Đi thẳng, phía trước rẽ trái là đến.'},
+       {speaker:'A',hanzi:'远不远？',pinyin:'yuǎn bu yuǎn?',meaning:'Có xa không?'},
+       {speaker:'B',hanzi:'不远，五分钟就到。',pinyin:'bù yuǎn, wǔ fēn zhōng jiù dào.',meaning:'Không xa, 5 phút là đến.'},
+       {speaker:'A',hanzi:'谢谢！',pinyin:'xiè xie!',meaning:'Cảm ơn!'}
+     ],
+     keyWords:[
+       {hanzi:'请问',pinyin:'qǐng wèn',meaning:'Xin hỏi'},
+       {hanzi:'地铁站',pinyin:'dì tiě zhàn',meaning:'Ga tàu điện ngầm'},
+       {hanzi:'一直走',pinyin:'yì zhí zǒu',meaning:'Đi thẳng'},
+       {hanzi:'左转',pinyin:'zuǒ zhuǎn',meaning:'Rẽ trái'}
+     ]
+   }
+  },
+
+  // ============ BÀI 10 ============
+  {id:10,level:'HSK 2',title:'Thời tiết',sub:'Nói về thời tiết, hỏi dự báo và các hiện tượng thời tiết.',
+   vocab:[
+     {hanzi:'天气',pinyin:'tiān qì',meaning:'Thời tiết',pos:'danh từ',example:'今天天气很好。',image:''},
+     {hanzi:'好',pinyin:'hǎo',meaning:'Tốt, đẹp',pos:'tính từ',example:'天气很好。',image:''},
+     {hanzi:'下雨',pinyin:'xià yǔ',meaning:'Mưa (rơi)',pos:'động từ',example:'明天会下雨。',image:''},
+     {hanzi:'下雪',pinyin:'xià xuě',meaning:'Tuyết rơi',pos:'động từ',example:'冬天下雪。',image:''},
+     {hanzi:'热',pinyin:'rè',meaning:'Nóng',pos:'tính từ',example:'夏天很热。',image:''},
+     {hanzi:'冷',pinyin:'lěng',meaning:'Lạnh',pos:'tính từ',example:'冬天很冷。',image:''}
+   ],
+   speaking:[{hanzi:'今天天气很好',pinyin:'jīn tiān tiān qì hěn hǎo',meaning:'Hôm nay thời tiết rất đẹp'},{hanzi:'明天会下雨吗？',pinyin:'míng tiān huì xià yǔ ma?',meaning:'Ngày mai có mưa không?'},{hanzi:'天气很热',pinyin:'tiān qì hěn rè',meaning:'Thời tiết rất nóng'},{hanzi:'外面很冷',pinyin:'wài miàn hěn lěng',meaning:'Bên ngoài rất lạnh'},{hanzi:'今天多少度？',pinyin:'jīn tiān duō shao dù?',meaning:'Hôm nay bao nhiêu độ?'}],
+   quiz:[{q:'"天气" nghĩa là?',options:['Không khí','Thời tiết','Bầu trời','Mặt trời'],correct:1},{q:'"下雨" nghĩa là?',options:['Nắng','Mưa','Gió','Tuyết'],correct:1},{q:'"热" nghĩa là?',options:['Lạnh','Nóng','Mát','Ấm'],correct:1},{q:'"下雪" nghĩa là?',options:['Mưa','Tuyết rơi','Sương mù','Gió'],correct:1},{q:'"冷" nghĩa là?',options:['Nóng','Lạnh','Mát','Khô'],correct:1}],
+   dialogue:{
+     lines:[
+       {speaker:'A',hanzi:'今天天气怎么样？',pinyin:'jīn tiān tiān qì zěn me yàng?',meaning:'Hôm nay thời tiết thế nào?'},
+       {speaker:'B',hanzi:'今天天气很好，不冷也不热。',pinyin:'jīn tiān tiān qì hěn hǎo, bù lěng yě bú rè.',meaning:'Hôm nay thời tiết đẹp, không lạnh cũng không nóng.'},
+       {speaker:'A',hanzi:'明天呢？',pinyin:'míng tiān ne?',meaning:'Ngày mai thì sao?'},
+       {speaker:'B',hanzi:'明天会下雨。',pinyin:'míng tiān huì xià yǔ.',meaning:'Ngày mai sẽ mưa.'}
+     ],
+     keyWords:[
+       {hanzi:'天气',pinyin:'tiān qì',meaning:'Thời tiết'},
+       {hanzi:'怎么样',pinyin:'zěn me yàng',meaning:'Thế nào'},
+       {hanzi:'下雨',pinyin:'xià yǔ',meaning:'Mưa'},
+       {hanzi:'冷',pinyin:'lěng',meaning:'Lạnh'}
+     ]
+   }
+  }
 ];
 
 init();
