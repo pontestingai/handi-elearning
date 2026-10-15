@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HanDi – Lớp học trực tuyến (Demo Agora)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --r: #ea580c; --r2: #c2410c; --dk: #3d2817; --sl: #5d4037; --mu: #8d6e63;
+    --li: #faf3e8; --bd: #e7d5be; --ok: #16a34a; --err: #dc2626;
+    --fn: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+  body {
+    font-family: var(--fn);
+    background: #fdf8f1;
+    color: var(--sl);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ===== HEADER ===== */
+  .hdr {
+    background: linear-gradient(135deg, #1c1008, #3d2817);
+    color: #f5eadb;
+    padding: 18px 24px;
+  }
+  .hdr__inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .hdr__brand { display: flex; align-items: center; gap: 12px; }
+  .hdr__logo {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--r), var(--r2));
+    border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    font-family: 'Noto Sans SC', sans-serif; font-weight: 900; font-size: 24px; color: #fff;
+  }
+  .hdr__brand b { display: block; font-size: 16px; font-weight: 800; color: #fff; }
+  .hdr__brand span { font-size: 12px; color: #a1887f; }
+  .hdr__badge {
+    padding: 6px 14px; background: rgba(234,88,12,.2);
+    border: 1px solid rgba(234,88,12,.4); color: #fbbf24;
+    border-radius: 99px; font-size: 12px; font-weight: 700;
+  }
+
+  /* ===== LAYOUT ===== */
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 22px 20px; width: 100%; flex: 1; }
+  .grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+  @media (min-width: 900px) {
+    .grid { grid-template-columns: 2fr 1fr; align-items: start; }
+  }
+  .card {
+    background: #fff; border: 1.5px solid var(--bd);
+    border-radius: 16px; padding: 20px;
+  }
+  .card h2 {
+    font-size: 15px; font-weight: 800; color: var(--dk);
+    display: flex; align-items: center; gap: 8px; margin-bottom: 16px;
+  }
+  .card h2 i { color: var(--r); }
+
+  /* ===== JOIN FORM ===== */
+  .form-group { margin-bottom: 14px; }
+  .form-group label {
+    display: block; font-size: 12.5px; font-weight: 700;
+    color: var(--sl); margin-bottom: 6px;
+  }
+  .form-group input, .form-group select {
+    width: 100%; padding: 11px 14px;
+    border: 1.5px solid var(--bd); border-radius: 10px;
+    font-size: 14px; font-family: inherit;
+    background: #fff; color: var(--dk);
+    transition: border .2s;
+  }
+  .form-group input:focus, .form-group select:focus {
+    outline: 0; border-color: var(--r);
+    box-shadow: 0 0 0 3px rgba(234,88,12,.1);
+  }
+  .form-group small {
+    display: block; font-size: 11.5px; color: var(--mu);
+    margin-top: 5px; line-height: 1.4;
+  }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 8px; padding: 12px 22px;
+    border-radius: 10px; font-size: 14px; font-weight: 700;
+    border: 2px solid transparent; cursor: pointer;
+    transition: all .2s; width: 100%; font-family: inherit;
+  }
+  .btn--primary {
+    background: linear-gradient(135deg, var(--r), var(--r2));
+    color: #fff; border-color: transparent;
+    box-shadow: 0 6px 16px rgba(234,88,12,.3);
+  }
+  .btn--primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(234,88,12,.45);
+  }
+  .btn--danger {
+    background: #fff; border-color: #fecaca; color: var(--err);
+  }
+  .btn--danger:hover:not(:disabled) {
+    background: #fef2f2; border-color: var(--err);
+  }
+  .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+  /* ===== VIDEO AREA ===== */
+  .video-stage {
+    position: relative; background: #1c1008;
+    border-radius: 14px; overflow: hidden;
+    aspect-ratio: 16/9; min-height: 320px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+  }
+  .video-stage video {
+    width: 100%; height: 100%; object-fit: contain; display: block;
+  }
+  .video-placeholder {
+    text-align: center; color: #8a7259; padding: 40px;
+  }
+  .video-placeholder i {
+    font-size: 48px; display: block; margin-bottom: 12px;
+    color: #5d4037;
+  }
+  .video-placeholder b {
+    display: block; font-size: 16px; color: #cfc1a8; margin-bottom: 6px;
+  }
+  .video-placeholder p { font-size: 13px; line-height: 1.5; }
+
+  .controls {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .controls .btn { width: auto; flex: 1; min-width: 130px; }
+
+  /* ===== STATUS BAR ===== */
+  .status-bar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px; border-radius: 10px;
+    font-size: 13.5px; font-weight: 600;
+    margin-bottom: 16px; line-height: 1.5;
+  }
+  .status-bar.info { background: #dbeafe; color: #1e40af; border: 1.5px solid #93c5fd; }
+  .status-bar.ok { background: #dcfce7; color: #166534; border: 1.5px solid #86efac; }
+  .status-bar.err { background: #fef2f2; color: #991b1b; border: 1.5px solid #fecaca; }
+  .status-bar.warn { background: #fffbeb; color: #92400e; border: 1.5px solid #fcd34d; }
+  .status-bar i { font-size: 16px; flex-shrink: 0; }
+  .status-bar.hidden { display: none; }
+
+  .participant-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px; background: var(--li); border-radius: 99px;
+    font-size: 12px; font-weight: 700; color: var(--sl);
+    margin-bottom: 12px;
+  }
+  .participant-badge i { color: var(--ok); }
+
+  /* ===== TOAST ===== */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(30px);
+    background: var(--dk); color: #fff;
+    padding: 13px 22px; border-radius: 11px;
+    font-size: 13.5px; font-weight: 700;
+    z-index: 999; opacity: 0;
+    transition: all .3s; pointer-events: none;
+    box-shadow: 0 12px 40px rgba(0,0,0,.35);
+    max-width: 90vw; text-align: center; line-height: 1.5;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast.ok { background: var(--ok); }
+  .toast.err { background: var(--err); }
+  .toast.warn { background: #f59e0b; color: var(--dk); }
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr__inner">
+    <div class="hdr__brand">
+      <div class="hdr__logo">汉</div>
+      <div>
+        <b>HanDi · Lớp học trực tuyến</b>
+        <span>Demo nhúng Agora.io</span>
+      </div>
+    </div>
+    <span class="hdr__badge"><i class="fas fa-flask"></i> BẢN DEMO</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="grid">
+
+    <!-- CỘT TRÁI: Video + Điều khiển -->
+    <div>
+      <!-- STATUS -->
+      <div class="status-bar info" id="statusBar">
+        <i class="fas fa-info-circle"></i>
+        <span>Chưa tham gia lớp học. Điền thông tin và bấm "Tham gia".</span>
+      </div>
+
+      <!-- VIDEO -->
+      <div class="video-stage" id="videoStage">
+        <div class="video-placeholder" id="videoPlaceholder">
+          <i class="fas fa-video"></i>
+          <b>Video sẽ hiển thị ở đây</b>
+          <p>Sau khi tham gia lớp học, video của giáo viên sẽ xuất hiện trong khung này.</p>
+        </div>
+      </div>
+
+      <!-- SỐ NGƯỜI -->
+      <div class="participant-badge hidden" id="participantBadge">
+        <i class="fas fa-users"></i>
+        <span id="participantCount">0</span> người trong lớp
+      </div>
+
+      <!-- ĐIỀU KHIỂN -->
+      <div class="controls" id="controls" style="display:none;">
+        <button class="btn btn--primary" id="btnMute" onclick="toggleMute()">
+          <i class="fas fa-microphone"></i> <span>Micro</span>
+        </button>
+        <button class="btn btn--primary" id="btnCam" onclick="toggleCamera()">
+          <i class="fas fa-video"></i> <span>Camera</span>
+        </button>
+        <button class="btn btn--danger" onclick="leaveChannel()">
+          <i class="fas fa-arrow-right-from-bracket"></i> Rời lớp
+        </button>
+      </div>
+    </div>
+
+    <!-- CỘT PHẢI: Form tham gia -->
+    <div>
+      <div class="card" id="joinCard">
+        <h2><i class="fas fa-right-to-bracket"></i> Tham gia lớp học</h2>
+
+        <div class="form-group">
+          <label>Vai trò</label>
+          <select id="roleSelect">
+            <option value="host">👨‍🏫 Giáo viên (phát sóng)</option>
+            <option value="audience">👩‍🎓 Học viên (xem)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Agora App ID</label>
+          <input type="text" id="appIdInput" placeholder="Dán App ID từ Agora Console">
+          <small>Lấy miễn phí tại <a href="https://console.agora.io" target="_blank" style="color:var(--r);font-weight:700">console.agora.io</a> → Project → App ID</small>
+        </div>
+
+        <div class="form-group">
+          <label>Tên kênh (Channel)</label>
+          <input type="text" id="channelInput" placeholder="VD: handi-class-01" value="handi-class">
+          <small>Tất cả mọi người phải nhập <b>cùng một tên kênh</b> để gặp nhau.</small>
+        </div>
+
+        <div class="form-group">
+          <label>Token (tùy chọn)</label>
+          <input type="text" id="tokenInput" placeholder="Để trống nếu dùng chế độ Test">
+          <small>Chế độ test (App ID chưa bật certificate) có thể để trống.</small>
+        </div>
+
+        <button class="btn btn--primary" id="btnJoin" onclick="joinChannel()" style="margin-top:8px;">
+          <i class="fas fa-sign-in-alt"></i> Tham gia
+        </button>
+      </div>
+
+      <!-- HƯỚNG DẪN -->
+      <div class="card" style="margin-top:16px;">
+        <h2><i class="fas fa-circle-info"></i> Hướng dẫn nhanh</h2>
+        <ol style="font-size:13px; line-height:1.8; padding-left:18px; color:var(--sl);">
+          <li>Tạo tài khoản miễn phí tại <b>agora.io</b></li>
+          <li>Vào <b>Console → Project Management</b></li>
+          <li>Tạo project mới → copy <b>App ID</b></li>
+          <li>Dán App ID vào ô bên trên</li>
+          <li>Mở 2 tab: một tab chọn <b>Giáo viên</b>, một tab chọn <b>Học viên</b></li>
+          <li>Nhập <b>cùng tên kênh</b> ở cả 2 tab</li>
+          <li>Bấm <b>Tham gia</b> ở cả 2 tab → video sẽ kết nối</li>
+        </ol>
+        <div style="margin-top:12px; padding:10px 12px; background:var(--li); border-radius:8px; font-size:12px; color:var(--mu); line-height:1.5;">
+          <b style="color:var(--r2)">Lưu ý:</b> Agora cho <b>10.000 phút miễn phí</b> mỗi tháng — đủ cho lớp học ~20 người × 8 giờ.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- AGORA SDK -->
+<script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.20.0.js"></script>
+
+<script>
+/* ============================================================
+   CẤU HÌNH
+   ============================================================ */
+let client = null;
+let localTracks = { video: null, audio: null };
+let remoteUsers = {};
+let joined = false;
+let muted = false;
+let camOff = false;
+
+const statusBar = document.getElementById('statusBar');
+const videoStage = document.getElementById('videoStage');
+const videoPlaceholder = document.getElementById('videoPlaceholder');
+const participantBadge = document.getElementById('participantBadge');
+const participantCount = document.getElementById('participantCount');
+const controls = document.getElementById('controls');
+const joinCard = document.getElementById('joinCard');
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+function toast(msg, type, ms){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + (type || '');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.className = 'toast', ms || 2800);
+}
+
+/* ============================================================
+   STATUS
+   ============================================================ */
+function setStatus(type, msg){
+  statusBar.className = 'status-bar ' + type;
+  statusBar.querySelector('span').textContent = msg;
+  statusBar.querySelector('i').className = {
+    info: 'fas fa-info-circle',
+    ok: 'fas fa-circle-check',
+    err: 'fas fa-circle-exclamation',
+    warn: 'fas fa-triangle-exclamation'
+  }[type] || 'fas fa-info-circle';
+}
+
+/* ============================================================
+   JOIN
+   ============================================================ */
+async function joinChannel(){
+  const appId = document.getElementById('appIdInput').value.trim();
+  const channel = document.getElementById('channelInput').value.trim();
+  const token = document.getElementById('tokenInput').value.trim() || null;
+  const role = document.getElementById('roleSelect').value;
+
+  if(!appId){ toast('Vui lòng nhập App ID', 'err'); return; }
+  if(!channel){ toast('Vui lòng nhập tên kênh', 'err'); return; }
+
+  const btn = document.getElementById('btnJoin');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang kết nối...';
+  setStatus('info', 'Đang kết nối tới Agora...');
+
+  try {
+    client = AgoraRTC.createClient({ mode: 'live', codec: 'vp8' });
+
+    // Đăng ký sự kiện
+    client.on('user-published', handleUserPublished);
+    client.on('user-unpublished', handleUserUnpublished);
+    client.on('user-joined', handleUserJoined);
+    client.on('user-left', handleUserLeft);
+
+    // Tham gia kênh
+    const uid = await client.join(appId, channel, token, null);
+    console.log('Joined channel with UID:', uid);
+
+    // Nếu là host → publish
+    if(role === 'host'){
+      await client.setClientRole('host');
+      try {
+        [localTracks.audio, localTracks.video] = await AgoraRTC.createMicrophoneAndCameraTracks();
+        await client.publish([localTracks.audio, localTracks.video]);
+        // Hiện video của chính mình
+        localTracks.video.play('videoStage', { fit: 'contain' });
+      } catch(e) {
+        console.warn('Không lấy được cam/mic:', e);
+        setStatus('warn', 'Không lấy được camera/micro. Bạn vẫn tham gia với vai trò host nhưng không phát sóng.');
+      }
+    } else {
+      await client.setClientRole('audience');
+    }
+
+    joined = true;
+    joinCard.style.display = 'none';
+    controls.style.display = 'flex';
+    participantBadge.classList.remove('hidden');
+    updateParticipantCount();
+
+    setStatus('ok', `Đã tham gia lớp với vai trò ${role === 'host' ? 'Giáo viên' : 'Học viên'}.`);
+    toast('Tham gia thành công!', 'ok');
+  } catch(e){
+    console.error(e);
+    setStatus('err', 'Lỗi: ' + (e.message || e.name || 'Không rõ'));
+    toast('Không thể tham gia: ' + (e.message || e.name), 'err', 4000);
+    cleanup();
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Tham gia';
+  }
+}
+
+/* ============================================================
+   HANDLE REMOTE USERS
+   ============================================================ */
+async function handleUserPublished(user, mediaType){
+  console.log('User published:', user.uid, mediaType);
+  await client.subscribe(user, mediaType);
+  remoteUsers[user.uid] = user;
+
+  if(mediaType === 'video'){
+    videoPlaceholder.style.display = 'none';
+    // Xóa video cũ (nếu có nhiều người) — demo chỉ hiện 1 người
+    user.videoTrack.play('videoStage', { fit: 'contain' });
+  }
+  if(mediaType === 'audio'){
+    user.audioTrack.play();
+  }
+  updateParticipantCount();
+}
+
+function handleUserUnpublished(user, mediaType){
+  console.log('User unpublished:', user.uid, mediaType);
+  if(mediaType === 'video'){
+    const player = document.getElementById('videoStage');
+    // Nếu không còn remote user nào publish video → hiện placeholder
+    setTimeout(() => {
+      const anyRemoteVideo = Object.values(remoteUsers).some(u => u.hasVideo);
+      if(!anyRemoteVideo && !localTracks.video){
+        videoPlaceholder.style.display = 'flex';
+      }
+    }, 500);
+  }
+}
+
+function handleUserJoined(user){
+  console.log('User joined:', user.uid);
+  updateParticipantCount();
+}
+
+function handleUserLeft(user){
+  console.log('User left:', user.uid);
+  delete remoteUsers[user.uid];
+  // Nếu không còn ai → hiện placeholder
+  const anyRemoteVideo = Object.values(remoteUsers).some(u => u.hasVideo);
+  if(!anyRemoteVideo && !localTracks.video){
+    videoPlaceholder.style.display = 'flex';
+  }
+  updateParticipantCount();
+}
+
+function updateParticipantCount(){
+  const total = Object.keys(remoteUsers).length + (joined ? 1 : 0);
+  participantCount.textContent = total;
+}
+
+/* ============================================================
+   CONTROLS
+   ============================================================ */
+function toggleMute(){
+  if(!localTracks.audio) return;
+  muted = !muted;
+  localTracks.audio.setEnabled(!muted);
+  const btn = document.getElementById('btnMute');
+  btn.innerHTML = muted
+    ? '<i class="fas fa-microphone-slash"></i> <span>Bật lại</span>'
+    : '<i class="fas fa-microphone"></i> <span>Micro</span>';
+  toast(muted ? 'Đã tắt micro' : 'Đã bật micro', 'ok', 1500);
+}
+
+function toggleCamera(){
+  if(!localTracks.video) return;
+  camOff = !camOff;
+  localTracks.video.setEnabled(!camOff);
+  const btn = document.getElementById('btnCam');
+  btn.innerHTML = camOff
+    ? '<i class="fas fa-video-slash"></i> <span>Bật lại</span>'
+    : '<i class="fas fa-video"></i> <span>Camera</span>';
+  toast(camOff ? 'Đã tắt camera' : 'Đã bật camera', 'ok', 1500);
+}
+
+/* ============================================================
+   LEAVE
+   ============================================================ */
+async function leaveChannel(){
+  if(!confirm('Rời khỏi lớp học?')) return;
+  await cleanup();
+  joinCard.style.display = 'block';
+  controls.style.display = 'none';
+  participantBadge.classList.add('hidden');
+  videoPlaceholder.style.display = 'flex';
+  setStatus('info', 'Đã rời lớp học.');
+  toast('Đã rời lớp', 'ok');
+}
+
+async function cleanup(){
+  try {
+    if(localTracks.video){ localTracks.video.stop(); localTracks.video.close(); }
+    if(localTracks.audio){ localTracks.audio.stop(); localTracks.audio.close(); }
+    localTracks = { video: null, audio: null };
+    if(client){ await client.leave(); }
+  } catch(e){ console.warn(e); }
+  client = null;
+  remoteUsers = {};
+  joined = false;
+  muted = false;
+  camOff = false;
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+window.addEventListener('beforeunload', () => { cleanup(); });
+</script>
+</body>
+</html>
