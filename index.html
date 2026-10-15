@@ -222,4 +222,124 @@
       <!-- QUIZ -->
       <section class="tab-panel" data-panel="quiz">
         <div class="quiz" id="quizBox">
-          <div class="quiz__head"><div class="quiz__progress">Câu <b id="qCurrent">1</b>/<span id="qTotal">5</span></div><div class="quiz__bar"><div class="quiz__fill" id="quizFill" style="
+          <div class="quiz__head"><div class="quiz__progress">Câu <b id="qCurrent">1</b>/<span id="qTotal">5</span></div><div class="quiz__bar"><div class="quiz__fill" id="quizFill" style="width:0%"></div></div></div>
+          <div class="quiz__question" id="qQuestion"></div>
+          <div class="quiz__options" id="qOptions"></div>
+          <div class="q-feedback" id="qFeedback"></div>
+          <div class="quiz__actions"><button class="btn btn--primary" id="qNext" style="display:none" onclick="nextQuestion()">Câu tiếp <i class="fas fa-arrow-right"></i></button></div>
+        </div>
+        <div class="result-box pass" id="quizResult" style="display:none">
+          <div class="result-box__icon"><i class="fas fa-trophy"></i></div>
+          <div class="result-box__score" id="resultScore">0%</div>
+          <div class="result-box__title" id="resultTitle"></div>
+          <div class="result-box__desc" id="resultDesc"></div>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+            <button class="btn btn--ghost" onclick="restartQuiz()"><i class="fas fa-rotate-right"></i> Làm lại</button>
+            <button class="btn btn--primary" onclick="switchTab('speak')">Sang Luyện nói <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SPEAK -->
+      <section class="tab-panel" data-panel="speak">
+        <div class="speaking" id="speakingBox">
+          <div class="speaking__unsupported" id="speakUnsupported" style="display:none"><i class="fas fa-triangle-exclamation"></i><div><b>Trình duyệt chưa hỗ trợ nhận diện giọng nói.</b><br>Vui lòng dùng <b>Chrome</b> hoặc <b>Edge</b> mới nhất.</div></div>
+          <div id="speakMain">
+            <div class="mic-status hidden" id="micStatus"><i class="fas fa-microphone-slash" id="micStatusIcon"></i><span id="micStatusText">Cần cấp quyền micro</span><button class="mic-status__btn" id="micStatusBtn" onclick="requestMicPermission()"><i class="fas fa-microphone"></i> Cấp quyền</button></div>
+            <div class="speaking__nav">
+              <div class="speaking__counter">Câu <b id="spkCurrent">1</b> / <span id="spkTotal">5</span> · đạt <b id="spkDoneCount">0</b></div>
+              <div class="speaking__voice"><i class="fas fa-volume-high"></i><label for="voiceSelect" style="font-weight:600">Giọng:</label><select id="voiceSelect"></select></div>
+            </div>
+            <div class="speaking__progress" id="spkProgress"></div>
+            <div class="speak-target">
+              <div class="speak-target__label">Câu cần đọc — đạt ≥85% để tính</div>
+              <div class="speak-target__hanzi" id="spkHanzi" lang="zh">你好</div>
+              <div class="speak-target__pinyin" id="spkPinyin">nǐ hǎo</div>
+              <div class="speak-target__meaning" id="spkMeaning">Xin chào</div>
+              <div class="speak-target__actions">
+                <button class="btn btn--ghost" onclick="playTarget()"><i class="fas fa-volume-high"></i> Nghe mẫu</button>
+                <button class="btn btn--ghost" onclick="playTargetSlow()"><i class="fas fa-turtle"></i> Nghe chậm</button>
+              </div>
+            </div>
+            <div class="speak-mic">
+              <button class="mic-btn" id="micBtn" onclick="toggleRecognition()" aria-label="Nhấn để nói"><span class="mic-btn__ring"></span><i class="fas fa-microphone"></i></button>
+              <div class="mic-hint" id="micHint">Nhấn để nói<small>Hoặc giữ phím Space</small></div>
+              <div class="keyhint" id="keyHint"><kbd>SPACE</kbd><span>Giữ để nói · Thả để dừng</span></div>
+            </div>
+            <div class="speak-transcript" id="speakTranscript">
+              <div class="speak-transcript__label"><i class="fas fa-waveform"></i> AI nghe được</div>
+              <div class="speak-transcript__text empty" id="transcriptText">Nhấn micro hoặc giữ Space...</div>
+            </div>
+            <div class="speak-result" id="speakResult">
+              <div class="speak-result__head">
+                <span class="speak-result__emoji" id="resultEmoji">🎉</span>
+                <span class="speak-result__score" id="resultScore2">100%</span>
+                <div><div class="speak-result__title" id="resultTitle2">Tuyệt vời!</div><div class="speak-result__sub" id="resultSub2"></div></div>
+              </div>
+              <div class="speak-result__tips" id="resultTips"></div>
+            </div>
+            <div class="speaking__controls">
+              <button class="btn btn--ghost" onclick="spkPrev()"><i class="fas fa-chevron-left"></i> Câu trước</button>
+              <button class="btn btn--primary" onclick="spkNext()">Câu tiếp <i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- WRITE (optional, cuối) -->
+      <section class="tab-panel" data-panel="write">
+        <div class="writing">
+          <div class="writing__header">
+            <div class="writing__nav">Chữ <b id="writeCurrent">1</b> / <span id="writeTotal">6</span></div>
+            <div class="writing__tools">
+              <button class="tool-btn" id="btnAnimate" onclick="playStrokeOrder()"><i class="fas fa-play"></i> <span>Xem cách viết</span></button>
+              <button class="tool-btn" id="btnQuiz" onclick="startQuiz()"><i class="fas fa-pen"></i> <span>Luyện viết</span></button>
+              <button class="tool-btn" onclick="clearWriter()" title="Xóa"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+          <div class="writing__stage-wrap"><div class="writing__stage"><div id="hanziWriterTarget" class="writing__writer"></div></div></div>
+          <div class="writing__info"><b id="writeHanzi"></b><span id="writeInfo"></span></div>
+          <div class="writing__controls">
+            <button class="btn btn--ghost" onclick="writeNav(-1)"><i class="fas fa-chevron-left"></i> Chữ trước</button>
+            <button class="btn btn--ghost" onclick="speak(LESSONS[state.currentLesson].vocab[writeIndex].hanzi)"><i class="fas fa-volume-high"></i> Nghe mẫu</button>
+            <button class="btn btn--primary" onclick="writeNav(1)">Chữ tiếp <i class="fas fa-chevron-right"></i></button>
+          </div>
+          <div class="writing__score" id="writingScore">
+            <div class="writing__score-emoji" id="writingScoreEmoji">🎉</div>
+            <div class="writing__score-num" id="writingScoreNum">100%</div>
+            <div class="writing__score-txt" id="writingScoreTxt">Hoàn hảo!</div>
+          </div>
+          <p class="writing__hint"><i class="fas fa-info-circle"></i> Phần này là <b>tuỳ chọn</b>. Nhấn "Xem cách viết" hoặc "Luyện viết" để bắt đầu.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="lightbox__backdrop" onclick="closeLightbox()"></div>
+  <div class="lightbox__content">
+    <button class="lightbox__close" onclick="closeLightbox()"><i class="fas fa-xmark"></i></button>
+    <div class="lightbox__hanzi" id="lbHanzi" lang="zh">你好</div>
+    <div class="lightbox__pinyin" id="lbPinyin">nǐ hǎo</div>
+    <div class="lightbox__meaning" id="lbMeaning">Xin chào</div>
+    <button class="lightbox__speak" onclick="speak(document.getElementById('lbHanzi').textContent)"><i class="fas fa-volume-high"></i> Nghe</button>
+  </div>
+</div>
+
+<!-- PROFILE MODAL -->
+<div class="modal" id="profileModal" role="dialog" aria-modal="true">
+  <div class="modal__backdrop" onclick="closeProfile()"></div>
+  <div class="modal__content">
+    <button class="modal__close" onclick="closeProfile()"><i class="fas fa-xmark"></i></button>
+    <h2 class="modal__title">Thông tin tài khoản</h2>
+    <p class="modal__sub">Thông tin lưu cục bộ trên trình duyệt</p>
+    <div class="profile-avatar-block"><div class="profile-avatar-big" id="profileAvatar">A</div><div class="profile-name" id="profileName">User</div><div class="profile-email" id="profileEmail">email@example.com</div></div>
+    <div class="profile-info" id="profileInfo"></div>
+    <button class="btn btn--ghost" style="width:100%;margin-top:12px" onclick="closeProfile();handleLogout()"><i class="fas fa-arrow-right-from-bracket"></i> Đăng xuất</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
