@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HanDi – Học qua Video (Demo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --r:#ea580c;--r2:#c2410c;--dk:#3d2817;--sl:#5d4037;--mu:#8d6e63;
+  --li:#faf3e8;--bd:#e7d5be;--ok:#16a34a;--info:#3b82f6;--gd:#fbbf24;
+  --fn:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --zh:'Noto Sans SC',sans-serif;
+}
+body{font-family:var(--fn);font-size:15px;line-height:1.6;color:var(--sl);background:#fdf8f1;-webkit-font-smoothing:antialiased;padding-bottom:60px}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+input,select{font-family:inherit;font-size:14px}
+
+/* ===== HEADER ===== */
+.hdr{background:linear-gradient(135deg,#1c1008 0%,#3d2817 100%);color:#f5eadb;padding:22px 24px}
+.hdr__inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.hdr__brand{display:flex;align-items:center;gap:12px}
+.hdr__logo{width:46px;height:46px;background:linear-gradient(135deg,#ea580c,#c2410c);border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:var(--zh);font-weight:900;font-size:26px;color:#fff;box-shadow:0 6px 16px rgba(234,88,12,.4)}
+.hdr__brand b{display:block;font-size:17px;font-weight:800;color:#fff}
+.hdr__brand span{font-size:12px;color:#a1887f}
+.hdr__badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(234,88,12,.2);border:1px solid rgba(234,88,12,.4);color:var(--gd);border-radius:99px;font-size:12px;font-weight:700;letter-spacing:.04em}
+
+/* ===== CONTAINER ===== */
+.wrap{max-width:1200px;margin:0 auto;padding:22px 20px}
+.grid{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;align-items:start}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+
+/* ===== CARD ===== */
+.card{background:#fff;border:1.5px solid var(--bd);border-radius:16px;padding:16px;margin-bottom:16px}
+.card h2{font-size:15px;font-weight:800;color:var(--dk);display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.card h2 i{color:var(--r)}
+
+/* ===== VIDEO ===== */
+.vid-wrap{position:relative;background:#000;border-radius:14px;overflow:hidden;margin-bottom:14px;aspect-ratio:16/9}
+.vid-wrap video{width:100%;height:100%;display:block;object-fit:contain}
+.vid-overlay{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;pointer-events:none;z-index:2}
+.vid-badge{background:rgba(0,0,0,.7);color:#fff;padding:5px 12px;border-radius:99px;font-size:12px;font-weight:700;backdrop-filter:blur(6px);pointer-events:auto}
+.vid-progress{position:absolute;bottom:0;left:0;right:0;height:5px;background:rgba(0,0,0,.5);z-index:3}
+.vid-progress__watch{position:absolute;top:0;left:0;height:100%;background:rgba(251,191,36,.5);transition:width .3s}
+.vid-progress__cur{position:absolute;top:0;left:0;height:100%;background:var(--r);transition:width .2s}
+
+/* ===== SUBTITLE BAR ===== */
+.sub-bar{background:linear-gradient(135deg,#1c1008,#2a1810);border-radius:14px;padding:22px 24px;text-align:center;min-height:130px;display:flex;flex-direction:column;justify-content:center;gap:6px;margin-bottom:14px;position:relative;overflow:hidden}
+.sub-bar::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(234,88,12,.15),transparent 50%);pointer-events:none}
+.sub-hz{font-family:var(--zh);font-size:clamp(20px,3vw,28px);font-weight:700;color:#fff;line-height:1.3;position:relative;z-index:1}
+.sub-hz .w{display:inline-block;padding:2px 4px;border-radius:6px;cursor:pointer;transition:all .2s;margin:0 1px}
+.sub-hz .w:hover{background:rgba(234,88,12,.3);color:var(--gd)}
+.sub-hz .w.active{background:var(--r);color:#fff}
+.sub-py{font-size:14px;color:var(--gd);font-style:italic;font-weight:600;position:relative;z-index:1}
+.sub-vi{font-size:14px;color:rgba(245,234,219,.8);position:relative;z-index:1}
+.sub-bar.idle .sub-hz{color:rgba(255,255,255,.35);font-weight:500}
+.sub-bar.idle .sub-py,.sub-bar.idle .sub-vi{opacity:.4}
+
+/* ===== CONTROLS ===== */
+.ctrl-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.ctrl-btn{padding:9px 16px;border-radius:9px;background:#fff;border:1.5px solid var(--bd);color:var(--dk);font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:7px;transition:all .2s}
+.ctrl-btn:hover{border-color:var(--r);color:var(--r);transform:translateY(-1px)}
+.ctrl-btn.active{background:var(--r);border-color:var(--r);color:#fff}
+.ctrl-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.speed-group{display:flex;gap:4px;background:var(--li);border-radius:9px;padding:3px;border:1.5px solid var(--bd)}
+.speed-btn{padding:6px 12px;border-radius:7px;font-size:12.5px;font-weight:700;color:var(--sl);transition:all .2s}
+.speed-btn.active{background:#fff;color:var(--r);box-shadow:0 2px 6px rgba(61,40,23,.08)}
+
+/* ===== WORDS CHIPS ===== */
+.words-row{display:flex;gap:8px;flex-wrap:wrap;padding:12px;background:var(--li);border-radius:12px;border:1.5px dashed var(--bd);min-height:56px;align-items:center}
+.words-empty{font-size:13px;color:var(--mu);font-style:italic}
+.word-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:#fff;border:1.5px solid var(--bd);border-radius:99px;font-size:13px;font-weight:700;color:var(--dk);cursor:pointer;transition:all .2s}
+.word-chip:hover{border-color:var(--r);color:var(--r);transform:translateY(-2px);box-shadow:0 4px 12px rgba(234,88,12,.15)}
+.word-chip .hz{font-family:var(--zh);font-size:15px}
+.word-chip .py{font-style:italic;font-size:11px;color:var(--mu);font-weight:600}
+
+/* ===== TRANSCRIPT ===== */
+.transcript{max-height:520px;overflow-y:auto;padding-right:4px}
+.tr-line{padding:12px 14px;border-radius:10px;background:var(--li);border-left:3px solid var(--bd);margin-bottom:8px;cursor:pointer;transition:all .2s}
+.tr-line:hover{border-left-color:var(--r);background:#fef7ee;transform:translateX(3px)}
+.tr-line.active{background:linear-gradient(90deg,#fff7ed,#fef3c7 60%);border-left-color:var(--r);border-left-width:5px;transform:translateX(5px);box-shadow:0 4px 16px rgba(234,88,12,.15)}
+.tr-line.watched::after{content:"✓";float:right;color:var(--ok);font-weight:900}
+.tr-line__time{font-size:11px;color:var(--mu);font-weight:700;margin-bottom:3px;font-family:ui-monospace,Menlo,monospace}
+.tr-line__hz{font-family:var(--zh);font-size:16px;color:var(--dk);font-weight:500;line-height:1.4}
+.tr-line.active .tr-line__hz{color:var(--r2);font-weight:700}
+.tr-line__vi{font-size:12px;color:var(--mu);margin-top:2px}
+
+/* ===== QUIZ ===== */
+.quiz-locked{background:var(--li);border:1.5px dashed var(--bd);border-radius:14px;padding:24px;text-align:center;color:var(--mu);font-size:13.5px;line-height:1.7}
+.quiz-locked i{font-size:26px;color:var(--warn);display:block;margin-bottom:8px}
+.quiz-locked b{color:var(--dk);display:block;font-size:15px;margin-bottom:4px}
+.quiz-progress{height:6px;background:var(--li);border-radius:99px;overflow:hidden;margin-top:12px}
+.quiz-progress__fill{height:100%;background:linear-gradient(90deg,var(--r),var(--gd));border-radius:99px;transition:width .4s}
+.quiz-q{margin-bottom:18px}
+.quiz-q__text{font-size:15px;font-weight:700;color:var(--dk);margin-bottom:10px}
+.quiz-q__text .zh{font-family:var(--zh);font-size:20px;display:block;margin-bottom:4px}
+.quiz-opt{display:flex;align-items:center;gap:12px;padding:11px 16px;background:var(--li);border:1.5px solid var(--bd);border-radius:11px;font-size:14px;font-weight:600;color:var(--dk);cursor:pointer;margin-bottom:8px;transition:all .2s;width:100%;text-align:left}
+.quiz-opt:hover:not(:disabled){background:#fff;border-color:rgba(234,88,12,.4);transform:translateX(3px)}
+.quiz-opt__key{flex-shrink:0;width:26px;height:26px;border-radius:7px;background:#fff;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+.quiz-opt.correct{background:var(--ok-bg);border-color:var(--ok);color:#166534}
+.quiz-opt.correct .quiz-opt__key{background:var(--ok);border-color:var(--ok);color:#fff}
+.quiz-opt.wrong{background:#fef2f2;border-color:#ef4444;color:#991b1b}
+.quiz-opt.wrong .quiz-opt__key{background:#ef4444;border-color:#ef4444;color:#fff}
+.quiz-opt:disabled{cursor:default}
+.quiz-result{text-align:center;padding:24px;background:linear-gradient(135deg,rgba(22,163,74,.08),rgba(234,88,12,.05));border:1.5px solid var(--ok);border-radius:14px;margin-top:12px}
+.quiz-result .score{font-size:44px;font-weight:900;color:var(--ok);line-height:1;margin-bottom:8px;letter-spacing:-.03em}
+.quiz-result .lbl{font-size:14px;color:var(--sl);font-weight:600}
+
+/* ===== POPUP ===== */
+.popup{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
+.popup.show{display:flex}
+.popup__bd{position:absolute;inset:0;background:rgba(20,12,6,.7);backdrop-filter:blur(6px)}
+.popup__box{position:relative;background:#fff;border-radius:20px;padding:32px 28px;max-width:420px;width:100%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.35);border:2px solid var(--gd);animation:pop .28s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.popup__close{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;background:var(--li);color:var(--sl);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.popup__close:hover{background:var(--r);color:#fff}
+.popup__hz{font-family:var(--zh);font-size:56px;font-weight:700;color:var(--dk);line-height:1.1;margin-bottom:8px}
+.popup__py{font-size:20px;color:var(--r);font-weight:700;font-style:italic;margin-bottom:14px}
+.popup__mn{font-size:18px;color:var(--sl);font-weight:600;line-height:1.4;padding-top:14px;border-top:1px dashed var(--bd);margin-bottom:18px}
+.popup__speak{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;background:var(--rg);color:var(--r);border-radius:10px;font-weight:700;font-size:14px;transition:all .2s}
+.popup__speak:hover{background:var(--r);color:#fff}
+
+/* ===== URL INPUT ===== */
+.url-row{display:flex;gap:8px;margin-bottom:14px}
+.url-row input{flex:1;padding:10px 14px;border:1.5px solid var(--bd);border-radius:9px;font-size:13.5px}
+.url-row input:focus{outline:0;border-color:var(--r)}
+
+/* ===== HINT ===== */
+.hint{background:var(--info-bg);border:1.5px solid rgba(59,130,246,.3);border-radius:12px;padding:14px 16px;font-size:13px;color:#1e40af;line-height:1.6;display:flex;gap:10px;align-items:flex-start;margin-bottom:16px}
+.hint i{flex-shrink:0;margin-top:2px;font-size:15px}
+.hint b{color:#1e3a8a}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(30px);background:var(--dk);color:#fff;padding:13px 22px;border-radius:11px;font-size:13.5px;font-weight:700;z-index:999;opacity:0;transition:all .3s;pointer-events:none;box-shadow:0 12px 40px rgba(0,0,0,.35);max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{background:var(--ok)}
+.toast.err{background:#dc2626}
+.toast.warn{background:var(--warn);color:var(--dk)}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr__inner">
+    <div class="hdr__brand">
+      <div class="hdr__logo">汉</div>
+      <div>
+        <b>HanDi · Học qua Video</b>
+        <span>Karaoke subtitle · Click từ để tra nghĩa</span>
+      </div>
+    </div>
+    <span class="hdr__badge"><i class="fas fa-flask"></i> BẢN DEMO</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- URL input -->
+  <div class="url-row">
+    <input type="url" id="videoUrl" placeholder="Dán URL video .mp4 (bỏ trống = dùng video demo)">
+    <button class="ctrl-btn" onclick="changeVideo()"><i class="fas fa-video"></i> Đổi video</button>
+  </div>
+
+  <div class="hint">
+    <i class="fas fa-circle-info"></i>
+    <div>
+      <b>Cách dùng:</b> Bấm play video → phụ đề chạy theo. Bấm vào <b>từ tiếng Trung trong phụ đề</b> hoặc <b>chip từ vựng</b> bên dưới để xem nghĩa. Bấm dòng trong <b>Transcript</b> để tua tới đoạn đó.
+      <br><b>Mở khoá quiz:</b> Xem ít nhất <b>80% video</b>. File demo hiện tại chỉ 10 giây — xem 8 giây là mở.
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <!-- LEFT: Video + Subtitle + Words -->
+    <div>
+      <div class="card">
+        <div class="vid-wrap">
+          <video id="vid" controls playsinline preload="metadata"></video>
+          <div class="vid-overlay">
+            <span class="vid-badge"><i class="fas fa-eye"></i> Đã xem <span id="watchPct">0</span>%</span>
+            <span class="vid-badge" id="lineBadge"><i class="fas fa-closed-captioning"></i> Câu 1/5</span>
+          </div>
+          <div class="vid-progress">
+            <div class="vid-progress__watch" id="watchBar"></div>
+            <div class="vid-progress__cur" id="curBar"></div>
+          </div>
+        </div>
+
+        <div class="sub-bar idle" id="subBar">
+          <div class="sub-hz" id="subHz">Nhấn play để bắt đầu...</div>
+          <div class="sub-py" id="subPy"></div>
+          <div class="sub-vi" id="subVi"></div>
+        </div>
+
+        <div class="ctrl-bar">
+          <button class="ctrl-btn" onclick="prevLine()"><i class="fas fa-backward-step"></i> Câu trước</button>
+          <button class="ctrl-btn" onclick="toggleLoop()" id="loopBtn"><i class="fas fa-repeat"></i> Lặp câu</button>
+          <button class="ctrl-btn" onclick="nextLine()">Câu tiếp <i class="fas fa-forward-step"></i></button>
+          <div class="speed-group" style="margin-left:auto">
+            <button class="speed-btn" data-speed="0.75" onclick="setSpeed(0.75, this)">0.75x</button>
+            <button class="speed-btn active" data-speed="1" onclick="setSpeed(1, this)">1x</button>
+            <button class="speed-btn" data-speed="1.25" onclick="setSpeed(1.25, this)">1.25x</button>
+          </div>
+        </div>
+
+        <div style="margin-top:14px">
+          <div style="font-size:12px;font-weight:800;color:var(--mu);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">
+            <i class="fas fa-bookmark" style="color:var(--r)"></i> Từ vựng trong câu — bấm để xem nghĩa
+          </div>
+          <div class="words-row" id="wordsRow">
+            <span class="words-empty">Chưa có câu nào đang chạy...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Transcript + Quiz -->
+    <div>
+      <div class="card">
+        <h2><i class="fas fa-list"></i> Transcript</h2>
+        <div class="transcript" id="transcript"></div>
+      </div>
+
+      <div class="card">
+        <h2><i class="fas fa-circle-question"></i> Kiểm tra hiểu bài</h2>
+        <div id="quizArea">
+          <div class="quiz-locked">
+            <i class="fas fa-lock"></i>
+            <b>Chưa mở khoá</b>
+            Xem đủ 80% video để làm quiz.
+            <div class="quiz-progress"><div class="quiz-progress__fill" id="quizUnlockBar" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- POPUP -->
+<div class="popup" id="popup">
+  <div class="popup__bd" onclick="closePopup()"></div>
+  <div class="popup__box">
+    <button class="popup__close" onclick="closePopup()"><i class="fas fa-xmark"></i></button>
+    <div class="popup__hz" id="popupHz">你好</div>
+    <div class="popup__py" id="popupPy">nǐ hǎo</div>
+    <div class="popup__mn" id="popupMn">Xin chào</div>
+    <button class="popup__speak" onclick="speakCurrentWord()">
+      <i class="fas fa-volume-high"></i> Nghe phát âm
+    </button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   SUBTITLE DATA — khớp với video demo 10s
+   ============================================================ */
+const SUBS = [
+  {
+    start: 0.0, end: 2.0,
+    hz: '你好！', py: 'nǐ hǎo!', vi: 'Xin chào!',
+    words: [{hz:'你好', py:'nǐ hǎo', meaning:'Xin chào'}]
+  },
+  {
+    start: 2.0, end: 4.0,
+    hz: '欢迎来到中文视频课。', py: 'huān yíng lái dào zhōng wén shì pín kè.', vi: 'Chào mừng đến với lớp học tiếng Trung qua video.',
+    words: [
+      {hz:'欢迎', py:'huān yíng', meaning:'Chào mừng'},
+      {hz:'来到', py:'lái dào', meaning:'Đến, tới'},
+      {hz:'中文', py:'zhōng wén', meaning:'Tiếng Trung'},
+      {hz:'视频', py:'shì pín', meaning:'Video'},
+      {hz:'课', py:'kè', meaning:'Bài học, lớp'}
+    ]
+  },
+  {
+    start: 4.0, end: 6.0,
+    hz: '今天我们要学习基础会话。', py: 'jīn tiān wǒ men yào xué xí jī chǔ huì huà.', vi: 'Hôm nay chúng ta sẽ học hội thoại cơ bản.',
+    words: [
+      {hz:'今天', py:'jīn tiān', meaning:'Hôm nay'},
+      {hz:'我们', py:'wǒ men', meaning:'Chúng ta'},
+      {hz:'要', py:'yào', meaning:'Sẽ, muốn'},
+      {hz:'学习', py:'xué xí', meaning:'Học tập'},
+      {hz:'基础', py:'jī chǔ', meaning:'Cơ bản, nền tảng'},
+      {hz:'会话', py:'huì huà', meaning:'Hội thoại'}
+    ]
+  },
+  {
+    start: 6.0, end: 8.0,
+    hz: '请跟我一起念。', py: 'qǐng gēn wǒ yì qǐ niàn.', vi: 'Hãy đọc theo tôi.',
+    words: [
+      {hz:'请', py:'qǐng', meaning:'Xin mời, hãy'},
+      {hz:'跟', py:'gēn', meaning:'Cùng, với'},
+      {hz:'一起', py:'yì qǐ', meaning:'Cùng nhau'},
+      {hz:'念', py:'niàn', meaning:'Đọc, ngâm'}
+    ]
+  },
+  {
+    start: 8.0, end: 10.0,
+    hz: '谢谢大家！', py: 'xiè xie dà jiā!', vi: 'Cảm ơn mọi người!',
+    words: [
+      {hz:'谢谢', py:'xiè xie', meaning:'Cảm ơn'},
+      {hz:'大家', py:'dà jiā', meaning:'Mọi người'}
+    ]
+  }
+];
+
+/* ============================================================
+   QUIZ DATA
+   ============================================================ */
+const QUIZ = [
+  {
+    q: '"你好" nghĩa là gì?', zh: '你好',
+    options: ['Tạm biệt', 'Xin chào', 'Cảm ơn', 'Xin lỗi'],
+    correct: 1
+  },
+  {
+    q: '"视频" nghĩa là gì?', zh: '视频',
+    options: ['Âm thanh', 'Hình ảnh', 'Video', 'Bài hát'],
+    correct: 2
+  },
+  {
+    q: 'Từ nào có nghĩa "Học tập"?', zh: '',
+    options: ['会话', '基础', '学习', '一起'],
+    correct: 2
+  },
+  {
+    q: '"请跟我一起念" nghĩa là gì?', zh: '请跟我一起念',
+    options: ['Hãy đọc theo tôi', 'Hãy nghe tôi', 'Hãy viết theo tôi', 'Hãy nhìn tôi'],
+    correct: 0
+  },
+  {
+    q: '"谢谢大家" nghĩa là gì?', zh: '谢谢大家',
+    options: ['Xin chào mọi người', 'Cảm ơn mọi người', 'Tạm biệt mọi người', 'Xin lỗi mọi người'],
+    correct: 1
+  }
+];
+
+/* ============================================================
+   DEFAULT VIDEO (demo công khai)
+   ============================================================ */
+const DEFAULT_VIDEO = 'https://www.w3schools.com/html/mov_bbb.mp4';
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const vid = document.getElementById('vid');
+const watchedSec = new Set();
+let currentLineIdx = -1;
+let loopCurrent = false;
+let unlocked = false;
+let quizState = { idx: 0, score: 0, done: false };
+let currentWord = null;
+let audioVoice = null;
+
+/* ============================================================
+   INIT VIDEO
+   ============================================================ */
+function initVideo(){
+  const saved = localStorage.getItem('handi_video_url');
+  vid.src = saved || DEFAULT_VIDEO;
+  vid.load();
+}
+initVideo();
+
+vid.addEventListener('loadedmetadata', () => {
+  renderTranscript();
+  updateWatchUI();
+});
+vid.addEventListener('timeupdate', onTimeUpdate);
+vid.addEventListener('ended', () => {
+  if(loopCurrent) seekToLine(currentLineIdx);
+});
+
+/* ============================================================
+   TIME UPDATE → subtitle + watched tracking
+   ============================================================ */
+function onTimeUpdate(){
+  const t = vid.currentTime;
+  watchedSec.add(Math.floor(t));
+  updateWatchUI();
+
+  // Find current subtitle
+  let found = -1;
+  for(let i = 0; i < SUBS.length; i++){
+    if(t >= SUBS[i].start && t < SUBS[i].end){ found = i; break; }
+  }
+  if(found !== currentLineIdx){
+    currentLineIdx = found;
+    renderSubtitle();
+    highlightTranscript();
+    if(found >= 0 && loopCurrent) ensureLoopRange(found);
+  }
+
+  // Update current playhead bar
+  const dur = vid.duration || 1;
+  document.getElementById('curBar').style.width = (t / dur * 100) + '%';
+}
+
+function updateWatchUI(){
+  const dur = Math.floor(vid.duration || 10);
+  const total = Math.max(dur, 1);
+  // Đếm số giây thực tế đã xem (không tính giây ngoài range video)
+  let watched = 0;
+  for(let s = 0; s < total; s++) if(watchedSec.has(s)) watched++;
+  const pct = Math.min(100, Math.round(watched / total * 100));
+  document.getElementById('watchPct').textContent = pct;
+  document.getElementById('watchBar').style.width = pct + '%';
+  document.getElementById('quizUnlockBar').style.width = Math.min(100, pct * 100 / 80) + '%';
+  if(pct >= 80 && !unlocked){
+    unlocked = true;
+    renderQuiz();
+    toast('🎉 Đã mở khoá quiz!', 'ok', 3000);
+  }
+}
+
+/* ============================================================
+   SUBTITLE RENDER
+   ============================================================ */
+function renderSubtitle(){
+  const bar = document.getElementById('subBar');
+  const hzEl = document.getElementById('subHz');
+  const pyEl = document.getElementById('subPy');
+  const viEl = document.getElementById('subVi');
+  const badge = document.getElementById('lineBadge');
+  const wordsRow = document.getElementById('wordsRow');
+
+  if(currentLineIdx < 0){
+    bar.classList.add('idle');
+    hzEl.textContent = '...';
+    pyEl.textContent = '';
+    viEl.textContent = '';
+    badge.innerHTML = '<i class="fas fa-closed-captioning"></i> —';
+    wordsRow.innerHTML = '<span class="words-empty">Chưa có câu nào đang chạy...</span>';
+    return;
+  }
+
+  const line = SUBS[currentLineIdx];
+  bar.classList.remove('idle');
+  pyEl.textContent = line.py;
+  viEl.textContent = line.vi;
+  badge.innerHTML = `<i class="fas fa-closed-captioning"></i> Câu ${currentLineIdx + 1}/${SUBS.length}`;
+
+  // Render hanzi as clickable words (using word boundaries from line.words if present)
+  if(line.words && line.words.length){
+    // Match words sequentially in hz string
+    let remaining = line.hz;
+    let html = '';
+    for(const w of line.words){
+      const idx = remaining.indexOf(w.hz);
+      if(idx === -1) continue;
+      if(idx > 0) html += escapeHtml(remaining.slice(0, idx));
+      html += `<span class="w" onclick="showWord('${escAttr(w.hz)}','${escAttr(w.py)}','${escAttr(w.meaning)}')">${escapeHtml(w.hz)}</span>`;
+      remaining = remaining.slice(idx + w.hz.length);
+    }
+    html += escapeHtml(remaining);
+    hzEl.innerHTML = html;
+  } else {
+    hzEl.textContent = line.hz;
+  }
+
+  // Render word chips
+  if(line.words && line.words.length){
+    wordsRow.innerHTML = line.words.map(w =>
+      `<button class="word-chip" onclick="showWord('${escAttr(w.hz)}','${escAttr(w.py)}','${escAttr(w.meaning)}')">
+        <span class="hz">${escapeHtml(w.hz)}</span>
+        <span class="py">${escapeHtml(w.py)}</span>
+      </button>`
+    ).join('');
+  } else {
+    wordsRow.innerHTML = '<span class="words-empty">Câu này không có từ vựng trọng tâm.</span>';
+  }
+}
+
+/* ============================================================
+   TRANSCRIPT
+   ============================================================ */
+function renderTranscript(){
+  const el = document.getElementById('transcript');
+  el.innerHTML = SUBS.map((s, i) => `
+    <div class="tr-line" data-idx="${i}" onclick="seekToLine(${i})">
+      <div class="tr-line__time">${formatTime(s.start)} → ${formatTime(s.end)}</div>
+      <div class="tr-line__hz">${escapeHtml(s.hz)}</div>
+      <div class="tr-line__vi">${escapeHtml(s.vi)}</div>
+    </div>
+  `).join('');
+}
+function highlightTranscript(){
+  document.querySelectorAll('.tr-line').forEach(el => {
+    const idx = +el.dataset.idx;
+    el.classList.toggle('active', idx === currentLineIdx);
+    // Mark watched if fully passed
+    if(vid.currentTime > SUBS[idx].end) el.classList.add('watched');
+  });
+  // Auto-scroll active line into view
+  const active = document.querySelector('.tr-line.active');
+  if(active) active.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+function formatTime(sec){
+  const s = Math.floor(sec);
+  const m = Math.floor(s / 60);
+  return (m > 0 ? m + ':' : '') + String(s % 60).padStart(2, '0');
+}
+
+/* ============================================================
+   NAV / CONTROLS
+   ============================================================ */
+function seekToLine(idx){
+  if(idx < 0 || idx >= SUBS.length) return;
+  vid.currentTime = SUBS[idx].start;
+  if(vid.paused) vid.play();
+}
+function prevLine(){
+  const idx = Math.max(0, currentLineIdx - 1);
+  seekToLine(idx);
+}
+function nextLine(){
+  const idx = Math.min(SUBS.length - 1, currentLineIdx + 1);
+  seekToLine(idx);
+}
+function toggleLoop(){
+  loopCurrent = !loopCurrent;
+  document.getElementById('loopBtn').classList.toggle('active', loopCurrent);
+  toast(loopCurrent ? 'Bật lặp câu' : 'Tắt lặp câu', 'ok', 1500);
+  if(loopCurrent) ensureLoopRange(currentLineIdx);
+}
+function ensureLoopRange(idx){
+  if(idx < 0 || idx >= SUBS.length) return;
+  if(vid.currentTime > SUBS[idx].end - 0.1){
+    vid.currentTime = SUBS[idx].start;
+  }
+}
+function setSpeed(speed, btn){
+  vid.playbackRate = speed;
+  document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+/* ============================================================
+   POPUP WORD
+   ============================================================ */
+function showWord(hz, py, meaning){
+  currentWord = {hz, py};
+  document.getElementById('popupHz').textContent = hz;
+  document.getElementById('popupPy').textContent = py;
+  document.getElementById('popupMn').textContent = meaning;
+  document.getElementById('popup').classList.add('show');
+  speakChinese(hz);
+}
+function closePopup(){
+  document.getElementById('popup').classList.remove('show');
+}
+function speakCurrentWord(){
+  if(currentWord) speakChinese(currentWord.hz);
+}
+
+/* ============================================================
+   SPEECH
+   ============================================================ */
+function pickVoice(){
+  if(!('speechSynthesis' in window)) return null;
+  const voices = speechSynthesis.getVoices();
+  const zh = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith('zh'));
+  if(!zh.length) return null;
+  // Ưu tiên Bắc Kinh nữ
+  const prefer = zh.find(v => /Xiaoxiao|Xiaoyi|Huihui|Yaoyao/i.test(v.name))
+    || zh.find(v => /zh[-_]CN/i.test(v.lang))
+    || zh[0];
+  return prefer;
+}
+if('speechSynthesis' in window){
+  speechSynthesis.onvoiceschanged = () => { audioVoice = pickVoice(); };
+  audioVoice = pickVoice();
+}
+function speakChinese(text){
+  if(!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN';
+  u.rate = 0.9;
+  const v = audioVoice || pickVoice();
+  if(v) u.voice = v;
+  speechSynthesis.speak(u);
+}
+
+/* ============================================================
+   QUIZ
+   ============================================================ */
+function renderQuiz(){
+  if(!unlocked) return;
+  const area = document.getElementById('quizArea');
+  if(quizState.done){ renderQuizResult(); return; }
+  const q = QUIZ[quizState.idx];
+  area.innerHTML = `
+    <div style="font-size:12px;font-weight:800;color:var(--mu);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px">
+      Câu ${quizState.idx + 1}/${QUIZ.length}
+    </div>
+    <div class="quiz-q">
+      <div class="quiz-q__text">
+        ${q.zh ? `<span class="zh">${escapeHtml(q.zh)}</span>` : ''}
+        ${escapeHtml(q.q)}
+      </div>
+      <div id="quizOpts">
+        ${q.options.map((opt, i) => `
+          <button class="quiz-opt" data-i="${i}" onclick="answerQuiz(${i})">
+            <span class="quiz-opt__key">${'ABCD'[i]}</span>
+            <span>${escapeHtml(opt)}</span>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+function answerQuiz(choice){
+  const q = QUIZ[quizState.idx];
+  const btns = document.querySelectorAll('#quizOpts .quiz-opt');
+  btns.forEach((b, i) => {
+    b.disabled = true;
+    if(i === q.correct) b.classList.add('correct');
+    if(i === choice && choice !== q.correct) b.classList.add('wrong');
+  });
+  if(choice === q.correct) quizState.score++;
+  setTimeout(() => {
+    quizState.idx++;
+    if(quizState.idx >= QUIZ.length){
+      quizState.done = true;
+      renderQuizResult();
+    } else {
+      renderQuiz();
+    }
+  }, 800);
+}
+function renderQuizResult(){
+  const pct = Math.round(quizState.score / QUIZ.length * 100);
+  const pass = pct >= 60;
+  document.getElementById('quizArea').innerHTML = `
+    <div class="quiz-result" style="${pass ? '' : 'border-color:var(--warn);background:linear-gradient(135deg,rgba(245,158,11,.08),transparent)'}">
+      <div class="score" style="${pass ? '' : 'color:var(--warn)'}">${pct}%</div>
+      <div class="lbl">${pass ? '🎉 Xuất sắc! Bạn hiểu bài rồi.' : '💪 Cố gắng thêm — xem lại video nhé.'}</div>
+      <div style="font-size:13px;color:var(--mu);margin-top:8px">Đúng ${quizState.score}/${QUIZ.length} câu</div>
+      <button class="ctrl-btn" style="margin-top:14px;display:inline-flex" onclick="restartQuiz()">
+        <i class="fas fa-rotate-right"></i> Làm lại
+      </button>
+    </div>
+  `;
+}
+function restartQuiz(){
+  quizState = {idx:0, score:0, done:false};
+  renderQuiz();
+}
+
+/* ============================================================
+   CHANGE VIDEO
+   ============================================================ */
+function changeVideo(){
+  const url = document.getElementById('videoUrl').value.trim();
+  if(!url){
+    localStorage.removeItem('handi_video_url');
+    vid.src = DEFAULT_VIDEO;
+    vid.load();
+    toast('Đã dùng video demo', 'ok');
+    return;
+  }
+  if(!/^https?:\/\//.test(url)){
+    toast('URL phải bắt đầu bằng http:// hoặc https://', 'err');
+    return;
+  }
+  if(!/\.(mp4|webm|ogg|mov|m4v)(\?|$)/i.test(url)){
+    if(!confirm('URL không giống file video (.mp4, .webm...). Tiếp tục thử?')) return;
+  }
+  localStorage.setItem('handi_video_url', url);
+  vid.src = url;
+  vid.load();
+  toast('Đã đổi video. Reset tiến độ xem.', 'ok');
+  watchedSec.clear();
+  unlocked = false;
+  quizState = {idx:0, score:0, done:false};
+  document.getElementById('quizArea').innerHTML = `
+    <div class="quiz-locked">
+      <i class="fas fa-lock"></i>
+      <b>Chưa mở khoá</b>
+      Xem đủ 80% video để làm quiz.
+      <div class="quiz-progress"><div class="quiz-progress__fill" id="quizUnlockBar" style="width:0%"></div></div>
+    </div>`;
+}
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function escapeHtml(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function escAttr(s){ return escapeHtml(s); }
+function toast(msg, type, ms){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + (type || '');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.className = 'toast', ms || 2400);
+}
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') closePopup();
+  // Space = play/pause
+  if(e.code === 'Space' && !['INPUT','TEXTAREA','BUTTON'].includes(document.activeElement.tagName)){
+    e.preventDefault();
+    vid.paused ? vid.play() : vid.pause();
+  }
+});
+</script>
+</body>
+</html>
