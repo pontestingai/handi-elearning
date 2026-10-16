@@ -69,7 +69,7 @@ input,select,textarea{font-family:inherit}
 #appContainer{display:none;flex-direction:column;height:100vh;width:100vw}
 #appContainer.active{display:flex}
 
-/* HEADER */
+/* ==== HEADER ==== */
 .room-header{height:58px;background:var(--glass-strong);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);color:var(--tx);display:flex;align-items:center;justify-content:space-between;padding:0 16px;gap:14px;flex-shrink:0;z-index:100}
 .rh-left{display:flex;align-items:center;gap:10px;min-width:0;flex-shrink:1}
 .rh-back{width:38px;height:38px;border-radius:10px;background:var(--card);border:1px solid var(--bd);color:var(--tx-2);display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;flex-shrink:0;text-decoration:none}
@@ -94,11 +94,11 @@ input,select,textarea{font-family:inherit}
 .rh-user{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--tx);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rh-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--r),var(--r2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;text-transform:uppercase;flex-shrink:0;box-shadow:0 3px 10px rgba(234,88,12,.35)}
 
-/* ROOM LAYOUT */
+/* ==== ROOM LAYOUT ==== */
 .room{flex:1;display:flex;min-height:0;overflow:hidden;background:var(--bg)}
 .stage{flex:1;display:flex;flex-direction:column;min-width:0;position:relative;padding:10px}
 
-/* CONTROLS NGANG TOP-LEFT */
+/* ==== FLOATING CONTROLS — NGANG Ở TOP-LEFT ==== */
 .float-ctrl{position:absolute;top:14px;left:14px;z-index:30;display:flex;flex-direction:row;gap:6px;padding:6px 8px;background:var(--glass-strong);backdrop-filter:blur(24px);border:1px solid var(--bd-strong);border-radius:99px;box-shadow:0 12px 40px rgba(0,0,0,.55);flex-wrap:wrap;max-width:calc(100% - 340px)}
 .ctrl-btn{width:42px;height:42px;border-radius:50%;background:var(--card);border:1px solid var(--bd);color:var(--tx);font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .2s;cursor:pointer;position:relative;flex-shrink:0}
 .ctrl-btn:hover:not(:disabled){background:var(--card-hover);border-color:var(--r);color:var(--r-l);transform:scale(1.08)}
@@ -111,18 +111,17 @@ input,select,textarea{font-family:inherit}
 .ctrl-btn__tip{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);background:var(--glass-strong);backdrop-filter:blur(20px);border:1px solid var(--bd);color:var(--tx);padding:5px 11px;border-radius:8px;font-size:11px;font-weight:700;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s;z-index:1}
 .ctrl-btn:hover .ctrl-btn__tip{opacity:1}
 
-/* FLOATING PANELS */
+/* ==== FLOATING PANELS ==== */
 .float-panel{position:absolute;z-index:25;background:var(--glass);backdrop-filter:blur(24px);border:1.5px solid var(--bd-strong);border-radius:16px;padding:12px 14px;box-shadow:0 20px 60px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.05);transition:all .3s}
-.float-panel.collapsed{padding:6px 12px;border-radius:99px;width:auto!important;min-width:0!important}
+.float-panel.collapsed{padding:6px 12px;min-width:0;width:auto;border-radius:99px}
 .float-panel.collapsed .fp-body{display:none}
-.float-panel.collapsed .fp-head{margin-bottom:0;gap:6px}
-.float-panel.collapsed .fp-title{font-size:11px;gap:5px;letter-spacing:.05em}
-.float-panel.collapsed .fp-title i{font-size:11px}
-.float-panel.collapsed .fp-collapse{width:18px;height:18px;font-size:9px;border-radius:50%}
+.float-panel.collapsed .fp-title{font-size:10.5px;letter-spacing:.06em}
+.float-panel.collapsed .fp-collapse{width:22px;height:22px;border-radius:50%}
 
-.float-code{top:14px;right:14px;width:auto;min-width:340px;border-color:rgba(234,88,12,.4);cursor:pointer}
-.float-code:not(.collapsed){cursor:default}
+/* CODE — layout ngang */
+.float-code{top:14px;right:14px;width:auto;min-width:340px;border-color:rgba(234,88,12,.4)}
 .float-code::before{content:"";position:absolute;inset:-2px;border-radius:16px;background:linear-gradient(135deg,rgba(234,88,12,.4),rgba(251,191,36,.15));z-index:-1;filter:blur(12px);opacity:.5}
+.float-code.collapsed::before{border-radius:99px}
 .fp-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
 .float-panel.collapsed .fp-head{margin-bottom:0}
 .fp-title{font-size:11px;font-weight:800;color:var(--tx-2);display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.08em}
@@ -141,8 +140,8 @@ input,select,textarea{font-family:inherit}
 .float-code__actions{display:flex;gap:5px}
 .float-code__actions .btn{flex:1;padding:7px 10px;font-size:11.5px;border-radius:7px}
 
-.float-homework{top:110px;right:14px;width:auto;min-width:340px;border-color:rgba(59,130,246,.4);display:none;cursor:pointer}
-.float-homework:not(.collapsed){cursor:default}
+/* HOMEWORK — same as code layout */
+.float-homework{top:110px;right:14px;width:auto;min-width:340px;border-color:rgba(59,130,246,.4);display:none}
 .float-homework.show{display:block}
 .float-homework__title{color:var(--tx-2)}
 .float-homework__title i{color:#93c5fd}
@@ -155,7 +154,7 @@ input,select,textarea{font-family:inherit}
 .homework-link i{flex-shrink:0}
 .homework-empty{font-size:11px;color:var(--tx-4);font-style:italic;text-align:center;padding:6px 0}
 
-/* MAIN STAGE */
+/* ==== MAIN STAGE ==== */
 .stage-main{flex:1;position:relative;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .main-tile{position:relative;background:#000;border-radius:16px;overflow:hidden;width:100%;height:100%;box-shadow:0 12px 40px rgba(0,0,0,.6);border:1px solid var(--bd)}
 .main-tile video{width:100%;height:100%;object-fit:contain;display:block;background:#000}
@@ -170,7 +169,7 @@ input,select,textarea{font-family:inherit}
 .status-chip.green{background:rgba(34,197,94,.85);border-color:rgba(34,197,94,.5);color:#fff}
 .status-chip.red{background:rgba(239,68,68,.85);border-color:rgba(239,68,68,.5);color:#fff}
 
-/* STRIP */
+/* ==== STRIP ==== */
 .strip{height:140px;flex-shrink:0;margin-top:10px;display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;padding:2px 2px 8px}
 .strip::-webkit-scrollbar{height:6px}
 .strip::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
@@ -194,7 +193,7 @@ input,select,textarea{font-family:inherit}
 .strip-tile__badge.hand{background:var(--gd);color:#1a1a1a;animation:handWave .8s infinite}
 @keyframes handWave{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}}
 
-/* PRESENTATION */
+/* ==== PRESENTATION ==== */
 .presentation{position:absolute;inset:0;display:flex;flex-direction:column;background:#000;z-index:15;border-radius:16px;overflow:hidden;border:1px solid var(--bd)}
 .presentation__bar{background:var(--glass-strong);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;color:var(--tx);font-size:13px;font-weight:700;flex-shrink:0}
 .presentation__bar i{color:var(--r-l)}
@@ -219,7 +218,7 @@ input,select,textarea{font-family:inherit}
 .presentation__stage img.slide{max-width:100%;max-height:100%;object-fit:contain;background:#000}
 .presentation__stage iframe{width:100%;height:100%;border:0;background:#fff}
 
-/* SIDEBAR */
+/* ==== SIDEBAR ==== */
 .sidebar{width:var(--sb-w);background:var(--bg-2);border-left:1px solid var(--bd);display:flex;flex-direction:column;flex-shrink:0;min-height:0}
 .sb-tabs{display:flex;gap:0;border-bottom:1px solid var(--bd);flex-shrink:0;background:var(--bg-2);padding:0 6px}
 .sb-tab{flex:1;padding:14px 8px;font-size:12.5px;font-weight:800;color:var(--tx-4);transition:all .2s;text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:6px;position:relative;border-bottom:3px solid transparent}
@@ -250,6 +249,7 @@ input,select,textarea{font-family:inherit}
 .part__meta .approved-badge{color:#86efac;font-weight:800}
 .part__actions{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
 
+/* CHAT */
 .panel-chat{flex:1;display:flex;flex-direction:column;min-height:0}
 .chat-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
 .chat-messages::-webkit-scrollbar{width:6px}
@@ -270,6 +270,7 @@ input,select,textarea{font-family:inherit}
 .chat-link{color:#93c5fd;text-decoration:underline;text-decoration-color:rgba(147,197,253,.4);word-break:break-all;transition:all .2s}
 .chat-link:hover{color:#bfdbfe}
 
+/* CHAT LINK CARD — compact 1 dòng */
 .chat-link-card{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);border-radius:8px;margin-top:4px;text-decoration:none;color:#93c5fd;font-size:12px;font-weight:600;transition:all .2s;max-width:100%;line-height:1.2;height:32px}
 .chat-link-card:hover{background:rgba(59,130,246,.2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(59,130,246,.2)}
 .chat-link-card i.fa-link{font-size:12px;flex-shrink:0;opacity:.8}
@@ -285,8 +286,10 @@ input,select,textarea{font-family:inherit}
 .chat-input button:last-child{padding:0 16px;height:40px;background:var(--r);color:#fff;border-radius:10px;font-size:14px;font-weight:700;transition:all .2s}
 .chat-input button:last-child:hover{background:var(--r2)}
 
-/* INTERACTION */
+/* INTERACTION (Tương tác) */
 .panel-interaction{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+
+/* Quiz links section */
 .interaction-quiz{padding:12px 14px;border-bottom:1px solid var(--bd);background:var(--bg-2);flex-shrink:0}
 .interaction-section-title{font-size:11.5px;font-weight:800;color:var(--tx-3);display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
 .interaction-section-title i{color:var(--r-l)}
@@ -309,6 +312,7 @@ input,select,textarea{font-family:inherit}
 .quiz-link-item__del:hover{background:var(--err);color:#fff;border-color:var(--err)}
 .quiz-empty{font-size:11.5px;color:var(--tx-4);font-style:italic;text-align:center;padding:14px 8px;line-height:1.5}
 
+/* Notes section (trong Tương tác) */
 .interaction-notes{flex:1;display:flex;flex-direction:column;min-height:0}
 .notes-toolbar{padding:10px 14px;border-bottom:1px solid var(--bd);display:flex;gap:8px;flex-shrink:0;background:var(--bg-2)}
 .notes-toolbar .btn{flex:1;font-size:11.5px;padding:7px 10px}
@@ -416,7 +420,7 @@ input,select,textarea{font-family:inherit}
 </head>
 <body>
 
-<!-- SETUP -->
+<!-- ============ SETUP ============ -->
 <div class="setup-screen" id="setupScreen">
   <div class="setup-card">
     <h1>🎓 Hán Ngữ HanDi</h1>
@@ -445,7 +449,7 @@ input,select,textarea{font-family:inherit}
   </div>
 </div>
 
-<!-- ROOM -->
+<!-- ============ ROOM ============ -->
 <div id="appContainer">
   <header class="room-header">
     <div class="rh-left">
@@ -474,11 +478,11 @@ input,select,textarea{font-family:inherit}
   <div class="room">
     <div class="stage" id="stageArea">
 
-      <!-- CODE PANEL -->
-      <div class="float-panel float-code collapsed" id="floatCode" style="display:none" onclick="handleCodePanelClick(event)">
+      <!-- CODE PANEL (ngang) -->
+      <div class="float-panel float-code collapsed" id="floatCode" style="display:none">
         <div class="fp-head">
           <div class="fp-title"><i class="fas fa-qrcode"></i> Mã lớp</div>
-          <button class="fp-collapse" onclick="event.stopPropagation();toggleCodePanel()"><i class="fas fa-chevron-up" id="codePanelChevron"></i></button>
+          <button class="fp-collapse" onclick="toggleCodePanel()"><i class="fas fa-chevron-up" id="codePanelChevron"></i></button>
         </div>
         <div class="fp-body">
           <div class="float-code__qr" id="qrBox"></div>
@@ -494,10 +498,10 @@ input,select,textarea{font-family:inherit}
       </div>
 
       <!-- HOMEWORK PANEL -->
-      <div class="float-panel float-homework collapsed" id="floatHomework" style="display:none" onclick="handleHomeworkPanelClick(event)">
+      <div class="float-panel float-homework collapsed" id="floatHomework" style="display:none">
         <div class="fp-head">
-          <div class="fp-title float-homework__title"><i class="fas fa-book-open"></i> Bài tập</div>
-          <button class="fp-collapse" onclick="event.stopPropagation();toggleHomeworkPanel()"><i class="fas fa-chevron-up" id="homeworkChevron"></i></button>
+          <div class="fp-title float-homework__title"><i class="fas fa-book-open"></i> Bài tập về nhà</div>
+          <button class="fp-collapse" onclick="toggleHomeworkPanel()"><i class="fas fa-chevron-up" id="homeworkChevron"></i></button>
         </div>
         <div class="fp-body" style="display:flex;flex-direction:column;gap:8px">
           <div class="homework-input-row" id="homeworkTeacherRow">
@@ -509,6 +513,7 @@ input,select,textarea{font-family:inherit}
         </div>
       </div>
 
+      <!-- MAIN STAGE -->
       <div class="stage-main" id="stageMain">
         <div class="main-tile" id="mainTile">
           <video id="mainVideo" autoplay playsinline></video>
@@ -517,6 +522,7 @@ input,select,textarea{font-family:inherit}
           <div class="main-tile__name" id="mainName">Đang chờ kết nối...</div>
         </div>
 
+        <!-- CONTROLS — NGANG Ở TRÊN TRÁI -->
         <div class="float-ctrl" id="floatCtrl" style="display:none">
           <button class="ctrl-btn" id="btnMuteAll" onclick="muteAllStudents()" style="display:none;background:rgba(239,68,68,.75);border-color:rgba(239,68,68,.5)">
             <i class="fas fa-volume-xmark"></i>
@@ -549,9 +555,11 @@ input,select,textarea{font-family:inherit}
         </div>
       </div>
 
+      <!-- STRIP -->
       <div class="strip" id="stripStudents"></div>
     </div>
 
+    <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="sb-tabs">
         <button class="sb-tab active" data-tab="people" onclick="switchSbTab('people')"><i class="fas fa-users"></i> Người</button>
@@ -575,6 +583,7 @@ input,select,textarea{font-family:inherit}
         </div>
         <div class="sb-panel" id="panelInteraction">
           <div class="panel-interaction">
+            <!-- QUIZ LINKS (GV paste link để HV nhảy qua làm quiz) -->
             <div class="interaction-quiz">
               <div class="interaction-section-title"><i class="fas fa-puzzle-piece"></i> Quiz & Bài tập tương tác</div>
               <div class="quiz-input-row" id="quizTeacherRow">
@@ -587,6 +596,7 @@ input,select,textarea{font-family:inherit}
               <div class="quiz-links-list" id="quizLinksList"></div>
             </div>
 
+            <!-- NOTES -->
             <div class="interaction-notes">
               <div class="notes-toolbar" id="notesToolbar">
                 <button class="btn btn--ghost" onclick="exportNotesToFile()"><i class="fas fa-file-export"></i> Xuất file</button>
@@ -642,6 +652,9 @@ https://example.com/slide.pptx"></textarea>
 <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.20.0.js"></script>
 
 <script>
+/* ============================================================
+   CONFIG
+   ============================================================ */
 const NTFY_BASE = 'https://ntfy.sh';
 const NTFY_TOPIC_PREFIX = 'handi-room-';
 const CODE_LENGTH = 6;
@@ -650,6 +663,9 @@ const IMG_CHUNK_SIZE = 900;
 const IMG_MAX_SIZE = 10 * 1024 * 1024;
 const IMG_COMPRESS_MAX = 1.5 * 1024 * 1024;
 
+/* ============================================================
+   STATE
+   ============================================================ */
 let client = null;
 let localAudioTrack = null, localVideoTrack = null, screenTrack = null;
 let remoteUsers = {};
@@ -678,6 +694,9 @@ function generateRoomCode(){
   return code;
 }
 
+/* ============================================================
+   NTFY
+   ============================================================ */
 async function ntfyPublish(topic, data){
   const res = await fetch(`${NTFY_BASE}/${topic}`, {
     method: 'POST',
@@ -708,6 +727,9 @@ function ntfySubscribe(topic, timeoutMs = 20000){
   });
 }
 
+/* ============================================================
+   SETUP
+   ============================================================ */
 function switchSetupTab(role){
   document.querySelectorAll('.setup-tab').forEach(t => t.classList.toggle('active', t.dataset.role === role));
   $('teacherPanel').classList.toggle('active', role === 'teacher');
@@ -929,6 +951,9 @@ function handleSignal(uid, msg){
   }
 }
 
+/* ============================================================
+   REMOTE USERS
+   ============================================================ */
 async function onUserPublished(user, mediaType){
   await client.subscribe(user, mediaType);
   if(!remoteUsers[user.uid]) remoteUsers[user.uid] = { user, name:'Người dùng '+user.uid, role:'student', hand:false, approved:false };
@@ -968,7 +993,9 @@ function getSlideType(url){
 }
 
 function renderSlideContent(url, type){
-  if(type === 'image') return `<img class="slide" src="${escapeAttr(url)}" alt="slide">`;
+  if(type === 'image'){
+    return `<img class="slide" src="${escapeAttr(url)}" alt="slide">`;
+  }
   if(['pdf','pptx','docx','xlsx'].includes(type)){
     const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
     return `<iframe src="${viewerUrl}" allowfullscreen></iframe>`;
@@ -1371,24 +1398,10 @@ function showCodePanel(code, channel){
   } catch(e){ qrBox.textContent = 'QR'; }
 }
 
-function handleCodePanelClick(e){
-  const panel = e.currentTarget;
-  if(panel.classList.contains('collapsed')) toggleCodePanel();
-}
-function handleHomeworkPanelClick(e){
-  const panel = e.currentTarget;
-  if(panel.classList.contains('collapsed')) toggleHomeworkPanel();
-}
-
 function toggleCodePanel(){
   const panel = $('floatCode');
   panel.classList.toggle('collapsed');
   $('codePanelChevron').className = panel.classList.contains('collapsed') ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
-}
-function toggleHomeworkPanel(){
-  const panel = $('floatHomework');
-  panel.classList.toggle('collapsed');
-  $('homeworkChevron').className = panel.classList.contains('collapsed') ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
 }
 
 function buildJoinLink(){
@@ -1423,6 +1436,9 @@ function shareCode(){
   else fallbackCopy(text);
 }
 
+/* ============================================================
+   HOMEWORK
+   ============================================================ */
 function showHomeworkPanel(){
   $('floatHomework').style.display = '';
   if(myRole === 'teacher'){
@@ -1433,6 +1449,12 @@ function showHomeworkPanel(){
     $('homeworkStudentView').style.display = 'block';
   }
   renderHomework();
+}
+
+function toggleHomeworkPanel(){
+  const panel = $('floatHomework');
+  panel.classList.toggle('collapsed');
+  $('homeworkChevron').className = panel.classList.contains('collapsed') ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
 }
 
 function saveHomework(){
@@ -1469,6 +1491,9 @@ function renderHomework(){
   body.appendChild(link);
 }
 
+/* ============================================================
+   QUIZ LINKS
+   ============================================================ */
 function saveQuizLink(){
   if(myRole !== 'teacher') return;
   const title = $('quizTitleInput').value.trim() || 'Bài quiz';
@@ -1510,6 +1535,9 @@ function renderQuizLinks(){
   `).join('');
 }
 
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
 function switchSbTab(tab){
   currentSbTab = tab;
   document.querySelectorAll('.sb-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
@@ -1569,6 +1597,9 @@ function renderSidebar(){
   }).join('');
 }
 
+/* ============================================================
+   CHAT
+   ============================================================ */
 function sendChat(){
   const input = $('chatInput');
   const text = input.value.trim();
@@ -1721,6 +1752,9 @@ function renderChat(){
   el.scrollTop = el.scrollHeight;
 }
 
+/* ============================================================
+   NOTES với lookup
+   ============================================================ */
 let lookupState = { hz:'', py:'', mn:'', example:'', loading:false };
 let lookupTimer = null;
 
@@ -1832,4 +1866,114 @@ function exportNotesToFile(){
   a.download = `handi-vocab-${Date.now()}.json`;
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   setTimeout(() => URL.revokeObjectURL(url), 1000);
-  toast('📥 Đã tải file. Vào CMS → Import JSON.', 'ok
+  toast('📥 Đã tải file. Vào CMS → Import JSON.', 'ok', 5000);
+}
+
+function renderNotes(){
+  const el = $('notesList');
+  if(!notes.length){
+    el.innerHTML = `<div class="notes-empty"><i class="fas fa-bookmark"></i>Chưa có từ vựng<br>${myRole === 'teacher' ? 'Ghi từ mới ở dưới' : 'GV sẽ ghi từ mới ở đây'}</div>`;
+    return;
+  }
+  el.innerHTML = notes.map((n, i) => `
+    <div class="note-item">
+      ${myRole === 'teacher' ? `<button class="note-item__del" onclick="deleteNote(${i})"><i class="fas fa-times"></i></button>` : ''}
+      <div class="note-item__hz">${escapeHtml(n.hz)}</div>
+      ${n.py ? `<div class="note-item__py">${escapeHtml(n.py)}</div>` : ''}
+      <div class="note-item__mn">${escapeHtml(n.mn)}</div>
+      ${n.example ? `<div class="note-item__ex"><i class="fas fa-quote-left"></i> ${escapeHtml(n.example)}</div>` : ''}
+    </div>`).join('');
+}
+
+/* ============================================================
+   LEAVE
+   ============================================================ */
+async function leaveRoom(){
+  if(!confirm('Rời khỏi lớp?')) return;
+  await cleanup();
+  location.reload();
+}
+
+async function cleanup(){
+  try {
+    if(broadcastTimer){ clearInterval(broadcastTimer); broadcastTimer = null; }
+    if(headerDurationTimer){ clearInterval(headerDurationTimer); headerDurationTimer = null; }
+    if(screenTrack){ screenTrack.stop(); screenTrack.close(); screenTrack = null; }
+    if(localVideoTrack){ localVideoTrack.stop(); localVideoTrack.close(); localVideoTrack = null; }
+    if(localAudioTrack){ localAudioTrack.stop(); localAudioTrack.close(); localAudioTrack = null; }
+    if(client){ await client.leave(); client = null; }
+  } catch(e){}
+  remoteUsers = {}; chatMessages = []; imageBuffers = {};
+}
+
+function showStatus(type, title, body, actions, ms){
+  const map = { success:'fa-circle-check', error:'fa-circle-exclamation', warn:'fa-triangle-exclamation', info:'fa-circle-info' };
+  const el = document.createElement('div');
+  el.className = 'status-toast ' + type;
+  el.innerHTML = `
+    <i class="fas ${map[type] || 'fa-circle-info'}"></i>
+    <div class="status-toast__body">
+      <b>${escapeHtml(title)}</b>
+      <span>${escapeHtml(body || '')}</span>
+      ${actions ? '<div class="status-toast__actions">' + actions + '</div>' : ''}
+    </div>`;
+  $('toastContainer').appendChild(el);
+  setTimeout(() => {
+    el.style.transition = 'opacity .3s, transform .3s';
+    el.style.opacity = '0';
+    el.style.transform = 'translateX(120%)';
+    setTimeout(() => el.remove(), 300);
+  }, ms || 6000);
+}
+
+function getInitials(name){
+  if(!name) return '?';
+  const clean = name.replace(/\s*\(Bạn\)\s*/, '').trim();
+  const p = clean.split(/\s+/);
+  if(p.length === 1) return p[0].substring(0,2).toUpperCase();
+  return (p[0][0] + p[p.length-1][0]).toUpperCase();
+}
+
+function escapeHtml(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function escapeAttr(s){ return escapeHtml(s); }
+
+function toast(msg, type, ms){
+  const t = $('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + (type || '');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.className = 'toast', ms || 2600);
+}
+
+function autoFillFromUrl(){
+  const params = new URLSearchParams(location.search);
+  const code = (params.get('code') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, CODE_LENGTH);
+  const name = params.get('name');
+  if(code){
+    switchSetupTab('student');
+    $('studentCodeInput').value = code;
+    if(name) $('studentNameInput').value = name;
+    setTimeout(() => $('studentNameInput').focus(), 300);
+    toast(`Đã điền mã ${code}`, 'ok', 2500);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const hz = $('noteHz');
+  if(hz) hz.addEventListener('input', onNoteHzInput);
+  const codeInp = $('studentCodeInput');
+  if(codeInp){
+    codeInp.addEventListener('input', e => {
+      e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, CODE_LENGTH);
+    });
+  }
+});
+
+window.addEventListener('beforeunload', () => { cleanup(); });
+autoFillFromUrl();
+</script>
+</body>
+</html>
