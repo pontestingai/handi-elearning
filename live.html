@@ -1290,4 +1290,840 @@ function handleRevoke(){
 
 /* ============================================================
    UI CONTROLS
-   =
+   ============================================================ */
+function updateMicUI(){
+  const btn = $('btnMic');
+  const canSpeak = (myRole === 'teacher') || speakApproved;
+  if(!canSpeak){
+    btn.classList.add('off');
+    btn.innerHTML = '<i class="fas fa-microphone-slash"></i><span class="ctrl-btn__tip">Chờ duyệt</span>';
+    return;
+  }
+  btn.classList.toggle('off', !micOn);
+  btn.innerHTML = `<i class="fas fa-microphone${micOn?'':'-slash'}"></i><span class="ctrl-btn__tip">${micOn?'Đang nói':'Micro'}</span>`;
+}
+
+function updateCamUI(){
+  const btn = $('btnCam');
+  btn.classList.toggle('off', !camOn);
+  btn.innerHTML = `<i class="fas fa-video${camOn?'':'-slash'}"></i><span class="ctrl-btn__tip">Camera</span>`;
+}
+
+function updateHandUI(){
+  const btn = $('btnHand');
+  if(myRole === 'teacher'){ btn.style.display = 'none'; return; }
+  btn.style.display = '';
+  btn.classList.toggle('hand-active', handUp);
+  if(speakApproved) btn.innerHTML = '<i class="fas fa-comment-dots"></i><span class="ctrl-btn__tip">Đang nói</span>';
+  else if(handUp) btn.innerHTML = '<i class="fas fa-hand"></i><span class="ctrl-btn__tip">Chờ duyệt</span>';
+  else btn.innerHTML = '<i class="fas fa-hand"></i><span class="ctrl-btn__tip">Giơ tay</span>';
+}
+
+function toggleMic(){
+  const canSpeak = (myRole === 'teacher') || speakApproved;
+  if(!canSpeak){ toast('Giơ tay và chờ GV duyệt', 'warn', 2500); return; }
+  if(!localAudioTrack){ toast('Không có mic', 'err'); return; }
+  micOn = !micOn;
+  localAudioTrack.setEnabled(micOn);
+  updateMicUI(); renderStrip();
+  if(remoteScreenSharingUid || remoteSlideUrl) renderPresSidebar();
+  else updateMainView();
+}
+
+function toggleCam(){
+  if(!localVideoTrack){ toast('Không có camera', 'err'); return; }
+  camOn = !camOn;
+  localVideoTrack.setEnabled(camOn);
+  updateCamUI(); renderStrip();
+  if(remoteScreenSharingUid || remoteSlideUrl) renderPresSidebar();
+  else updateMainView();
+}
+
+/* ============================================================
+   SCREEN SHARE
+   ============================================================ */
+async function toggleScreen(){
+  if(myRole !== 'teacher'){ toast('Chỉ GV chia sẻ màn hình', 'warn'); return; }
+  if(screenSharing){
+    if(screenTrack){ screenTrack.stop(); screenTrack.close(); screenTrack = null; }
+    if(localVideoTrack){
+      await client.unpublish(localVideoTrack).catch(()=>{});
+      await client.publish(localVideoTrack).catch(()=>{});
+    }
+    screenSharing = false;
+    sendMsg({ type:'screenshare-end' });
+    remoteScreenSharingUid = null;
+    updateMainView();
+    toast('Đã dừng chia sẻ', 'ok');
+  } else {
+    try {
+      if(localVideoTrack) await client.unpublish(localVideoTrack).catch(()=>{});
+      screenTrack = await AgoraRTC.createScreenVideoTrack({ encoderConfig:'720p_1' }, 'auto');
+      if(Array.isArray(screenTrack)) screenTrack = screenTrack[0];
+      await client.publish(screenTrack);
+      screenSharing = true;
+      remoteScreenSharingUid = myUid;
+      sendMsg({ type:'screenshare-start', uid: myUid, name: myName });
+      screenTrack.on('track-ended', () => toggleScreen());
+      updateMainView();
+      toast('Đang chia sẻ màn hình', 'ok');
+    } catch(e){
+      console.warn(e);
+      if(localVideoTrack) await client.publish(localVideoTrack).catch(()=>{});
+      toast('Không chia sẻ được', 'err');
+    }
+  }
+}
+
+/* ============================================================
+   SLIDE
+   ============================================================ */
+function toggleSlidePanel(){ if(myRole !== 'teacher') return; $('slidePanel').classList.toggle('show'); renderSlideThumbs(); }
+
+function addSlidesFromUrls(){
+  const raw = $('slideUrlsInput').value.trim();
+  if(!raw){ toast('Chưa nhập URL', 'warn'); return; }
+  const urls = raw.split(/\n/).map(u => u.trim()).filter(u => /^https?:\/\//.test(u));
+  if(!urls.length){ toast('URL không hợp lệ', 'err'); return; }
+  mySlides = mySlides.concat(urls.map(u => ({ url:u, type: getSlideType(u), isLocal:false })));
+  $('slideUrlsInput').value = '';
+  renderSlideThumbs();
+  toast(`Đã thêm ${urls.length} bài giảng`, 'ok');
+}
+
+function addSlidesFromFiles(e){
+  const files = [...e.target.files];
+  if(!files.length) return;
+  let loaded = 0;
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const ext = file.name.split('.').pop().toLowerCase();
+      let type = 'image';
+      if(ext === 'pdf') type = 'pdf';
+      else if(['ppt','pptx'].includes(ext)) type = 'pptx';
+      else if(['doc','docx'].includes(ext)) type = 'docx';
+      else if(['xls','xlsx'].includes(ext)) type = 'xlsx';
+      else if(['jpg','jpeg','png','gif','webp','svg'].includes(ext)) type = 'image';
+
+      mySlides.push({ url: reader.result, type, name: file.name, isLocal: true });
+      loaded++;
+      renderSlideThumbs();
+      if(loaded === files.length) toast(`Đã thêm ${files.length} bài giảng`, 'ok');
+    };
+    reader.readAsDataURL(file);
+  });
+  e.target.value = '';
+}
+
+function renderSlideThumbs(){
+  $('slideThumbs').innerHTML = mySlides.map((s, i) => {
+    let inner = '';
+    if(s.type === 'image'){
+      inner = `<img src="${escapeAttr(s.url)}" onerror="this.parentElement.innerHTML='<div style=padding:10px;color:#888;font-size:11px;text-align:center>Lỗi</div>'">`;
+    } else {
+      const iconMap = { pdf:'fa-file-pdf', pptx:'fa-file-powerpoint', docx:'fa-file-word', xlsx:'fa-file-excel' };
+      inner = `<div class="file-icon"><i class="fas ${iconMap[s.type] || 'fa-file'}"></i><span>${s.type}</span></div>`;
+    }
+    return `
+    <div class="slide-thumb ${i === currentSlideIdx ? 'active' : ''}" onclick="showSlide(${i})" title="${escapeAttr(s.name || s.url)}">
+      <span class="slide-thumb__num">${i+1}</span>
+      ${inner}
+      <button class="slide-thumb__del" onclick="event.stopPropagation();deleteSlide(${i})"><i class="fas fa-times"></i></button>
+    </div>`;
+  }).join('') || '<div style="grid-column:1/-1;text-align:center;color:var(--tx-4);font-size:12.5px;padding:20px"><i class="fas fa-inbox" style="font-size:24px;display:block;margin-bottom:8px;opacity:.3"></i>Chưa có bài giảng</div>';
+}
+
+function showSlide(idx){
+  if(idx < 0 || idx >= mySlides.length) return;
+  currentSlideIdx = idx;
+  const url = mySlides[idx].url;
+  sendMsg({ type:'slide-show', url, idx, total: mySlides.length });
+  remoteSlideUrl = url; remoteSlideIdx = idx; remoteSlideTotal = mySlides.length;
+  slideMode = true;
+  renderSlideThumbs(); updateMainView();
+}
+
+function deleteSlide(idx){
+  mySlides.splice(idx, 1);
+  if(currentSlideIdx >= mySlides.length) currentSlideIdx = -1;
+  renderSlideThumbs();
+  if(slideMode && mySlides.length === 0) endSlideshow();
+}
+
+function endSlideshow(){
+  slideMode = false; currentSlideIdx = -1; remoteSlideUrl = null;
+  sendMsg({ type:'slide-end' });
+  renderSlideThumbs(); updateMainView();
+}
+
+/* ============================================================
+   CODE PANEL
+   ============================================================ */
+function showCodePanel(code, channel){
+  $('floatCode').style.display = '';
+  $('codeDisplay').textContent = code;
+  $('roomCodeDisplay').textContent = channel;
+
+  const link = buildJoinLink();
+  const qrBox = $('qrBox');
+  qrBox.innerHTML = '';
+  try {
+    new QRCode(qrBox, {
+      text: link, width: 140, height: 140,
+      colorDark: '#1a1a1a', colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  } catch(e){ qrBox.textContent = 'QR lỗi'; }
+}
+
+function toggleCodePanel(){
+  const panel = $('floatCode');
+  panel.classList.toggle('collapsed');
+  $('codePanelChevron').className = panel.classList.contains('collapsed') ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
+}
+
+function buildJoinLink(){
+  if(!myRoomCode) return '';
+  return location.origin + location.pathname + '?code=' + myRoomCode;
+}
+
+function copyLink(){
+  const url = buildJoinLink();
+  if(!url) return;
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(url)
+      .then(() => toast('📋 Đã copy link vào lớp', 'ok', 2600))
+      .catch(() => fallbackCopy(url));
+  } else {
+    fallbackCopy(url);
+  }
+}
+
+function fallbackCopy(text){
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); toast('📋 Đã copy link', 'ok'); }
+  catch(e){ toast('Không copy được', 'err'); }
+  document.body.removeChild(ta);
+}
+
+function shareCode(){
+  const url = buildJoinLink();
+  if(!url) return;
+  const text = `Vào lớp HanDi của ${myName}:\nMã: ${myRoomCode}\nLink: ${url}`;
+  if(navigator.share) navigator.share({ title:'Lớp học HanDi', text, url }).catch(()=>{});
+  else fallbackCopy(text);
+}
+
+/* ============================================================
+   HOMEWORK
+   ============================================================ */
+function showHomeworkPanel(){
+  $('floatHomework').style.display = '';
+  if(myRole === 'teacher'){
+    $('homeworkTeacherRow').style.display = 'flex';
+    $('homeworkStudentView').style.display = 'none';
+  } else {
+    $('homeworkTeacherRow').style.display = 'none';
+    $('homeworkStudentView').style.display = 'block';
+  }
+  renderHomework();
+}
+
+function toggleHomeworkPanel(){
+  const panel = $('floatHomework');
+  panel.classList.toggle('collapsed');
+  $('homeworkChevron').className = panel.classList.contains('collapsed') ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
+}
+
+function saveHomework(){
+  const url = $('homeworkInput').value.trim();
+  if(!url){ toast('Nhập link bài tập', 'warn'); return; }
+  if(!/^https?:\/\//.test(url)){ toast('Link phải bắt đầu http:// hoặc https://', 'err'); return; }
+  homeworkUrl = url;
+  sendMsg({ type:'homework-set', url });
+  renderHomework();
+  toast('📚 Đã gửi bài tập cho học viên', 'ok');
+  $('homeworkInput').value = '';
+}
+
+function renderHomework(){
+  const empty = $('homeworkEmpty');
+  const linkBox = document.getElementById('homeworkLinkBox');
+  if(linkBox) linkBox.remove();
+
+  if(!homeworkUrl){
+    empty.style.display = 'block';
+    empty.textContent = myRole === 'teacher' ? 'Chưa gửi bài tập' : 'GV chưa giao bài tập';
+    return;
+  }
+  empty.style.display = 'none';
+
+  const link = document.createElement('a');
+  link.id = 'homeworkLinkBox';
+  link.className = 'homework-link';
+  link.href = homeworkUrl;
+  link.target = '_blank';
+  link.rel = 'noopener';
+  link.innerHTML = '<i class="fas fa-external-link-alt"></i> Mở bài tập về nhà';
+  const body = $('floatHomework').querySelector('.fp-body');
+  body.appendChild(link);
+}
+
+/* ============================================================
+   SIDEBAR TABS
+   ============================================================ */
+function switchSbTab(tab){
+  currentSbTab = tab;
+  document.querySelectorAll('.sb-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  document.querySelectorAll('.sb-panel').forEach(p => p.classList.remove('active'));
+  $('panel' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
+  if(tab === 'chat'){ unreadChat = 0; updateChatBadge(); setTimeout(() => $('chatInput').focus(), 100); $('chatMessages').scrollTop = $('chatMessages').scrollHeight; }
+}
+
+function updateChatBadge(){
+  const b = $('chatBadge');
+  if(unreadChat > 0){ b.textContent = unreadChat; b.classList.remove('hidden'); }
+  else b.classList.add('hidden');
+}
+
+/* ============================================================
+   RENDER SIDEBAR
+   ============================================================ */
+function renderSidebar(){
+  const items = [{ uid:'self', name: myName + ' (Bạn)', role: myRole, mic:micOn, hand:handUp, approved:speakApproved, self:true }];
+  for(const uid in remoteUsers){
+    const u = remoteUsers[uid];
+    items.push({ uid, name:u.name, role:u.role || 'student', mic:u.hasAudio, hand:u.hand, approved:u.approved, self:false });
+  }
+
+  $('sidebarList').innerHTML = items.map(it => {
+    const initials = getInitials(it.name);
+    const isTeacher = it.role === 'teacher';
+    let statusHtml = '';
+    if(it.self && myRole === 'student'){
+      if(it.approved) statusHtml = '<span class="approved-badge">🎤 Đang nói</span>';
+      else if(it.hand) statusHtml = '<span class="hand-badge">✋ Chờ duyệt</span>';
+      else statusHtml = '🔇 Mic tắt';
+    } else if(it.hand) statusHtml = '<span class="hand-badge">✋ Giơ tay</span>';
+    else if(it.approved) statusHtml = '<span class="approved-badge">🎤 Được nói</span>';
+    else statusHtml = it.mic ? '🎤 Đang nói' : '🔇 Tắt mic';
+
+    let actions = '';
+    if(myRole === 'teacher' && !it.self && it.role === 'student'){
+      const btns = [];
+      if(it.hand){
+        btns.push(`<button class="btn btn--ok btn--xs" onclick="approveStudent(${it.uid})"><i class="fas fa-check"></i> Cho nói</button>`);
+        btns.push(`<button class="btn btn--ghost btn--xs" onclick="rejectStudent(${it.uid})">Từ chối</button>`);
+      }
+      if(it.approved) btns.push(`<button class="btn btn--danger btn--xs" onclick="revokeStudent(${it.uid})"><i class="fas fa-microphone-slash"></i> Thu hồi</button>`);
+      if(it.mic && !it.approved) btns.push(`<button class="btn btn--ghost btn--xs" onclick="forceMuteStudent(${it.uid})"><i class="fas fa-volume-xmark"></i> Tắt mic</button>`);
+      if(btns.length) actions = `<div class="part__actions">${btns.join('')}</div>`;
+    }
+
+    return `<div class="part ${it.self?'self':''} ${it.hand?'hand-raised':''}">
+      <div class="part__avatar ${isTeacher?'teacher':''}">
+        ${escapeHtml(initials)}
+        <div class="mic-dot ${it.mic?'on':''}">${it.mic?'<i class="fas fa-microphone"></i>':'<i class="fas fa-microphone-slash"></i>'}</div>
+      </div>
+      <div class="part__body">
+        <div class="part__name">${escapeHtml(it.name)}${isTeacher?'<span class="tag teacher">GV</span>':''}</div>
+        <div class="part__meta">${statusHtml}</div>
+        ${actions}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ============================================================
+   CHAT
+   ============================================================ */
+function sendChat(){
+  const input = $('chatInput');
+  const text = input.value.trim();
+  if(!text) return;
+  const msg = { uid:myUid, name:myName, role:myRole, text, ts:Date.now() };
+  chatMessages.push({ ...msg, self:true });
+  sendMsg({ type:'chat', ...msg });
+  input.value = '';
+  renderChat();
+  input.focus();
+}
+
+/* ============================================================
+   LINKIFY — chuyển URL text thành hyperlink + button
+   ============================================================ */
+function linkify(text){
+  const escaped = escapeHtml(text);
+  const urlRegex = /(https?:\/\/[^\s<>"']+)/g;
+  const matches = text.match(urlRegex) || [];
+  if(!matches.length) return escaped;
+
+  const html = escaped.replace(urlRegex, (url) => {
+    return `<a class="chat-link" href="${url}" target="_blank" rel="noopener">${url}</a>`;
+  });
+
+  // Nếu tin nhắn CHỈ là 1 URL (không có text khác) → hiện card
+  const trimmed = text.trim();
+  if(matches.length === 1 && trimmed === matches[0]){
+    let displayUrl = matches[0];
+    try {
+      const u = new URL(matches[0]);
+      displayUrl = u.hostname + (u.pathname !== '/' ? u.pathname : '');
+      if(displayUrl.length > 40) displayUrl = displayUrl.slice(0, 40) + '...';
+    } catch(e){}
+    return `<a class="chat-link-card" href="${matches[0]}" target="_blank" rel="noopener">
+      <i class="fas fa-link"></i>
+      <div style="flex:1;min-width:0">
+        <div>Mở liên kết</div>
+        <div class="chat-link-card__url">${escapeHtml(displayUrl)}</div>
+      </div>
+      <i class="fas fa-external-link-alt" style="opacity:.7"></i>
+    </a>`;
+  }
+
+  return html;
+}
+
+/* ============================================================
+   CHAT IMAGE
+   ============================================================ */
+async function handleChatImage(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  e.target.value = '';
+
+  if(!file.type.startsWith('image/')){ toast('Chỉ gửi được file ảnh', 'err'); return; }
+  if(file.size > IMG_MAX_SIZE){
+    toast(`Ảnh phải dưới ${IMG_MAX_SIZE / 1024 / 1024}MB`, 'err');
+    return;
+  }
+
+  try {
+    toast('📤 Đang xử lý ảnh...', 'ok', 1500);
+    const dataUrl = await compressImage(file, 1600, 0.75);
+    await sendImageAsChunks(dataUrl);
+  } catch(err){
+    console.error(err);
+    toast('Không gửi được ảnh', 'err');
+  }
+}
+
+function compressImage(file, maxDim, quality){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.onerror = reject;
+      img.onload = () => {
+        let { width, height } = img;
+        if(width > maxDim || height > maxDim){
+          if(width > height){ height = height * maxDim / width; width = maxDim; }
+          else { width = width * maxDim / height; height = maxDim; }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        let q = quality;
+        let data = canvas.toDataURL('image/jpeg', q);
+        // Target ~1.5MB sau nén
+        while(data.length > IMG_COMPRESS_MAX && q > 0.3){
+          q -= 0.08;
+          data = canvas.toDataURL('image/jpeg', q);
+        }
+        resolve(data);
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+async function sendImageAsChunks(dataUrl){
+  const id = 'img_' + Date.now() + '_' + myUid;
+  const total = Math.ceil(dataUrl.length / IMG_CHUNK_SIZE);
+  const meta = { uid: myUid, name: myName, role: myRole, id, total, ts: Date.now() };
+
+  chatMessages.push({
+    uid: myUid, name: myName, role: myRole,
+    text: '', imageId: id, imageLoading: true, ts: meta.ts, self: true
+  });
+  renderChat();
+
+  sendMsg({ type:'chat-image-header', ...meta });
+
+  for(let i = 0; i < total; i++){
+    const data = dataUrl.slice(i * IMG_CHUNK_SIZE, (i + 1) * IMG_CHUNK_SIZE);
+    sendMsg({ type:'chat-image-chunk', id, idx: i, data });
+    if(i % 8 === 7) await new Promise(r => setTimeout(r, 25));
+  }
+
+  sendMsg({ type:'chat-image-end', id });
+
+  const localMsg = chatMessages.find(m => m.imageId === id);
+  if(localMsg){
+    localMsg.imageLoading = false;
+    localMsg.imageData = dataUrl;
+    renderChat();
+  }
+}
+
+function handleChatImageSignal(uid, msg){
+  if(msg.type === 'chat-image-header'){
+    imageBuffers[msg.id] = { chunks: new Array(msg.total), total: msg.total, received: 0, meta: msg };
+    chatMessages.push({
+      uid: msg.uid, name: msg.name, role: msg.role,
+      text: '', imageId: msg.id, imageLoading: true, ts: msg.ts, self: false
+    });
+    renderChat();
+    if(currentSbTab !== 'chat'){ unreadChat++; updateChatBadge(); }
+  } else if(msg.type === 'chat-image-chunk'){
+    const buf = imageBuffers[msg.id];
+    if(!buf) return;
+    if(buf.chunks[msg.idx] === undefined){
+      buf.chunks[msg.idx] = msg.data;
+      buf.received++;
+    }
+    if(buf.received === buf.total){
+      const dataUrl = buf.chunks.join('');
+      const m = chatMessages.find(x => x.imageId === msg.id);
+      if(m){ m.imageLoading = false; m.imageData = dataUrl; renderChat(); }
+      delete imageBuffers[msg.id];
+    }
+  }
+}
+
+function openChatImage(imageId){
+  const m = chatMessages.find(x => x.imageId === imageId);
+  if(!m || !m.imageData) return;
+  const w = window.open();
+  if(w){
+    w.document.write(`<html><head><title>Ảnh chat</title><style>body{margin:0;background:#111;display:flex;align-items:center;justify-content:center;min-height:100vh}img{max-width:100%;max-height:100vh}</style></head><body><img src="${m.imageData}"></body></html>`);
+  }
+}
+
+function renderChat(){
+  const el = $('chatMessages');
+  if(!chatMessages.length){
+    el.innerHTML = '<div class="notes-empty"><i class="fas fa-comments"></i>Chưa có tin nhắn<br>Gõ tin nhắn, gửi ảnh (tối đa 10MB), hoặc dán link</div>';
+    return;
+  }
+  el.innerHTML = chatMessages.map(m => {
+    const isTeacher = m.role === 'teacher';
+    const time = new Date(m.ts).toLocaleTimeString('vi-VN', {hour:'2-digit', minute:'2-digit'});
+    let content = '';
+    if(m.imageLoading){
+      content = `<div class="chat-image-loading"><i class="fas fa-spinner fa-spin"></i> Đang nhận ảnh...</div>`;
+    } else if(m.imageData){
+      content = `<img src="${m.imageData}" onclick="openChatImage('${m.imageId}')" alt="ảnh">`;
+    } else if(m.text){
+      content = linkify(m.text);
+    }
+    return `<div class="chat-msg ${m.self?'self':''}">
+      <div class="chat-msg__avatar ${isTeacher?'teacher':''}">${escapeHtml(getInitials(m.name))}</div>
+      <div class="chat-msg__body">
+        <div class="chat-msg__head">
+          <span class="chat-msg__name ${isTeacher?'teacher':''}">${escapeHtml(m.name)}${isTeacher?' · GV':''}</span>
+          <span class="chat-msg__time">${time}</span>
+        </div>
+        <div class="chat-msg__text">${content}</div>
+      </div>
+    </div>`;
+  }).join('');
+  el.scrollTop = el.scrollHeight;
+}
+
+/* ============================================================
+   NOTES với LOOKUP
+   ============================================================ */
+let lookupState = { hz:'', py:'', mn:'', example:'', loading:false };
+let lookupTimer = null;
+
+async function lookupWord(hanzi){
+  hanzi = hanzi.trim();
+  if(!hanzi) return null;
+  const result = { hz: hanzi, py:'', mn:'', example:'' };
+
+  try {
+    if(window.pinyinPro && window.pinyinPro.pinyin){
+      result.py = window.pinyinPro.pinyin(hanzi, { toneType:'symbol', type:'string' });
+    }
+  } catch(e){ console.warn(e); }
+
+  try {
+    result.mn = await fetchGoogleTranslate(hanzi) || '';
+  } catch(e){ console.warn(e); }
+
+  return result;
+}
+
+async function fetchGoogleTranslate(text){
+  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=zh-CN&tl=vi&dt=t&q=${encodeURIComponent(text)}`;
+  const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+  if(!res.ok) throw new Error('GT HTTP ' + res.status);
+  const data = await res.json();
+  if(Array.isArray(data) && Array.isArray(data[0])){
+    return data[0].map(seg => seg[0]).join('').trim();
+  }
+  return '';
+}
+
+function onNoteHzInput(){
+  const hz = $('noteHz').value.trim();
+  lookupState.hz = hz;
+
+  if(!hz){
+    lookupState = { hz:'', py:'', mn:'', example:'', loading:false };
+    renderLookupPreview();
+    updateAddNoteButton();
+    return;
+  }
+
+  clearTimeout(lookupTimer);
+  lookupTimer = setTimeout(async () => {
+    lookupState.loading = true;
+    renderLookupPreview();
+    try {
+      const r = await lookupWord(hz);
+      if(r && lookupState.hz === hz){
+        lookupState.py = r.py || '';
+        lookupState.mn = r.mn || '';
+        lookupState.example = r.example || '';
+      }
+    } catch(e){ console.warn(e); }
+    lookupState.loading = false;
+    renderLookupPreview();
+    updateAddNoteButton();
+  }, 600);
+}
+
+function renderLookupPreview(){
+  const box = $('lookupPreview');
+  if(!box) return;
+  const s = lookupState;
+  if(!s.hz){
+    box.innerHTML = '<div class="lookup-empty">Nhập Hán tự để tra pinyin, nghĩa và ví dụ</div>';
+    return;
+  }
+  if(s.loading){
+    box.innerHTML = '<div class="lookup-loading"><i class="fas fa-spinner fa-spin"></i> Đang tra từ điển...</div>';
+    return;
+  }
+  box.innerHTML = `
+    <div class="lookup-row">
+      <div class="lookup-label">Pinyin</div>
+      <input type="text" class="lookup-input" value="${escapeAttr(s.py)}" placeholder="Đang trống..." oninput="lookupState.py=this.value;updateAddNoteButton();">
+    </div>
+    <div class="lookup-row">
+      <div class="lookup-label">Nghĩa</div>
+      <input type="text" class="lookup-input" value="${escapeAttr(s.mn)}" placeholder="Đang trống..." oninput="lookupState.mn=this.value;updateAddNoteButton();">
+    </div>
+    <div class="lookup-row">
+      <div class="lookup-label">Ví dụ</div>
+      <input type="text" class="lookup-input" value="${escapeAttr(s.example)}" placeholder="(tuỳ chọn)" oninput="lookupState.example=this.value;">
+    </div>
+  `;
+}
+
+function updateAddNoteButton(){
+  const btn = $('btnAddNote');
+  if(!btn) return;
+  btn.disabled = !(lookupState.hz && lookupState.mn);
+}
+
+function addNote(){
+  if(myRole !== 'teacher') return;
+  const hz = lookupState.hz.trim();
+  const mn = lookupState.mn.trim();
+  if(!hz || !mn){ toast('Cần Hán tự và nghĩa', 'warn'); return; }
+
+  const note = { hz, py: lookupState.py.trim(), mn, example: lookupState.example.trim() };
+  notes.push(note);
+  sendMsg({ type:'note-add', ...note });
+  renderNotes();
+
+  $('noteHz').value = '';
+  lookupState = { hz:'', py:'', mn:'', example:'', loading:false };
+  renderLookupPreview();
+  updateAddNoteButton();
+  $('noteHz').focus();
+  toast('📖 Đã thêm từ vựng', 'ok');
+}
+
+function deleteNote(idx){
+  if(myRole !== 'teacher') return;
+  notes.splice(idx, 1);
+  sendMsg({ type:'note-delete', idx });
+  renderNotes();
+}
+
+function clearAllNotes(){
+  if(myRole !== 'teacher') return;
+  if(!notes.length) return;
+  if(!confirm('Xoá hết ghi chú?')) return;
+  notes = [];
+  sendMsg({ type:'note-clear' });
+  renderNotes();
+}
+
+function exportNotesToFile(){
+  if(!notes.length){ toast('Chưa có từ vựng để xuất', 'warn'); return; }
+  const today = new Date().toLocaleDateString('vi-VN');
+  const lessonId = 1000 + Math.floor(Math.random() * 9000);
+
+  const lesson = {
+    id: lessonId,
+    level: 'Live-class',
+    title: 'Từ vựng lớp ' + today,
+    sub: 'Ghi chú từ buổi học trực tuyến ngày ' + today + ' cùng ' + myName,
+    vocab: notes.map(n => ({
+      hanzi: n.hz || '', pinyin: n.py || '', meaning: n.mn || '',
+      pos: '', example: n.example || '', image: ''
+    })),
+    speaking: notes.map(n => ({
+      hanzi: n.hz || '', pinyin: n.py || '', meaning: n.mn || ''
+    })),
+    quiz: [],
+    dialogue: { lines: [], keyWords: [] }
+  };
+
+  const json = JSON.stringify([lesson], null, 2);
+  const blob = new Blob([json], { type:'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `handi-vocab-${Date.now()}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  toast('📥 Đã tải file. Vào CMS → Import JSON để thêm vào app.', 'ok', 5000);
+}
+
+function renderNotes(){
+  const el = $('notesList');
+  if(!notes.length){
+    el.innerHTML = `<div class="notes-empty"><i class="fas fa-bookmark"></i>Chưa có từ vựng<br>${myRole === 'teacher' ? 'Ghi từ mới ở dưới' : 'GV sẽ ghi từ mới ở đây'}</div>`;
+    return;
+  }
+  el.innerHTML = notes.map((n, i) => `
+    <div class="note-item">
+      ${myRole === 'teacher' ? `<button class="note-item__del" onclick="deleteNote(${i})"><i class="fas fa-times"></i></button>` : ''}
+      <div class="note-item__hz">${escapeHtml(n.hz)}</div>
+      ${n.py ? `<div class="note-item__py">${escapeHtml(n.py)}</div>` : ''}
+      <div class="note-item__mn">${escapeHtml(n.mn)}</div>
+      ${n.example ? `<div class="note-item__ex"><i class="fas fa-quote-left"></i> ${escapeHtml(n.example)}</div>` : ''}
+    </div>`).join('');
+}
+
+/* ============================================================
+   LEAVE / CLEANUP
+   ============================================================ */
+async function leaveRoom(){
+  if(!confirm('Rời khỏi lớp?')) return;
+  await cleanup();
+  location.reload();
+}
+
+async function cleanup(){
+  try {
+    if(broadcastTimer){ clearInterval(broadcastTimer); broadcastTimer = null; }
+    if(headerDurationTimer){ clearInterval(headerDurationTimer); headerDurationTimer = null; }
+    if(screenTrack){ screenTrack.stop(); screenTrack.close(); screenTrack = null; }
+    if(localVideoTrack){ localVideoTrack.stop(); localVideoTrack.close(); localVideoTrack = null; }
+    if(localAudioTrack){ localAudioTrack.stop(); localAudioTrack.close(); localAudioTrack = null; }
+    if(client){ await client.leave(); client = null; }
+  } catch(e){ console.warn(e); }
+  remoteUsers = {};
+  chatMessages = [];
+  imageBuffers = {};
+}
+
+/* ============================================================
+   STATUS TOAST
+   ============================================================ */
+function showStatus(type, title, body, actions, ms){
+  const map = { success:'fa-circle-check', error:'fa-circle-exclamation', warn:'fa-triangle-exclamation', info:'fa-circle-info' };
+  const el = document.createElement('div');
+  el.className = 'status-toast ' + type;
+  el.innerHTML = `
+    <i class="fas ${map[type] || 'fa-circle-info'}"></i>
+    <div class="status-toast__body">
+      <b>${escapeHtml(title)}</b>
+      <span>${escapeHtml(body || '')}</span>
+      ${actions ? '<div class="status-toast__actions">' + actions + '</div>' : ''}
+    </div>`;
+  $('toastContainer').appendChild(el);
+  setTimeout(() => {
+    el.style.transition = 'opacity .3s, transform .3s';
+    el.style.opacity = '0';
+    el.style.transform = 'translateX(120%)';
+    setTimeout(() => el.remove(), 300);
+  }, ms || 6000);
+}
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function getInitials(name){
+  if(!name) return '?';
+  const clean = name.replace(/\s*\(Bạn\)\s*/, '').trim();
+  const p = clean.split(/\s+/);
+  if(p.length === 1) return p[0].substring(0,2).toUpperCase();
+  return (p[0][0] + p[p.length-1][0]).toUpperCase();
+}
+
+function escapeHtml(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function escapeAttr(s){ return escapeHtml(s); }
+
+function toast(msg, type, ms){
+  const t = $('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + (type || '');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.className = 'toast', ms || 2600);
+}
+
+/* ============================================================
+   AUTO-FILL
+   ============================================================ */
+function autoFillFromUrl(){
+  const params = new URLSearchParams(location.search);
+  const code = (params.get('code') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, CODE_LENGTH);
+  const name = params.get('name');
+  if(code){
+    switchSetupTab('student');
+    $('studentCodeInput').value = code;
+    if(name) $('studentNameInput').value = name;
+    setTimeout(() => $('studentNameInput').focus(), 300);
+    toast(`Đã điền mã ${code}`, 'ok', 2500);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const hz = $('noteHz');
+  if(hz) hz.addEventListener('input', onNoteHzInput);
+
+  const codeInp = $('studentCodeInput');
+  if(codeInp){
+    codeInp.addEventListener('input', e => {
+      e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, CODE_LENGTH);
+    });
+  }
+});
+
+window.addEventListener('beforeunload', () => { cleanup(); });
+autoFillFromUrl();
+</script>
+</body>
+</html>
