@@ -70,7 +70,7 @@ input,select,textarea{font-family:inherit}
 #appContainer.active{display:flex}
 
 /* ==== HEADER ==== */
-.room-header{height:58px;background:var(--glass-strong);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);color:var(--tx);display:flex;align-items:center;justify-content:space-between;padding:0 16px;gap:14px;flex-shrink:0;z-index:100}
+.room-header{height:58px;background:var(--glass-strong);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);color:var(--tx);display:flex;align-items:center;justify-content:space-between;padding:0 16px;gap:14px;flex-shrink:0;z-index:100}
 .rh-left{display:flex;align-items:center;gap:10px;min-width:0;flex-shrink:1}
 .rh-back{width:38px;height:38px;border-radius:10px;background:var(--card);border:1px solid var(--bd);color:var(--tx-2);display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;flex-shrink:0;text-decoration:none}
 .rh-back:hover{background:var(--r);border-color:var(--r);color:#fff;transform:translateY(-1px)}
@@ -93,19 +93,14 @@ input,select,textarea{font-family:inherit}
 .rh-role.student{background:rgba(34,197,94,.15);color:#86efac;border:1px solid rgba(34,197,94,.3)}
 .rh-user{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--tx);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rh-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--r),var(--r2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;text-transform:uppercase;flex-shrink:0;box-shadow:0 3px 10px rgba(234,88,12,.35)}
-@media(max-width:700px){
-  .rh-center .rh-stat:last-child{display:none}
-  .rh-title b{font-size:12.5px}
-  .rh-user span#rhUserName{display:none}
-}
 
 /* ==== ROOM LAYOUT ==== */
 .room{flex:1;display:flex;min-height:0;overflow:hidden;background:var(--bg)}
 .stage{flex:1;display:flex;flex-direction:column;min-width:0;position:relative;padding:10px}
 
-/* ==== FLOATING CONTROLS — VERTICAL LEFT (trong stage-main) ==== */
-.float-ctrl{position:absolute;top:16px;left:16px;z-index:30;display:flex;flex-direction:column;gap:8px;padding:8px;background:var(--glass-strong);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--bd-strong);border-radius:99px;box-shadow:0 12px 40px rgba(0,0,0,.55)}
-.ctrl-btn{width:46px;height:46px;border-radius:50%;background:var(--card);border:1px solid var(--bd);color:var(--tx);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s;cursor:pointer;position:relative}
+/* ==== FLOATING CONTROLS — NGANG Ở TOP-LEFT ==== */
+.float-ctrl{position:absolute;top:14px;left:14px;z-index:30;display:flex;flex-direction:row;gap:6px;padding:6px 8px;background:var(--glass-strong);backdrop-filter:blur(24px);border:1px solid var(--bd-strong);border-radius:99px;box-shadow:0 12px 40px rgba(0,0,0,.55);flex-wrap:wrap;max-width:calc(100% - 340px)}
+.ctrl-btn{width:42px;height:42px;border-radius:50%;background:var(--card);border:1px solid var(--bd);color:var(--tx);font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .2s;cursor:pointer;position:relative;flex-shrink:0}
 .ctrl-btn:hover:not(:disabled){background:var(--card-hover);border-color:var(--r);color:var(--r-l);transform:scale(1.08)}
 .ctrl-btn:disabled{opacity:.4;cursor:not-allowed}
 .ctrl-btn.danger{background:rgba(239,68,68,.85);border-color:rgba(239,68,68,.5);color:#fff}
@@ -113,49 +108,52 @@ input,select,textarea{font-family:inherit}
 .ctrl-btn.off{background:rgba(239,68,68,.2);border-color:rgba(239,68,68,.4);color:#fca5a5}
 .ctrl-btn.hand-active{background:rgba(251,191,36,.95);border-color:var(--gd);color:#1a1a1a;animation:handBtnPulse 1.5s infinite}
 @keyframes handBtnPulse{0%,100%{box-shadow:0 0 0 0 rgba(251,191,36,.6)}50%{box-shadow:0 0 0 12px rgba(251,191,36,0)}}
-.ctrl-btn__tip{position:absolute;left:calc(100% + 12px);top:50%;transform:translateY(-50%);background:var(--glass-strong);backdrop-filter:blur(20px);border:1px solid var(--bd);color:var(--tx);padding:6px 12px;border-radius:8px;font-size:11.5px;font-weight:700;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s;z-index:1}
+.ctrl-btn__tip{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);background:var(--glass-strong);backdrop-filter:blur(20px);border:1px solid var(--bd);color:var(--tx);padding:5px 11px;border-radius:8px;font-size:11px;font-weight:700;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s;z-index:1}
 .ctrl-btn:hover .ctrl-btn__tip{opacity:1}
 
 /* ==== FLOATING PANELS ==== */
-.float-panel{position:absolute;z-index:25;background:var(--glass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1.5px solid var(--bd-strong);border-radius:18px;padding:14px;box-shadow:0 20px 60px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.05);transition:all .3s}
-.float-panel.collapsed{padding:10px 14px}
+.float-panel{position:absolute;z-index:25;background:var(--glass);backdrop-filter:blur(24px);border:1.5px solid var(--bd-strong);border-radius:16px;padding:12px 14px;box-shadow:0 20px 60px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.05);transition:all .3s}
+.float-panel.collapsed{padding:8px 14px}
 .float-panel.collapsed .fp-body{display:none}
 
-.float-code{top:14px;right:14px;width:280px;border-color:rgba(234,88,12,.4)}
-.float-code::before{content:"";position:absolute;inset:-2px;border-radius:18px;background:linear-gradient(135deg,rgba(234,88,12,.4),rgba(251,191,36,.15));z-index:-1;filter:blur(12px);opacity:.6}
-.fp-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+/* CODE — layout ngang */
+.float-code{top:14px;right:14px;width:auto;min-width:340px;border-color:rgba(234,88,12,.4)}
+.float-code::before{content:"";position:absolute;inset:-2px;border-radius:16px;background:linear-gradient(135deg,rgba(234,88,12,.4),rgba(251,191,36,.15));z-index:-1;filter:blur(12px);opacity:.5}
+.fp-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
 .float-panel.collapsed .fp-head{margin-bottom:0}
-.fp-title{font-size:11.5px;font-weight:800;color:var(--tx-2);display:flex;align-items:center;gap:7px;text-transform:uppercase;letter-spacing:.08em}
-.fp-title i{color:var(--r-l);font-size:13px}
-.fp-collapse{width:26px;height:26px;border-radius:8px;background:var(--card);border:1px solid var(--bd);color:var(--tx-3);font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.fp-title{font-size:11px;font-weight:800;color:var(--tx-2);display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.08em}
+.fp-title i{color:var(--r-l);font-size:12px}
+.fp-collapse{width:24px;height:24px;border-radius:7px;background:var(--card);border:1px solid var(--bd);color:var(--tx-3);font-size:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
 .fp-collapse:hover{background:var(--r);border-color:var(--r);color:#fff}
-.fp-body{display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center}
-.float-code__qr{background:#fff;padding:10px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;min-height:160px;min-width:160px;box-shadow:0 4px 20px rgba(0,0,0,.3)}
-.float-code__qr canvas{display:block!important;width:140px!important;height:140px!important}
-.float-code__qr img{display:none!important}
-.float-code__code{font-family:ui-monospace,Menlo,monospace;font-size:32px;font-weight:900;background:linear-gradient(135deg,rgba(234,88,12,.2),rgba(251,191,36,.1));color:var(--gd);padding:12px 8px;border-radius:12px;border:1.5px solid rgba(234,88,12,.5);width:100%;text-align:center;line-height:1;letter-spacing:.12em;text-shadow:0 0 20px rgba(251,191,36,.5)}
-.float-code__room{font-size:11px;color:var(--tx-3);font-weight:600}
-.float-code__room b{color:var(--r-l);font-family:ui-monospace,monospace}
-.float-code__actions{display:flex;gap:6px;width:100%}
-.float-code__actions .btn{flex:1;padding:10px 12px;font-size:12px;border-radius:10px}
 
-.float-homework{top:14px;right:14px;width:280px;border-color:rgba(59,130,246,.4);display:none;margin-top:340px}
+.float-code .fp-body{display:flex;flex-direction:row;gap:12px;align-items:center}
+.float-code__qr{background:#fff;padding:5px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;width:70px;height:70px;flex-shrink:0;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.float-code__qr canvas{display:block!important;width:60px!important;height:60px!important}
+.float-code__qr img{display:none!important}
+.float-code__info{display:flex;flex-direction:column;gap:5px;min-width:0}
+.float-code__code{font-family:ui-monospace,Menlo,monospace;font-size:22px;font-weight:900;background:linear-gradient(135deg,rgba(234,88,12,.2),rgba(251,191,36,.1));color:var(--gd);padding:6px 14px;border-radius:8px;border:1.5px solid rgba(234,88,12,.5);text-align:center;line-height:1;letter-spacing:.15em;text-shadow:0 0 15px rgba(251,191,36,.5)}
+.float-code__room{font-size:10.5px;color:var(--tx-3);font-weight:600;text-align:center}
+.float-code__room b{color:var(--r-l);font-family:ui-monospace,monospace}
+.float-code__actions{display:flex;gap:5px}
+.float-code__actions .btn{flex:1;padding:7px 10px;font-size:11.5px;border-radius:7px}
+
+/* HOMEWORK — same as code layout */
+.float-homework{top:110px;right:14px;width:auto;min-width:340px;border-color:rgba(59,130,246,.4);display:none}
 .float-homework.show{display:block}
 .float-homework__title{color:var(--tx-2)}
 .float-homework__title i{color:#93c5fd}
 .homework-input-row{display:flex;gap:6px;width:100%}
-.homework-input-row input{flex:1;padding:9px 12px;border:1.5px solid var(--bd);border-radius:10px;font-size:12.5px;background:var(--bg-3);color:var(--tx)}
+.homework-input-row input{flex:1;padding:8px 11px;border:1.5px solid var(--bd);border-radius:9px;font-size:12.5px;background:var(--bg-3);color:var(--tx)}
 .homework-input-row input:focus{outline:0;border-color:var(--info);background:#1c1c1c}
-.homework-input-row button{padding:0 14px;background:var(--info);color:#fff;border-radius:10px;font-size:12px;font-weight:700;transition:all .2s}
-.homework-input-row button:hover{background:#2563eb}
-.homework-link{display:flex;align-items:center;gap:8px;padding:12px 14px;background:rgba(59,130,246,.12);border:1.5px solid rgba(59,130,246,.3);border-radius:10px;font-size:12.5px;font-weight:700;color:#93c5fd;text-decoration:none;transition:all .2s;width:100%;word-break:break-all;justify-content:center}
-.homework-link:hover{background:rgba(59,130,246,.2);transform:translateY(-1px);box-shadow:0 6px 18px rgba(59,130,246,.25)}
+.homework-input-row button{padding:0 12px;background:var(--info);color:#fff;border-radius:9px;font-size:12px;font-weight:700}
+.homework-link{display:flex;align-items:center;gap:8px;padding:10px 12px;background:rgba(59,130,246,.12);border:1.5px solid rgba(59,130,246,.3);border-radius:9px;font-size:12px;font-weight:700;color:#93c5fd;text-decoration:none;transition:all .2s;width:100%;word-break:break-all;justify-content:center;margin-top:8px}
+.homework-link:hover{background:rgba(59,130,246,.2);transform:translateY(-1px)}
 .homework-link i{flex-shrink:0}
-.homework-empty{font-size:11.5px;color:var(--tx-4);font-style:italic;text-align:center;padding:8px 0}
+.homework-empty{font-size:11px;color:var(--tx-4);font-style:italic;text-align:center;padding:6px 0}
 
 /* ==== MAIN STAGE ==== */
 .stage-main{flex:1;position:relative;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
-.main-tile{position:relative;background:#000;border-radius:18px;overflow:hidden;width:100%;height:100%;box-shadow:0 12px 40px rgba(0,0,0,.6);border:1px solid var(--bd)}
+.main-tile{position:relative;background:#000;border-radius:16px;overflow:hidden;width:100%;height:100%;box-shadow:0 12px 40px rgba(0,0,0,.6);border:1px solid var(--bd)}
 .main-tile video{width:100%;height:100%;object-fit:contain;display:block;background:#000}
 .main-tile__camoff{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,#1c1c1c,#0a0a0a);display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--tx-4)}
 .main-tile__camoff.show{display:flex}
@@ -163,7 +161,7 @@ input,select,textarea{font-family:inherit}
 .main-tile__name{position:absolute;bottom:16px;right:16px;background:var(--glass-strong);backdrop-filter:blur(20px);border:1px solid var(--bd);color:var(--tx);padding:8px 16px;border-radius:99px;font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:10px;z-index:2}
 .main-tile__name .role-tag{font-size:10px;padding:3px 9px;border-radius:99px;font-weight:800;letter-spacing:.04em}
 .main-tile__name .role-tag.teacher{background:rgba(59,130,246,.9);color:#fff}
-.main-tile__status{position:absolute;top:16px;right:16px;display:flex;gap:8px;z-index:2}
+.main-tile__status{position:absolute;bottom:16px;left:16px;display:flex;gap:8px;z-index:2}
 .status-chip{background:var(--glass-strong);backdrop-filter:blur(20px);border:1px solid var(--bd);color:var(--tx);padding:6px 13px;border-radius:99px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:6px}
 .status-chip.green{background:rgba(34,197,94,.85);border-color:rgba(34,197,94,.5);color:#fff}
 .status-chip.red{background:rgba(239,68,68,.85);border-color:rgba(239,68,68,.5);color:#fff}
@@ -192,8 +190,8 @@ input,select,textarea{font-family:inherit}
 .strip-tile__badge.hand{background:var(--gd);color:#1a1a1a;animation:handWave .8s infinite}
 @keyframes handWave{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}}
 
-/* ==== PRESENTATION MODE (with sidebar) ==== */
-.presentation{position:absolute;inset:0;display:flex;flex-direction:column;background:#000;z-index:15;border-radius:18px;overflow:hidden;border:1px solid var(--bd)}
+/* ==== PRESENTATION ==== */
+.presentation{position:absolute;inset:0;display:flex;flex-direction:column;background:#000;z-index:15;border-radius:16px;overflow:hidden;border:1px solid var(--bd)}
 .presentation__bar{background:var(--glass-strong);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;color:var(--tx);font-size:13px;font-weight:700;flex-shrink:0}
 .presentation__bar i{color:var(--r-l)}
 .presentation__content{flex:1;display:flex;min-height:0;overflow:hidden}
@@ -248,6 +246,7 @@ input,select,textarea{font-family:inherit}
 .part__meta .approved-badge{color:#86efac;font-weight:800}
 .part__actions{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
 
+/* CHAT */
 .panel-chat{flex:1;display:flex;flex-direction:column;min-height:0}
 .chat-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
 .chat-messages::-webkit-scrollbar{width:6px}
@@ -264,57 +263,87 @@ input,select,textarea{font-family:inherit}
 .chat-msg__text{font-size:13px;color:var(--tx-2);line-height:1.5;word-break:break-word;background:var(--card);border:1px solid var(--bd);padding:10px 14px;border-radius:12px;white-space:pre-wrap}
 .chat-msg.self .chat-msg__text{background:rgba(234,88,12,.1);border-color:rgba(234,88,12,.25)}
 .chat-msg__text img{max-width:100%;border-radius:10px;margin-top:6px;display:block;cursor:pointer;transition:all .2s}
-.chat-msg__text img:hover{opacity:.9;transform:scale(1.01)}
 .chat-image-loading{padding:20px;background:var(--card);border:1px dashed var(--bd);border-radius:10px;text-align:center;font-size:12px;color:var(--tx-3);font-style:italic}
 .chat-link{color:#93c5fd;text-decoration:underline;text-decoration-color:rgba(147,197,253,.4);word-break:break-all;transition:all .2s}
-.chat-link:hover{color:#bfdbfe;text-decoration-color:#bfdbfe}
-.chat-link-card{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);border-radius:10px;margin-top:8px;text-decoration:none;color:#93c5fd;font-size:12px;font-weight:700;transition:all .2s}
-.chat-link-card:hover{background:rgba(59,130,246,.2);transform:translateY(-1px);box-shadow:0 6px 16px rgba(59,130,246,.25)}
-.chat-link-card i{font-size:14px}
-.chat-link-card .chat-link-card__url{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tx-3);font-weight:500;font-size:11.5px}
+.chat-link:hover{color:#bfdbfe}
+
+/* CHAT LINK CARD — compact 1 dòng */
+.chat-link-card{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);border-radius:8px;margin-top:4px;text-decoration:none;color:#93c5fd;font-size:12px;font-weight:600;transition:all .2s;max-width:100%;line-height:1.2;height:32px}
+.chat-link-card:hover{background:rgba(59,130,246,.2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(59,130,246,.2)}
+.chat-link-card i.fa-link{font-size:12px;flex-shrink:0;opacity:.8}
+.chat-link-card .chat-link-card__url{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tx-2);font-weight:500;font-size:11.5px;max-width:200px}
+.chat-link-card i.fa-external-link-alt{font-size:10px;flex-shrink:0;opacity:.7;margin-left:auto}
+
 .chat-input{padding:12px 14px;border-top:1px solid var(--bd);display:flex;gap:8px;flex-shrink:0;background:var(--bg-2);align-items:flex-end}
 .chat-input__attach{width:40px;height:40px;border-radius:10px;background:var(--card);border:1.5px solid var(--bd);color:var(--tx-3);font-size:14px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
-.chat-input__attach:hover{border-color:var(--r);color:var(--r-l);background:var(--rg)}
+.chat-input__attach:hover{border-color:var(--r);color:var(--r-l);background:rgba(234,88,12,.1)}
 .chat-input textarea{flex:1;padding:10px 14px;border:1.5px solid var(--bd);border-radius:10px;font-size:13px;resize:none;min-height:40px;max-height:100px;line-height:1.4;font-family:inherit;background:var(--bg-3);color:var(--tx)}
 .chat-input textarea::placeholder{color:var(--tx-4)}
 .chat-input textarea:focus{outline:0;border-color:var(--r);background:#1c1c1c}
 .chat-input button:last-child{padding:0 16px;height:40px;background:var(--r);color:#fff;border-radius:10px;font-size:14px;font-weight:700;transition:all .2s}
 .chat-input button:last-child:hover{background:var(--r2)}
 
-.panel-notes{flex:1;display:flex;flex-direction:column;min-height:0}
-.notes-toolbar{padding:12px 14px;border-bottom:1px solid var(--bd);display:flex;gap:8px;flex-shrink:0;background:var(--bg-2)}
-.notes-toolbar .btn{flex:1;font-size:12px;padding:8px 12px}
-.notes-list{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+/* INTERACTION (Tương tác) */
+.panel-interaction{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+
+/* Quiz links section */
+.interaction-quiz{padding:12px 14px;border-bottom:1px solid var(--bd);background:var(--bg-2);flex-shrink:0}
+.interaction-section-title{font-size:11.5px;font-weight:800;color:var(--tx-3);display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+.interaction-section-title i{color:var(--r-l)}
+.quiz-input-row{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.quiz-input-row input{padding:8px 11px;border:1.5px solid var(--bd);border-radius:9px;font-size:12.5px;background:var(--bg-3);color:var(--tx);font-family:inherit}
+.quiz-input-row input:focus{outline:0;border-color:var(--r);background:#1c1c1c}
+.quiz-input-row input::placeholder{color:var(--tx-4)}
+.quiz-input-row .quiz-row-actions{display:flex;gap:6px}
+.quiz-input-row .quiz-row-actions .btn{flex:1;font-size:12px;padding:8px}
+.quiz-links-list{display:flex;flex-direction:column;gap:6px;max-height:180px;overflow-y:auto;margin-top:8px}
+.quiz-links-list::-webkit-scrollbar{width:5px}
+.quiz-links-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
+.quiz-link-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(234,88,12,.08);border:1px solid rgba(234,88,12,.3);border-radius:9px;text-decoration:none;color:var(--tx-2);font-size:12.5px;font-weight:600;transition:all .2s;position:relative}
+.quiz-link-item:hover{background:rgba(234,88,12,.15);transform:translateY(-1px)}
+.quiz-link-item i.fa-puzzle-piece{color:var(--r-l);font-size:14px;flex-shrink:0}
+.quiz-link-item .quiz-link-text{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.quiz-link-item .quiz-link-text b{display:block;color:var(--tx);font-size:12.5px;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.quiz-link-item .quiz-link-text span{display:block;color:var(--tx-4);font-size:10.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.quiz-link-item__del{width:22px;height:22px;border-radius:6px;background:rgba(239,68,68,.15);color:#fca5a5;font-size:10px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(239,68,68,.25);flex-shrink:0;transition:all .2s}
+.quiz-link-item__del:hover{background:var(--err);color:#fff;border-color:var(--err)}
+.quiz-empty{font-size:11.5px;color:var(--tx-4);font-style:italic;text-align:center;padding:14px 8px;line-height:1.5}
+
+/* Notes section (trong Tương tác) */
+.interaction-notes{flex:1;display:flex;flex-direction:column;min-height:0}
+.notes-toolbar{padding:10px 14px;border-bottom:1px solid var(--bd);display:flex;gap:8px;flex-shrink:0;background:var(--bg-2)}
+.notes-toolbar .btn{flex:1;font-size:11.5px;padding:7px 10px}
+.notes-list{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
 .notes-list::-webkit-scrollbar{width:6px}
 .notes-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
-.note-item{background:var(--card);border:1.5px solid var(--bd);border-radius:12px;padding:12px 14px;position:relative;transition:all .2s;animation:msgIn .25s}
+.note-item{background:var(--card);border:1.5px solid var(--bd);border-radius:12px;padding:10px 14px;position:relative;transition:all .2s;animation:msgIn .25s}
 .note-item:hover{border-color:rgba(234,88,12,.4);background:var(--card-hover)}
-.note-item__hz{font-family:var(--zh);font-size:24px;font-weight:700;color:var(--tx);line-height:1.2;margin-bottom:4px}
-.note-item__py{font-size:13px;color:var(--r-l);font-style:italic;font-weight:600;margin-bottom:4px}
-.note-item__mn{font-size:13.5px;color:var(--tx-2);font-weight:600;line-height:1.4}
-.note-item__ex{font-size:12px;color:var(--tx-3);margin-top:6px;padding-top:6px;border-top:1px dashed var(--bd);line-height:1.5;font-family:var(--zh)}
+.note-item__hz{font-family:var(--zh);font-size:22px;font-weight:700;color:var(--tx);line-height:1.2;margin-bottom:3px}
+.note-item__py{font-size:12.5px;color:var(--r-l);font-style:italic;font-weight:600;margin-bottom:3px}
+.note-item__mn{font-size:13px;color:var(--tx-2);font-weight:600;line-height:1.4}
+.note-item__ex{font-size:11.5px;color:var(--tx-3);margin-top:5px;padding-top:5px;border-top:1px dashed var(--bd);line-height:1.4;font-family:var(--zh)}
 .note-item__ex i{color:var(--r-l);font-size:10px;margin-right:4px;opacity:.7}
-.note-item__del{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:7px;background:rgba(239,68,68,.15);color:#fca5a5;font-size:11px;display:flex;align-items:center;justify-content:center;opacity:0;transition:all .2s;border:1px solid rgba(239,68,68,.25)}
+.note-item__del{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:6px;background:rgba(239,68,68,.15);color:#fca5a5;font-size:10px;display:flex;align-items:center;justify-content:center;opacity:0;transition:all .2s;border:1px solid rgba(239,68,68,.25)}
 .note-item:hover .note-item__del{opacity:1}
-.note-item__del:hover{background:var(--err);color:#fff;border-color:var(--err)}
-.notes-empty{text-align:center;padding:50px 24px;color:var(--tx-4);font-size:13px;line-height:1.6}
-.notes-empty i{font-size:38px;opacity:.3;display:block;margin-bottom:12px;color:var(--r-l)}
+.note-item__del:hover{background:var(--err);color:#fff}
+.notes-empty{text-align:center;padding:30px 24px;color:var(--tx-4);font-size:12.5px;line-height:1.6}
+.notes-empty i{font-size:34px;opacity:.3;display:block;margin-bottom:10px;color:var(--r-l)}
 
-.notes-input{padding:14px;border-top:1px solid var(--bd);flex-shrink:0;background:var(--bg-2)}
-.notes-input__hz-row{margin-bottom:10px}
-.notes-input input.hz{width:100%;padding:12px;border:1.5px solid var(--bd);border-radius:10px;font-family:var(--zh);font-weight:700;font-size:22px;text-align:center;background:var(--bg-3);color:var(--tx);transition:all .2s}
-.notes-input input.hz::placeholder{color:var(--tx-4);font-family:var(--fn);font-size:13px;font-weight:400}
-.notes-input input.hz:focus{outline:0;border-color:var(--r);background:#1c1c1c;box-shadow:0 0 0 3px rgba(234,88,12,.15)}
-.lookup-preview{background:var(--card);border:1.5px dashed var(--bd);border-radius:10px;padding:12px;margin-bottom:10px;min-height:80px}
-.lookup-empty{font-size:11.5px;color:var(--tx-4);font-style:italic;text-align:center;padding:10px 0}
-.lookup-loading{font-size:12.5px;color:var(--r-l);font-weight:700;text-align:center;padding:10px 0}
+.notes-input{padding:12px 14px;border-top:1px solid var(--bd);flex-shrink:0;background:var(--bg-2)}
+.notes-input__hz-row{margin-bottom:8px}
+.notes-input input.hz{width:100%;padding:11px;border:1.5px solid var(--bd);border-radius:10px;font-family:var(--zh);font-weight:700;font-size:20px;text-align:center;background:var(--bg-3);color:var(--tx);transition:all .2s}
+.notes-input input.hz::placeholder{color:var(--tx-4);font-family:var(--fn);font-size:12.5px;font-weight:400}
+.notes-input input.hz:focus{outline:0;border-color:var(--r);background:#1c1c1c}
+.lookup-preview{background:var(--card);border:1.5px dashed var(--bd);border-radius:10px;padding:10px;margin-bottom:8px;min-height:70px}
+.lookup-empty{font-size:11px;color:var(--tx-4);font-style:italic;text-align:center;padding:8px 0}
+.lookup-loading{font-size:12px;color:var(--r-l);font-weight:700;text-align:center;padding:8px 0}
 .lookup-loading i{margin-right:6px}
-.lookup-row{display:grid;grid-template-columns:58px 1fr;gap:8px;align-items:center;margin-bottom:8px}
+.lookup-row{display:grid;grid-template-columns:52px 1fr;gap:8px;align-items:center;margin-bottom:6px}
 .lookup-row:last-child{margin-bottom:0}
-.lookup-label{font-size:10.5px;font-weight:800;color:var(--tx-4);text-transform:uppercase;letter-spacing:.06em}
-.lookup-input{width:100%;padding:8px 10px;border:1px solid var(--bd);border-radius:8px;font-size:12.5px;background:var(--bg-3);color:var(--tx);transition:all .2s}
+.lookup-label{font-size:10px;font-weight:800;color:var(--tx-4);text-transform:uppercase;letter-spacing:.06em}
+.lookup-input{width:100%;padding:7px 10px;border:1px solid var(--bd);border-radius:7px;font-size:12px;background:var(--bg-3);color:var(--tx)}
 .lookup-input:focus{outline:0;border-color:var(--r);background:#1c1c1c}
-.notes-input button{width:100%;padding:11px;background:linear-gradient(135deg,var(--r),var(--r2));color:#fff;border-radius:10px;font-size:13px;font-weight:700;transition:all .2s;display:inline-flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 12px rgba(234,88,12,.3)}
+.notes-input button{width:100%;padding:10px;background:linear-gradient(135deg,var(--r),var(--r2));color:#fff;border-radius:10px;font-size:12.5px;font-weight:700;transition:all .2s;display:inline-flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 12px rgba(234,88,12,.3)}
 .notes-input button:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 18px rgba(234,88,12,.45)}
 .notes-input button:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
 
@@ -342,8 +371,7 @@ input,select,textarea{font-family:inherit}
 .slide-panel.show{display:flex}
 .slide-panel__head{background:linear-gradient(135deg,var(--r),var(--r2));color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .slide-panel__head b{font-size:14px;display:flex;align-items:center;gap:9px}
-.slide-panel__head button{color:#fff;font-size:20px;padding:0 4px;transition:opacity .2s}
-.slide-panel__head button:hover{opacity:.8}
+.slide-panel__head button{color:#fff;font-size:20px;padding:0 4px}
 .slide-panel__body{padding:16px;overflow-y:auto;flex:1}
 .slide-panel__body label{display:block;font-size:12px;font-weight:700;color:var(--tx-2);margin-bottom:8px}
 .slide-panel__body textarea{width:100%;padding:12px;border:1.5px solid var(--bd);border-radius:10px;font-size:12.5px;font-family:ui-monospace,monospace;resize:vertical;min-height:80px;background:var(--bg-3);color:var(--tx)}
@@ -359,7 +387,7 @@ input,select,textarea{font-family:inherit}
 .slide-thumb .file-icon span{font-size:9px;font-weight:800;color:var(--tx-3);text-transform:uppercase;letter-spacing:.06em}
 .slide-thumb:hover{border-color:var(--r);transform:scale(1.04)}
 .slide-thumb.active{border-color:var(--r);box-shadow:0 0 0 3px rgba(234,88,12,.25)}
-.slide-thumb__num{position:absolute;top:5px;left:5px;background:rgba(0,0,0,.85);color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:5px;backdrop-filter:blur(6px)}
+.slide-thumb__num{position:absolute;top:5px;left:5px;background:rgba(0,0,0,.85);color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:5px}
 .slide-thumb__del{position:absolute;top:5px;right:5px;background:rgba(239,68,68,.95);color:#fff;width:22px;height:22px;border-radius:50%;font-size:10px;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
 .slide-thumb:hover .slide-thumb__del{opacity:1}
 
@@ -367,22 +395,18 @@ input,select,textarea{font-family:inherit}
   :root{--sb-w:320px}
   .strip{height:120px}
   .strip-tile{width:170px}
-  .float-code,.float-homework{width:250px}
-  .float-code__qr{min-width:140px;min-height:140px}
-  .float-code__qr canvas{width:120px!important;height:120px!important}
-  .float-code__code{font-size:26px}
+  .float-code,.float-homework{width:auto;min-width:300px}
+  .float-code__code{font-size:18px;letter-spacing:.1em}
   .presentation__sidebar{width:180px}
-  .ctrl-btn{width:42px;height:42px;font-size:14px}
+  .ctrl-btn{width:38px;height:38px;font-size:13px}
+  .float-ctrl{max-width:calc(100% - 320px)}
 }
 @media(max-width:700px){
   .room{flex-direction:column}
   .sidebar{width:100%;max-height:50vh;border-left:0;border-top:1px solid var(--bd)}
-  .float-code,.float-homework{width:220px}
-  .float-code__qr{min-width:120px;min-height:120px}
-  .float-code__qr canvas{width:100px!important;height:100px!important}
-  .float-code__code{font-size:22px}
-  .float-ctrl{top:10px;left:10px;padding:5px;gap:5px}
-  .ctrl-btn{width:38px;height:38px;font-size:13px}
+  .float-code,.float-homework{min-width:auto;width:calc(100% - 28px);left:14px;right:14px}
+  .float-homework{top:auto;margin-top:0}
+  .float-ctrl{top:auto;bottom:16px;left:50%;transform:translateX(-50%);max-width:calc(100% - 20px);justify-content:center}
   .slide-panel{right:14px;left:14px;width:auto;bottom:90px}
   .presentation__content{flex-direction:column}
   .presentation__sidebar{width:100%;flex-direction:row;overflow-x:auto;overflow-y:hidden;padding:8px;gap:6px;border-right:0;border-bottom:1px solid var(--bd)}
@@ -398,63 +422,26 @@ input,select,textarea{font-family:inherit}
   <div class="setup-card">
     <h1>🎓 Hán Ngữ HanDi</h1>
     <p>Chọn vai trò để bắt đầu</p>
-
     <div class="setup-tabs">
-      <button class="setup-tab active" data-role="teacher" onclick="switchSetupTab('teacher')">
-        <i class="fas fa-chalkboard-user"></i> Giáo viên
-      </button>
-      <button class="setup-tab" data-role="student" onclick="switchSetupTab('student')">
-        <i class="fas fa-user-graduate"></i> Học viên
-      </button>
+      <button class="setup-tab active" data-role="teacher" onclick="switchSetupTab('teacher')"><i class="fas fa-chalkboard-user"></i> Giáo viên</button>
+      <button class="setup-tab" data-role="student" onclick="switchSetupTab('student')"><i class="fas fa-user-graduate"></i> Học viên</button>
     </div>
 
     <div class="setup-panel active" id="teacherPanel">
-      <div class="fg">
-        <label>Tên của bạn *</label>
-        <input type="text" id="teacherNameInput" placeholder="VD: Cô Lan" maxlength="30">
-      </div>
-      <div class="fg">
-        <label>Tiêu đề buổi học (tuỳ chọn)</label>
-        <input type="text" id="teacherTitleInput" placeholder="VD: Bài 1 – Chào hỏi" maxlength="50">
-      </div>
-      <div class="fg">
-        <label>Agora App ID *</label>
-        <input type="text" id="teacherAppIdInput" placeholder="Dán App ID từ Agora Console">
-        <small>Lấy tại <a href="https://console.agora.io" target="_blank">console.agora.io</a> → Project Management</small>
-      </div>
-      <div class="fg">
-        <label>Tên phòng Agora *</label>
-        <input type="text" id="teacherChannelInput" placeholder="VD: handi-buoi1" value="handi-class">
-        <small>Không dấu, không khoảng trắng. VD: <code>toan6a</code></small>
-      </div>
-      <div class="fg">
-        <label>Token (tuỳ chọn)</label>
-        <input type="text" id="teacherTokenInput" placeholder="Để trống nếu Testing mode">
-      </div>
-      <button class="btn btn--primary btn--block" id="btnCreateClass" onclick="createClass()" style="margin-top:10px">
-        <i class="fas fa-plus-circle"></i> Tạo lớp & sinh mã 6 ký tự
-      </button>
-      <div class="hint">
-        Hệ thống sinh <b>mã 6 ký tự</b> + QR code. Học viên nhập mã → tự động nhận cấu hình lớp từ ntfy.sh → vào thẳng.
-      </div>
+      <div class="fg"><label>Tên của bạn *</label><input type="text" id="teacherNameInput" placeholder="VD: Cô Lan" maxlength="30"></div>
+      <div class="fg"><label>Tiêu đề buổi học (tuỳ chọn)</label><input type="text" id="teacherTitleInput" placeholder="VD: Bài 1 – Chào hỏi" maxlength="50"></div>
+      <div class="fg"><label>Agora App ID *</label><input type="text" id="teacherAppIdInput" placeholder="Dán App ID từ Agora Console"><small>Lấy tại <a href="https://console.agora.io" target="_blank">console.agora.io</a></small></div>
+      <div class="fg"><label>Tên phòng Agora *</label><input type="text" id="teacherChannelInput" value="handi-class"><small>Không dấu, không khoảng trắng</small></div>
+      <div class="fg"><label>Token (tuỳ chọn)</label><input type="text" id="teacherTokenInput" placeholder="Để trống nếu Testing mode"></div>
+      <button class="btn btn--primary btn--block" id="btnCreateClass" onclick="createClass()" style="margin-top:10px"><i class="fas fa-plus-circle"></i> Tạo lớp & sinh mã 6 ký tự</button>
+      <div class="hint">Hệ thống sinh <b>mã 6 ký tự</b> + QR code. Học viên nhập mã → tự động nhận cấu hình lớp từ ntfy.sh.</div>
     </div>
 
     <div class="setup-panel" id="studentPanel">
-      <div class="fg">
-        <label>Tên của bạn *</label>
-        <input type="text" id="studentNameInput" placeholder="VD: Minh" maxlength="30">
-      </div>
-      <div class="fg">
-        <label>Mã vào lớp (6 ký tự) *</label>
-        <input type="text" id="studentCodeInput" class="code-input-big" placeholder="ABC123" maxlength="6" autocomplete="off" spellcheck="false">
-        <small>Nhập mã 6 ký tự giáo viên đã gửi, hoặc mở link từ QR</small>
-      </div>
-      <button class="btn btn--primary btn--block" id="btnJoinClass" onclick="joinWithCode()" style="margin-top:10px">
-        <i class="fas fa-sign-in-alt"></i> Vào lớp
-      </button>
-      <div class="hint">
-        <b>💡</b> Học viên <b>không cần biết</b> App ID/Token — hệ thống tự trao đổi với giáo viên qua kênh signaling.
-      </div>
+      <div class="fg"><label>Tên của bạn *</label><input type="text" id="studentNameInput" placeholder="VD: Minh" maxlength="30"></div>
+      <div class="fg"><label>Mã vào lớp (6 ký tự) *</label><input type="text" id="studentCodeInput" class="code-input-big" placeholder="ABC123" maxlength="6" autocomplete="off" spellcheck="false"></div>
+      <button class="btn btn--primary btn--block" id="btnJoinClass" onclick="joinWithCode()" style="margin-top:10px"><i class="fas fa-sign-in-alt"></i> Vào lớp</button>
+      <div class="hint"><b>💡</b> Học viên <b>không cần biết</b> App ID/Token — hệ thống tự trao đổi qua kênh signaling.</div>
     </div>
   </div>
 </div>
@@ -463,12 +450,8 @@ input,select,textarea{font-family:inherit}
 <div id="appContainer">
   <header class="room-header">
     <div class="rh-left">
-      <a href="index.html" class="rh-back" title="Về trang chủ">
-        <i class="fas fa-home"></i>
-      </a>
-      <button class="rh-back rh-back--leave" onclick="leaveRoom()" title="Rời lớp">
-        <i class="fas fa-arrow-left"></i>
-      </button>
+      <a href="index.html" class="rh-back" title="Về trang chủ"><i class="fas fa-home"></i></a>
+      <button class="rh-back rh-back--leave" onclick="leaveRoom()" title="Rời lớp"><i class="fas fa-arrow-left"></i></button>
       <div class="rh-logo">汉</div>
       <div class="rh-title">
         <b id="rhTitleText">Hán Ngữ HanDi</b>
@@ -492,21 +475,21 @@ input,select,textarea{font-family:inherit}
   <div class="room">
     <div class="stage" id="stageArea">
 
-      <!-- CODE PANEL -->
+      <!-- CODE PANEL (ngang) -->
       <div class="float-panel float-code collapsed" id="floatCode" style="display:none">
         <div class="fp-head">
           <div class="fp-title"><i class="fas fa-qrcode"></i> Mã lớp</div>
-          <button class="fp-collapse" onclick="toggleCodePanel()">
-            <i class="fas fa-chevron-up" id="codePanelChevron"></i>
-          </button>
+          <button class="fp-collapse" onclick="toggleCodePanel()"><i class="fas fa-chevron-up" id="codePanelChevron"></i></button>
         </div>
         <div class="fp-body">
           <div class="float-code__qr" id="qrBox"></div>
-          <div class="float-code__code" id="codeDisplay">—</div>
-          <div class="float-code__room">Phòng: <b id="roomCodeDisplay">—</b></div>
-          <div class="float-code__actions">
-            <button class="btn btn--primary" onclick="copyLink()"><i class="fas fa-link"></i> Copy link</button>
-            <button class="btn btn--ghost" onclick="shareCode()"><i class="fas fa-share-nodes"></i></button>
+          <div class="float-code__info">
+            <div class="float-code__code" id="codeDisplay">—</div>
+            <div class="float-code__room">Phòng: <b id="roomCodeDisplay">—</b></div>
+            <div class="float-code__actions">
+              <button class="btn btn--primary" onclick="copyLink()"><i class="fas fa-link"></i> Copy</button>
+              <button class="btn btn--ghost" onclick="shareCode()"><i class="fas fa-share-nodes"></i></button>
+            </div>
           </div>
         </div>
       </div>
@@ -515,16 +498,14 @@ input,select,textarea{font-family:inherit}
       <div class="float-panel float-homework collapsed" id="floatHomework" style="display:none">
         <div class="fp-head">
           <div class="fp-title float-homework__title"><i class="fas fa-book-open"></i> Bài tập về nhà</div>
-          <button class="fp-collapse" onclick="toggleHomeworkPanel()">
-            <i class="fas fa-chevron-up" id="homeworkChevron"></i>
-          </button>
+          <button class="fp-collapse" onclick="toggleHomeworkPanel()"><i class="fas fa-chevron-up" id="homeworkChevron"></i></button>
         </div>
-        <div class="fp-body">
+        <div class="fp-body" style="display:flex;flex-direction:column;gap:8px">
           <div class="homework-input-row" id="homeworkTeacherRow">
             <input type="url" id="homeworkInput" placeholder="Dán link bài tập..." onkeydown="if(event.key==='Enter')saveHomework();">
             <button onclick="saveHomework()" title="Lưu"><i class="fas fa-paper-plane"></i></button>
           </div>
-          <div id="homeworkStudentView" style="display:none;width:100%"></div>
+          <div id="homeworkStudentView" style="display:none"></div>
           <div class="homework-empty" id="homeworkEmpty">Chưa có bài tập</div>
         </div>
       </div>
@@ -538,7 +519,7 @@ input,select,textarea{font-family:inherit}
           <div class="main-tile__name" id="mainName">Đang chờ kết nối...</div>
         </div>
 
-        <!-- CONTROLS INSIDE STAGE-MAIN, VERTICAL LEFT -->
+        <!-- CONTROLS — NGANG Ở TRÊN TRÁI -->
         <div class="float-ctrl" id="floatCtrl" style="display:none">
           <button class="ctrl-btn" id="btnMuteAll" onclick="muteAllStudents()" style="display:none;background:rgba(239,68,68,.75);border-color:rgba(239,68,68,.5)">
             <i class="fas fa-volume-xmark"></i>
@@ -580,7 +561,7 @@ input,select,textarea{font-family:inherit}
       <div class="sb-tabs">
         <button class="sb-tab active" data-tab="people" onclick="switchSbTab('people')"><i class="fas fa-users"></i> Người</button>
         <button class="sb-tab" data-tab="chat" onclick="switchSbTab('chat')"><i class="fas fa-comments"></i> Chat<span class="tab-badge hidden" id="chatBadge">0</span></button>
-        <button class="sb-tab" data-tab="notes" onclick="switchSbTab('notes')"><i class="fas fa-bookmark"></i> Ghi chú</button>
+        <button class="sb-tab" data-tab="interaction" onclick="switchSbTab('interaction')"><i class="fas fa-puzzle-piece"></i> Tương tác</button>
       </div>
       <div class="sb-body">
         <div class="sb-panel active" id="panelPeople"><div class="panel-people" id="sidebarList"></div></div>
@@ -588,32 +569,48 @@ input,select,textarea{font-family:inherit}
           <div class="panel-chat">
             <div class="chat-messages" id="chatMessages"></div>
             <div class="chat-input">
-              <button class="chat-input__attach" onclick="document.getElementById('chatImageInput').click()" title="Gửi ảnh (tối đa 10MB)">
+              <button class="chat-input__attach" onclick="document.getElementById('chatImageInput').click()" title="Gửi ảnh (≤10MB)">
                 <i class="fas fa-image"></i>
               </button>
               <input type="file" id="chatImageInput" accept="image/*" style="display:none" onchange="handleChatImage(event)">
-              <textarea id="chatInput" placeholder="Nhập tin nhắn..." rows="1" onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendChat();}"></textarea>
+              <textarea id="chatInput" placeholder="Nhập tin nhắn, dán link..." rows="1" onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendChat();}"></textarea>
               <button onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
             </div>
           </div>
         </div>
-        <div class="sb-panel" id="panelNotes">
-          <div class="panel-notes">
-            <div class="notes-toolbar" id="notesToolbar">
-              <button class="btn btn--ghost" onclick="exportNotesToFile()"><i class="fas fa-file-export"></i> Xuất file</button>
-              <button class="btn btn--ghost" onclick="clearAllNotes()"><i class="fas fa-trash"></i> Xoá hết</button>
+        <div class="sb-panel" id="panelInteraction">
+          <div class="panel-interaction">
+            <!-- QUIZ LINKS (GV paste link để HV nhảy qua làm quiz) -->
+            <div class="interaction-quiz">
+              <div class="interaction-section-title"><i class="fas fa-puzzle-piece"></i> Quiz & Bài tập tương tác</div>
+              <div class="quiz-input-row" id="quizTeacherRow">
+                <input type="text" id="quizTitleInput" placeholder="Tên bài (VD: Quiz bài 1)" maxlength="60">
+                <input type="url" id="quizUrlInput" placeholder="https://..." onkeydown="if(event.key==='Enter')saveQuizLink();">
+                <div class="quiz-row-actions">
+                  <button class="btn btn--primary" onclick="saveQuizLink()"><i class="fas fa-plus"></i> Thêm quiz</button>
+                </div>
+              </div>
+              <div class="quiz-links-list" id="quizLinksList"></div>
             </div>
-            <div class="notes-list" id="notesList"></div>
-            <div class="notes-input" id="notesInput" style="display:none">
-              <div class="notes-input__hz-row">
-                <input type="text" id="noteHz" placeholder="Nhập Hán tự — VD: 你好" class="hz" maxlength="10" autocomplete="off" spellcheck="false">
+
+            <!-- NOTES -->
+            <div class="interaction-notes">
+              <div class="notes-toolbar" id="notesToolbar">
+                <button class="btn btn--ghost" onclick="exportNotesToFile()"><i class="fas fa-file-export"></i> Xuất file</button>
+                <button class="btn btn--ghost" onclick="clearAllNotes()"><i class="fas fa-trash"></i> Xoá hết</button>
               </div>
-              <div class="lookup-preview" id="lookupPreview">
-                <div class="lookup-empty">Nhập Hán tự để tra pinyin, nghĩa và ví dụ</div>
+              <div class="notes-list" id="notesList"></div>
+              <div class="notes-input" id="notesInput" style="display:none">
+                <div class="notes-input__hz-row">
+                  <input type="text" id="noteHz" placeholder="Nhập Hán tự — VD: 你好" class="hz" maxlength="10" autocomplete="off" spellcheck="false">
+                </div>
+                <div class="lookup-preview" id="lookupPreview">
+                  <div class="lookup-empty">Nhập Hán tự để tra pinyin, nghĩa và ví dụ</div>
+                </div>
+                <button onclick="addNote()" id="btnAddNote" disabled>
+                  <i class="fas fa-plus"></i> Lưu vào ghi chú
+                </button>
               </div>
-              <button onclick="addNote()" id="btnAddNote" disabled>
-                <i class="fas fa-plus"></i> Lưu vào ghi chú
-              </button>
             </div>
           </div>
         </div>
@@ -631,21 +628,15 @@ input,select,textarea{font-family:inherit}
   <div class="slide-panel__body">
     <label>Thêm bài giảng bằng URL (PDF, PPTX, DOC, ảnh)</label>
     <textarea id="slideUrlsInput" placeholder="https://example.com/bài-giảng.pdf
-https://example.com/slide.pptx
-https://i.imgur.com/slide1.jpg"></textarea>
+https://example.com/slide.pptx"></textarea>
     <div class="slide-file-row">
       <button class="btn btn--primary" onclick="addSlidesFromUrls()"><i class="fas fa-plus"></i> Thêm từ URL</button>
     </div>
-    <div style="margin-top:16px;font-size:12px;font-weight:700;color:var(--tx-2);margin-bottom:6px">
-      Hoặc upload file từ máy
-    </div>
+    <div style="margin-top:16px;font-size:12px;font-weight:700;color:var(--tx-2);margin-bottom:6px">Hoặc upload file từ máy</div>
     <input type="file" id="slideFileInput" accept="image/*,.pdf,.ppt,.pptx,.doc,.docx" multiple style="display:none" onchange="addSlidesFromFiles(event)">
     <button class="btn btn--ghost btn--block" onclick="document.getElementById('slideFileInput').click()">
       <i class="fas fa-upload"></i> Chọn file từ máy
     </button>
-    <div style="margin-top:12px;padding:10px 12px;background:rgba(234,88,12,.08);border:1px solid rgba(234,88,12,.25);border-radius:9px;font-size:11.5px;color:var(--tx-2);line-height:1.5">
-      <b style="color:var(--gd)"><i class="fas fa-lightbulb"></i> Gợi ý:</b> File PDF/PPTX nên được host công khai (Google Drive, Dropbox) — dán link chia sẻ trực tiếp.
-    </div>
     <div class="slide-thumbs" id="slideThumbs"></div>
   </div>
 </div>
@@ -666,8 +657,8 @@ const NTFY_TOPIC_PREFIX = 'handi-room-';
 const CODE_LENGTH = 6;
 const BROADCAST_INTERVAL_MS = 60000;
 const IMG_CHUNK_SIZE = 900;
-const IMG_MAX_SIZE = 10 * 1024 * 1024; // 10MB
-const IMG_COMPRESS_MAX = 1.5 * 1024 * 1024; // 1.5MB sau nén (target)
+const IMG_MAX_SIZE = 10 * 1024 * 1024;
+const IMG_COMPRESS_MAX = 1.5 * 1024 * 1024;
 
 /* ============================================================
    STATE
@@ -682,6 +673,7 @@ let mySlides = [], currentSlideIdx = -1;
 let remoteSlideUrl = null, remoteSlideIdx = 0, remoteSlideTotal = 0;
 let remoteScreenSharingUid = null;
 let chatMessages = [], notes = [];
+let quizLinks = [];
 let unreadChat = 0, currentSbTab = 'people';
 let myRoomCode = null;
 let myAgoraConfig = null;
@@ -692,9 +684,6 @@ let imageBuffers = {};
 
 const $ = id => document.getElementById(id);
 
-/* ============================================================
-   SINH MÃ PHÒNG 6 KÝ TỰ
-   ============================================================ */
 function generateRoomCode(){
   const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
   let code = '';
@@ -703,7 +692,7 @@ function generateRoomCode(){
 }
 
 /* ============================================================
-   NTFY SIGNALING
+   NTFY
    ============================================================ */
 async function ntfyPublish(topic, data){
   const res = await fetch(`${NTFY_BASE}/${topic}`, {
@@ -719,7 +708,7 @@ function ntfySubscribe(topic, timeoutMs = 20000){
     const es = new EventSource(`${NTFY_BASE}/${topic}/sse`);
     const timer = setTimeout(() => {
       es.close();
-      reject(new Error('Không nhận được phản hồi từ giáo viên. Kiểm tra lại mã.'));
+      reject(new Error('Không nhận được phản hồi từ giáo viên.'));
     }, timeoutMs);
     es.onmessage = (e) => {
       try {
@@ -748,9 +737,6 @@ function switchSetupTab(role){
   }, 80);
 }
 
-/* ============================================================
-   HEADER
-   ============================================================ */
 function updateRoomHeader(){
   const ch = myAgoraConfig ? myAgoraConfig.channel : '—';
   $('rhChannel').textContent = ch;
@@ -774,9 +760,6 @@ function startHeaderTimer(){
   }, 1000);
 }
 
-/* ============================================================
-   TEACHER: TẠO LỚP
-   ============================================================ */
 async function createClass(){
   const name = $('teacherNameInput').value.trim();
   const appId = $('teacherAppIdInput').value.trim();
@@ -828,9 +811,6 @@ async function createClass(){
   }
 }
 
-/* ============================================================
-   STUDENT: VÀO LỚP
-   ============================================================ */
 async function joinWithCode(){
   const name = $('studentNameInput').value.trim();
   let code = $('studentCodeInput').value.trim().toUpperCase();
@@ -859,16 +839,13 @@ async function joinWithCode(){
     toast(`Đã vào lớp của ${creds.teacherName}`, 'ok', 3000);
   } catch(e){
     console.error(e);
-    toast(e.message || 'Không tìm thấy lớp. Kiểm tra lại mã hoặc chờ GV mở lớp.', 'err', 5000);
+    toast(e.message || 'Không tìm thấy lớp.', 'err', 5000);
   } finally {
     btn.disabled = false;
     btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Vào lớp';
   }
 }
 
-/* ============================================================
-   JOIN AGORA
-   ============================================================ */
 async function joinAgora({ name, role }){
   if(!myAgoraConfig){ throw new Error('Chưa có cấu hình Agora'); }
   const { appId, channel, token } = myAgoraConfig;
@@ -889,7 +866,6 @@ async function joinAgora({ name, role }){
   });
 
   myUid = await client.join(appId, channel, token || null, null);
-  console.log('[Agora] UID:', myUid, 'channel:', channel);
 
   try {
     [localAudioTrack, localVideoTrack] = await AgoraRTC.createMicrophoneAndCameraTracks(
@@ -913,6 +889,7 @@ async function joinAgora({ name, role }){
     $('btnHand').style.display = 'none';
     $('notesInput').style.display = '';
     $('notesToolbar').style.display = 'flex';
+    $('quizTeacherRow').style.display = 'flex';
   } else {
     $('btnMuteAll').style.display = 'none';
     $('btnScreen').style.display = 'none';
@@ -920,10 +897,11 @@ async function joinAgora({ name, role }){
     $('btnHand').style.display = '';
     $('notesInput').style.display = 'none';
     $('notesToolbar').style.display = 'none';
+    $('quizTeacherRow').style.display = 'none';
   }
 
   updateMicUI(); updateCamUI(); updateHandUI();
-  renderStrip(); renderSidebar(); renderNotes(); updateMainView();
+  renderStrip(); renderSidebar(); renderNotes(); renderQuizLinks(); updateMainView();
   updateRoomHeader();
   startHeaderTimer();
 
@@ -931,12 +909,8 @@ async function joinAgora({ name, role }){
   if(myRole === 'teacher') teacherUid = myUid;
 
   document.title = `Lớp ${channel} – HanDi`;
-  setTimeout(() => $('chatInput').focus(), 500);
 }
 
-/* ============================================================
-   SIGNALING
-   ============================================================ */
 function sendMsg(obj){
   if(!client) return;
   try { client.sendStreamMessage(new TextEncoder().encode(JSON.stringify(obj))); }
@@ -961,23 +935,16 @@ function handleSignal(uid, msg){
     case 'slide-show': remoteSlideUrl = msg.url; remoteSlideIdx = msg.idx; remoteSlideTotal = msg.total; if(uid !== myUid){ slideMode = true; updateMainView(); } break;
     case 'slide-end': remoteSlideUrl = null; slideMode = false; updateMainView(); break;
     case 'mute-all': if(myRole === 'student'){ micOn = false; if(localAudioTrack) localAudioTrack.setEnabled(false); updateMicUI(); renderStrip(); toast('GV đã tắt mic tất cả', 'warn'); } break;
-    case 'force-mute': if(msg.target === myUid){ micOn = false; if(localAudioTrack) localAudioTrack.setEnabled(false); updateMicUI(); renderStrip(); toast('Bạn đã bị tắt mic', 'warn'); } break;
+    case 'force-mute': if(msg.target === myUid){ micOn = false; if(localAudioTrack) localAudioTrack.setEnabled(false); updateMicUI(); renderStrip(); } break;
     case 'chat': chatMessages.push({ uid, name: msg.name, role: msg.role, text: msg.text, ts: msg.ts, self:false }); renderChat(); if(currentSbTab !== 'chat'){ unreadChat++; updateChatBadge(); } break;
     case 'chat-image-header':
-    case 'chat-image-chunk':
-      handleChatImageSignal(uid, msg);
-      break;
+    case 'chat-image-chunk': handleChatImageSignal(uid, msg); break;
     case 'note-add': notes.push({ hz: msg.hz, py: msg.py, mn: msg.mn, example: msg.example || '' }); renderNotes(); if(uid !== myUid) toast(`📖 GV thêm từ: ${msg.hz}`, 'ok', 2500); break;
-    case 'note-clear': notes = []; renderNotes(); if(uid !== myUid) toast('GV đã xoá hết ghi chú', 'warn'); break;
+    case 'note-clear': notes = []; renderNotes(); break;
     case 'note-delete': notes.splice(msg.idx, 1); renderNotes(); break;
-    case 'homework-set':
-      homeworkUrl = msg.url;
-      renderHomework();
-      if(uid !== myUid){
-        toast('📚 GV đã giao bài tập mới!', 'ok', 3500);
-        $('floatHomework').style.display = '';
-      }
-      break;
+    case 'homework-set': homeworkUrl = msg.url; renderHomework(); if(uid !== myUid){ toast('📚 GV đã giao bài tập mới!', 'ok', 3500); $('floatHomework').style.display = ''; } break;
+    case 'quiz-add': quizLinks.push(msg.link); renderQuizLinks(); if(uid !== myUid){ toast('🧩 GV đã thêm quiz: ' + msg.link.title, 'ok', 3000); switchSbTab('interaction'); } break;
+    case 'quiz-delete': quizLinks.splice(msg.idx, 1); renderQuizLinks(); break;
   }
 }
 
@@ -1009,9 +976,6 @@ function onUserLeft(user){
   renderSidebar(); renderStrip(); updateMainView(); updateRoomHeader();
 }
 
-/* ============================================================
-   SLIDE TYPE
-   ============================================================ */
 function getSlideType(url){
   if(!url) return 'unknown';
   const clean = url.split('?')[0].split('#')[0].toLowerCase();
@@ -1027,7 +991,7 @@ function getSlideType(url){
 
 function renderSlideContent(url, type){
   if(type === 'image'){
-    return `<img class="slide" src="${escapeAttr(url)}" alt="slide" onerror="this.parentElement.innerHTML='<div style=\\'padding:40px;color:#888;text-align:center;font-size:14px\\'>❌ Không tải được ảnh</div>'">`;
+    return `<img class="slide" src="${escapeAttr(url)}" alt="slide">`;
   }
   if(['pdf','pptx','docx','xlsx'].includes(type)){
     const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
@@ -1039,17 +1003,11 @@ function renderSlideContent(url, type){
   }
   if(type === 'gdrive'){
     const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    if(match){
-      const previewUrl = `https://drive.google.com/file/d/${match[1]}/preview`;
-      return `<iframe src="${previewUrl}" allowfullscreen></iframe>`;
-    }
+    if(match) return `<iframe src="https://drive.google.com/file/d/${match[1]}/preview" allowfullscreen></iframe>`;
   }
   return `<iframe src="${escapeAttr(url)}" allowfullscreen></iframe>`;
 }
 
-/* ============================================================
-   MAIN VIEW
-   ============================================================ */
 function updateMainView(){
   const mainTile = $('mainTile');
   const mainVideo = $('mainVideo');
@@ -1078,11 +1036,11 @@ function updateMainView(){
 
     pres.innerHTML = `
       <div class="presentation__bar">
-        <span><i class="fas ${isScreen ? 'fa-desktop' : 'fa-chalkboard'}"></i> ${escapeHtml(isScreen ? (sharerName + ' đang chia sẻ màn hình') : ('Bài giảng (' + (remoteSlideIdx+1) + '/' + remoteSlideTotal + ')'))}</span>
+        <span><i class="fas ${isScreen ? 'fa-desktop' : 'fa-chalkboard'}"></i> ${escapeHtml(isScreen ? (sharerName + ' chia sẻ màn hình') : ('Bài giảng (' + (remoteSlideIdx+1) + '/' + remoteSlideTotal + ')'))}</span>
         ${myRole === 'teacher' ? `<button class="btn btn--danger btn--sm" onclick="${isScreen ? 'toggleScreen()' : 'endSlideshow()'}"><i class="fas fa-stop"></i> Dừng</button>` : ''}
       </div>
       <div class="presentation__content">
-        <div class="presentation__sidebar" id="presSidebar">
+        <div class="presentation__sidebar">
           <div class="presentation__sidebar-title"><i class="fas fa-users"></i> Người tham gia</div>
           <div id="presSidebarTiles"></div>
         </div>
@@ -1091,21 +1049,15 @@ function updateMainView(){
     `;
     $('stageMain').appendChild(pres);
 
-    // Play screen share video
     if(isScreen){
       if(isMe && screenTrack) screenTrack.play('presVideo');
       else if(remoteUsers[remoteScreenSharingUid]?.videoTrack) remoteUsers[remoteScreenSharingUid].videoTrack.play('presVideo');
     }
-
-    // Render sidebar tiles (GV + HV)
     renderPresSidebar();
-
-    // Hide strip khi presentation
     $('stripStudents').style.display = 'none';
     return;
   }
 
-  // Normal mode
   mainTile.style.display = '';
   $('stripStudents').style.display = '';
 
@@ -1129,33 +1081,23 @@ function updateMainView(){
   renderStrip();
 }
 
-/* ============================================================
-   PRESENTATION SIDEBAR — video GV/HV với label
-   ============================================================ */
 function renderPresSidebar(){
   const box = $('presSidebarTiles');
   if(!box) return;
 
   const tiles = [];
-
-  // Teacher first
   if(teacherUid){
-    if(teacherUid === myUid){
-      tiles.push({ uid:'self', name: myName + ' (Bạn)', role:'teacher', isSelf:true, hasVideo:camOn });
-    } else if(remoteUsers[teacherUid]){
+    if(teacherUid === myUid) tiles.push({ uid:'self', name: myName + ' (Bạn)', role:'teacher', isSelf:true, hasVideo:camOn });
+    else if(remoteUsers[teacherUid]){
       const t = remoteUsers[teacherUid];
       tiles.push({ uid: teacherUid, name: t.name, role:'teacher', isSelf:false, hasVideo: t.hasVideo });
     }
   }
-
-  // Then others
   for(const uid in remoteUsers){
     if(uid === teacherUid) continue;
     const u = remoteUsers[uid];
     tiles.push({ uid, name: u.name, role: u.role || 'student', isSelf:false, hasVideo: u.hasVideo });
   }
-
-  // Self if student
   if(myRole === 'student' && !tiles.find(t => t.isSelf)){
     tiles.push({ uid:'self', name: myName + ' (Bạn)', role:'student', isSelf:true, hasVideo: camOn });
   }
@@ -1173,16 +1115,12 @@ function renderPresSidebar(){
     `;
   }).join('');
 
-  // Play videos
   tiles.forEach(t => {
     if(t.isSelf && localVideoTrack) localVideoTrack.play('presVideo-' + t.uid);
     else if(remoteUsers[t.uid]?.videoTrack) remoteUsers[t.uid].videoTrack.play('presVideo-' + t.uid);
   });
 }
 
-/* ============================================================
-   STRIP (bottom, normal mode)
-   ============================================================ */
 function renderStrip(){
   const strip = $('stripStudents');
   const tiles = [];
@@ -1227,9 +1165,6 @@ function renderStrip(){
   }
 }
 
-/* ============================================================
-   HAND RAISE
-   ============================================================ */
 function toggleHand(){
   if(myRole === 'teacher'){ toast('GV không cần giơ tay', 'warn'); return; }
   if(!speakApproved && !handUp){
@@ -1261,7 +1196,7 @@ function handleHandRaise(uid, msg){
 }
 
 function approveStudent(uid){ if(myRole !== 'teacher') return; if(remoteUsers[uid]){ remoteUsers[uid].hand = false; remoteUsers[uid].approved = true; } sendMsg({ type:'hand-approve', target: uid }); renderSidebar(); renderStrip(); toast('Đã cho phép', 'ok'); }
-function rejectStudent(uid){ if(myRole !== 'teacher') return; if(remoteUsers[uid]){ remoteUsers[uid].hand = false; remoteUsers[uid].approved = false; } sendMsg({ type:'hand-reject', target: uid }); renderSidebar(); renderStrip(); toast('Đã từ chối', 'warn'); }
+function rejectStudent(uid){ if(myRole !== 'teacher') return; if(remoteUsers[uid]){ remoteUsers[uid].hand = false; remoteUsers[uid].approved = false; } sendMsg({ type:'hand-reject', target: uid }); renderSidebar(); renderStrip(); }
 function revokeStudent(uid){ if(myRole !== 'teacher') return; if(remoteUsers[uid]) remoteUsers[uid].approved = false; sendMsg({ type:'hand-revoke', target: uid }); renderSidebar(); }
 function muteAllStudents(){ sendMsg({ type:'mute-all' }); toast('Đã tắt mic tất cả', 'ok'); }
 function forceMuteStudent(uid){ sendMsg({ type:'force-mute', target: uid }); toast('Đã tắt mic', 'ok'); }
@@ -1276,7 +1211,6 @@ function handleMyApproval(approved){
   } else {
     speakApproved = false; handUp = false;
     updateHandUI(); renderStrip();
-    showStatus('error', '❌ GV chưa cho phép', '', null, 4000);
   }
 }
 
@@ -1288,9 +1222,6 @@ function handleRevoke(){
   showStatus('warn', '🔇 GV đã thu hồi quyền phát biểu', '', null, 4000);
 }
 
-/* ============================================================
-   UI CONTROLS
-   ============================================================ */
 function updateMicUI(){
   const btn = $('btnMic');
   const canSpeak = (myRole === 'teacher') || speakApproved;
@@ -1326,8 +1257,7 @@ function toggleMic(){
   micOn = !micOn;
   localAudioTrack.setEnabled(micOn);
   updateMicUI(); renderStrip();
-  if(remoteScreenSharingUid || remoteSlideUrl) renderPresSidebar();
-  else updateMainView();
+  if(remoteScreenSharingUid || remoteSlideUrl) renderPresSidebar(); else updateMainView();
 }
 
 function toggleCam(){
@@ -1335,13 +1265,9 @@ function toggleCam(){
   camOn = !camOn;
   localVideoTrack.setEnabled(camOn);
   updateCamUI(); renderStrip();
-  if(remoteScreenSharingUid || remoteSlideUrl) renderPresSidebar();
-  else updateMainView();
+  if(remoteScreenSharingUid || remoteSlideUrl) renderPresSidebar(); else updateMainView();
 }
 
-/* ============================================================
-   SCREEN SHARE
-   ============================================================ */
 async function toggleScreen(){
   if(myRole !== 'teacher'){ toast('Chỉ GV chia sẻ màn hình', 'warn'); return; }
   if(screenSharing){
@@ -1375,9 +1301,6 @@ async function toggleScreen(){
   }
 }
 
-/* ============================================================
-   SLIDE
-   ============================================================ */
 function toggleSlidePanel(){ if(myRole !== 'teacher') return; $('slidePanel').classList.toggle('show'); renderSlideThumbs(); }
 
 function addSlidesFromUrls(){
@@ -1385,7 +1308,7 @@ function addSlidesFromUrls(){
   if(!raw){ toast('Chưa nhập URL', 'warn'); return; }
   const urls = raw.split(/\n/).map(u => u.trim()).filter(u => /^https?:\/\//.test(u));
   if(!urls.length){ toast('URL không hợp lệ', 'err'); return; }
-  mySlides = mySlides.concat(urls.map(u => ({ url:u, type: getSlideType(u), isLocal:false })));
+  mySlides = mySlides.concat(urls.map(u => ({ url:u, type: getSlideType(u) })));
   $('slideUrlsInput').value = '';
   renderSlideThumbs();
   toast(`Đã thêm ${urls.length} bài giảng`, 'ok');
@@ -1404,9 +1327,7 @@ function addSlidesFromFiles(e){
       else if(['ppt','pptx'].includes(ext)) type = 'pptx';
       else if(['doc','docx'].includes(ext)) type = 'docx';
       else if(['xls','xlsx'].includes(ext)) type = 'xlsx';
-      else if(['jpg','jpeg','png','gif','webp','svg'].includes(ext)) type = 'image';
-
-      mySlides.push({ url: reader.result, type, name: file.name, isLocal: true });
+      mySlides.push({ url: reader.result, type, name: file.name });
       loaded++;
       renderSlideThumbs();
       if(loaded === files.length) toast(`Đã thêm ${files.length} bài giảng`, 'ok');
@@ -1420,7 +1341,7 @@ function renderSlideThumbs(){
   $('slideThumbs').innerHTML = mySlides.map((s, i) => {
     let inner = '';
     if(s.type === 'image'){
-      inner = `<img src="${escapeAttr(s.url)}" onerror="this.parentElement.innerHTML='<div style=padding:10px;color:#888;font-size:11px;text-align:center>Lỗi</div>'">`;
+      inner = `<img src="${escapeAttr(s.url)}">`;
     } else {
       const iconMap = { pdf:'fa-file-pdf', pptx:'fa-file-powerpoint', docx:'fa-file-word', xlsx:'fa-file-excel' };
       inner = `<div class="file-icon"><i class="fas ${iconMap[s.type] || 'fa-file'}"></i><span>${s.type}</span></div>`;
@@ -1431,7 +1352,7 @@ function renderSlideThumbs(){
       ${inner}
       <button class="slide-thumb__del" onclick="event.stopPropagation();deleteSlide(${i})"><i class="fas fa-times"></i></button>
     </div>`;
-  }).join('') || '<div style="grid-column:1/-1;text-align:center;color:var(--tx-4);font-size:12.5px;padding:20px"><i class="fas fa-inbox" style="font-size:24px;display:block;margin-bottom:8px;opacity:.3"></i>Chưa có bài giảng</div>';
+  }).join('') || '<div style="grid-column:1/-1;text-align:center;color:var(--tx-4);font-size:12.5px;padding:20px">Chưa có bài giảng</div>';
 }
 
 function showSlide(idx){
@@ -1457,9 +1378,6 @@ function endSlideshow(){
   renderSlideThumbs(); updateMainView();
 }
 
-/* ============================================================
-   CODE PANEL
-   ============================================================ */
 function showCodePanel(code, channel){
   $('floatCode').style.display = '';
   $('codeDisplay').textContent = code;
@@ -1470,11 +1388,11 @@ function showCodePanel(code, channel){
   qrBox.innerHTML = '';
   try {
     new QRCode(qrBox, {
-      text: link, width: 140, height: 140,
+      text: link, width: 60, height: 60,
       colorDark: '#1a1a1a', colorLight: '#ffffff',
-      correctLevel: QRCode.CorrectLevel.M
+      correctLevel: QRCode.CorrectLevel.L
     });
-  } catch(e){ qrBox.textContent = 'QR lỗi'; }
+  } catch(e){ qrBox.textContent = 'QR'; }
 }
 
 function toggleCodePanel(){
@@ -1492,12 +1410,8 @@ function copyLink(){
   const url = buildJoinLink();
   if(!url) return;
   if(navigator.clipboard && window.isSecureContext){
-    navigator.clipboard.writeText(url)
-      .then(() => toast('📋 Đã copy link vào lớp', 'ok', 2600))
-      .catch(() => fallbackCopy(url));
-  } else {
-    fallbackCopy(url);
-  }
+    navigator.clipboard.writeText(url).then(() => toast('📋 Đã copy link vào lớp', 'ok', 2600)).catch(() => fallbackCopy(url));
+  } else fallbackCopy(url);
 }
 
 function fallbackCopy(text){
@@ -1507,8 +1421,7 @@ function fallbackCopy(text){
   ta.style.opacity = '0';
   document.body.appendChild(ta);
   ta.select();
-  try { document.execCommand('copy'); toast('📋 Đã copy link', 'ok'); }
-  catch(e){ toast('Không copy được', 'err'); }
+  try { document.execCommand('copy'); toast('📋 Đã copy link', 'ok'); } catch(e){}
   document.body.removeChild(ta);
 }
 
@@ -1576,7 +1489,51 @@ function renderHomework(){
 }
 
 /* ============================================================
-   SIDEBAR TABS
+   QUIZ LINKS
+   ============================================================ */
+function saveQuizLink(){
+  if(myRole !== 'teacher') return;
+  const title = $('quizTitleInput').value.trim() || 'Bài quiz';
+  const url = $('quizUrlInput').value.trim();
+  if(!url){ toast('Nhập link quiz', 'warn'); return; }
+  if(!/^https?:\/\//.test(url)){ toast('Link phải bắt đầu http:// hoặc https://', 'err'); return; }
+  const link = { title, url, ts: Date.now() };
+  quizLinks.push(link);
+  sendMsg({ type:'quiz-add', link });
+  renderQuizLinks();
+  $('quizTitleInput').value = '';
+  $('quizUrlInput').value = '';
+  toast('🧩 Đã thêm quiz cho học viên', 'ok');
+}
+
+function deleteQuizLink(idx){
+  if(myRole !== 'teacher') return;
+  quizLinks.splice(idx, 1);
+  sendMsg({ type:'quiz-delete', idx });
+  renderQuizLinks();
+}
+
+function renderQuizLinks(){
+  const box = $('quizLinksList');
+  if(!quizLinks.length){
+    box.innerHTML = `<div class="quiz-empty">${myRole === 'teacher' ? 'Chưa có quiz nào — thêm ở trên' : 'GV chưa giao quiz'}</div>`;
+    return;
+  }
+  box.innerHTML = quizLinks.map((q, i) => `
+    <a class="quiz-link-item" href="${escapeAttr(q.url)}" target="_blank" rel="noopener">
+      <i class="fas fa-puzzle-piece"></i>
+      <div class="quiz-link-text">
+        <b>${escapeHtml(q.title)}</b>
+        <span>${escapeHtml(q.url)}</span>
+      </div>
+      <i class="fas fa-external-link-alt" style="color:var(--tx-4);font-size:11px"></i>
+      ${myRole === 'teacher' ? `<button class="quiz-link-item__del" onclick="event.preventDefault();event.stopPropagation();deleteQuizLink(${i})"><i class="fas fa-times"></i></button>` : ''}
+    </a>
+  `).join('');
+}
+
+/* ============================================================
+   SIDEBAR
    ============================================================ */
 function switchSbTab(tab){
   currentSbTab = tab;
@@ -1592,9 +1549,6 @@ function updateChatBadge(){
   else b.classList.add('hidden');
 }
 
-/* ============================================================
-   RENDER SIDEBAR
-   ============================================================ */
 function renderSidebar(){
   const items = [{ uid:'self', name: myName + ' (Bạn)', role: myRole, mic:micOn, hand:handUp, approved:speakApproved, self:true }];
   for(const uid in remoteUsers){
@@ -1655,475 +1609,34 @@ function sendChat(){
   input.focus();
 }
 
-/* ============================================================
-   LINKIFY — chuyển URL text thành hyperlink + button
-   ============================================================ */
 function linkify(text){
   const escaped = escapeHtml(text);
   const urlRegex = /(https?:\/\/[^\s<>"']+)/g;
   const matches = text.match(urlRegex) || [];
   if(!matches.length) return escaped;
 
-  const html = escaped.replace(urlRegex, (url) => {
-    return `<a class="chat-link" href="${url}" target="_blank" rel="noopener">${url}</a>`;
-  });
-
-  // Nếu tin nhắn CHỈ là 1 URL (không có text khác) → hiện card
   const trimmed = text.trim();
   if(matches.length === 1 && trimmed === matches[0]){
     let displayUrl = matches[0];
     try {
       const u = new URL(matches[0]);
       displayUrl = u.hostname + (u.pathname !== '/' ? u.pathname : '');
-      if(displayUrl.length > 40) displayUrl = displayUrl.slice(0, 40) + '...';
+      if(displayUrl.length > 30) displayUrl = displayUrl.slice(0, 30) + '...';
     } catch(e){}
-    return `<a class="chat-link-card" href="${matches[0]}" target="_blank" rel="noopener">
+    return `<a class="chat-link-card" href="${escapeAttr(matches[0])}" target="_blank" rel="noopener">
       <i class="fas fa-link"></i>
-      <div style="flex:1;min-width:0">
-        <div>Mở liên kết</div>
-        <div class="chat-link-card__url">${escapeHtml(displayUrl)}</div>
-      </div>
-      <i class="fas fa-external-link-alt" style="opacity:.7"></i>
+      <span class="chat-link-card__url">${escapeHtml(displayUrl)}</span>
+      <i class="fas fa-external-link-alt"></i>
     </a>`;
   }
 
-  return html;
+  return escaped.replace(urlRegex, (url) => `<a class="chat-link" href="${escapeAttr(url)}" target="_blank" rel="noopener">${url}</a>`);
 }
 
-/* ============================================================
-   CHAT IMAGE
-   ============================================================ */
 async function handleChatImage(e){
   const file = e.target.files[0];
   if(!file) return;
   e.target.value = '';
-
-  if(!file.type.startsWith('image/')){ toast('Chỉ gửi được file ảnh', 'err'); return; }
-  if(file.size > IMG_MAX_SIZE){
-    toast(`Ảnh phải dưới ${IMG_MAX_SIZE / 1024 / 1024}MB`, 'err');
-    return;
-  }
-
+  if(!file.type.startsWith('image/')){ toast('Chỉ gửi được ảnh', 'err'); return; }
+  if(file.size > IMG_MAX_SIZE){ toast('Ảnh phải dưới 10MB', 'err'); return; }
   try {
-    toast('📤 Đang xử lý ảnh...', 'ok', 1500);
-    const dataUrl = await compressImage(file, 1600, 0.75);
-    await sendImageAsChunks(dataUrl);
-  } catch(err){
-    console.error(err);
-    toast('Không gửi được ảnh', 'err');
-  }
-}
-
-function compressImage(file, maxDim, quality){
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onerror = reject;
-    reader.onload = (ev) => {
-      const img = new Image();
-      img.onerror = reject;
-      img.onload = () => {
-        let { width, height } = img;
-        if(width > maxDim || height > maxDim){
-          if(width > height){ height = height * maxDim / width; width = maxDim; }
-          else { width = width * maxDim / height; height = maxDim; }
-        }
-        const canvas = document.createElement('canvas');
-        canvas.width = width; canvas.height = height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, width, height);
-        let q = quality;
-        let data = canvas.toDataURL('image/jpeg', q);
-        // Target ~1.5MB sau nén
-        while(data.length > IMG_COMPRESS_MAX && q > 0.3){
-          q -= 0.08;
-          data = canvas.toDataURL('image/jpeg', q);
-        }
-        resolve(data);
-      };
-      img.src = ev.target.result;
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-async function sendImageAsChunks(dataUrl){
-  const id = 'img_' + Date.now() + '_' + myUid;
-  const total = Math.ceil(dataUrl.length / IMG_CHUNK_SIZE);
-  const meta = { uid: myUid, name: myName, role: myRole, id, total, ts: Date.now() };
-
-  chatMessages.push({
-    uid: myUid, name: myName, role: myRole,
-    text: '', imageId: id, imageLoading: true, ts: meta.ts, self: true
-  });
-  renderChat();
-
-  sendMsg({ type:'chat-image-header', ...meta });
-
-  for(let i = 0; i < total; i++){
-    const data = dataUrl.slice(i * IMG_CHUNK_SIZE, (i + 1) * IMG_CHUNK_SIZE);
-    sendMsg({ type:'chat-image-chunk', id, idx: i, data });
-    if(i % 8 === 7) await new Promise(r => setTimeout(r, 25));
-  }
-
-  sendMsg({ type:'chat-image-end', id });
-
-  const localMsg = chatMessages.find(m => m.imageId === id);
-  if(localMsg){
-    localMsg.imageLoading = false;
-    localMsg.imageData = dataUrl;
-    renderChat();
-  }
-}
-
-function handleChatImageSignal(uid, msg){
-  if(msg.type === 'chat-image-header'){
-    imageBuffers[msg.id] = { chunks: new Array(msg.total), total: msg.total, received: 0, meta: msg };
-    chatMessages.push({
-      uid: msg.uid, name: msg.name, role: msg.role,
-      text: '', imageId: msg.id, imageLoading: true, ts: msg.ts, self: false
-    });
-    renderChat();
-    if(currentSbTab !== 'chat'){ unreadChat++; updateChatBadge(); }
-  } else if(msg.type === 'chat-image-chunk'){
-    const buf = imageBuffers[msg.id];
-    if(!buf) return;
-    if(buf.chunks[msg.idx] === undefined){
-      buf.chunks[msg.idx] = msg.data;
-      buf.received++;
-    }
-    if(buf.received === buf.total){
-      const dataUrl = buf.chunks.join('');
-      const m = chatMessages.find(x => x.imageId === msg.id);
-      if(m){ m.imageLoading = false; m.imageData = dataUrl; renderChat(); }
-      delete imageBuffers[msg.id];
-    }
-  }
-}
-
-function openChatImage(imageId){
-  const m = chatMessages.find(x => x.imageId === imageId);
-  if(!m || !m.imageData) return;
-  const w = window.open();
-  if(w){
-    w.document.write(`<html><head><title>Ảnh chat</title><style>body{margin:0;background:#111;display:flex;align-items:center;justify-content:center;min-height:100vh}img{max-width:100%;max-height:100vh}</style></head><body><img src="${m.imageData}"></body></html>`);
-  }
-}
-
-function renderChat(){
-  const el = $('chatMessages');
-  if(!chatMessages.length){
-    el.innerHTML = '<div class="notes-empty"><i class="fas fa-comments"></i>Chưa có tin nhắn<br>Gõ tin nhắn, gửi ảnh (tối đa 10MB), hoặc dán link</div>';
-    return;
-  }
-  el.innerHTML = chatMessages.map(m => {
-    const isTeacher = m.role === 'teacher';
-    const time = new Date(m.ts).toLocaleTimeString('vi-VN', {hour:'2-digit', minute:'2-digit'});
-    let content = '';
-    if(m.imageLoading){
-      content = `<div class="chat-image-loading"><i class="fas fa-spinner fa-spin"></i> Đang nhận ảnh...</div>`;
-    } else if(m.imageData){
-      content = `<img src="${m.imageData}" onclick="openChatImage('${m.imageId}')" alt="ảnh">`;
-    } else if(m.text){
-      content = linkify(m.text);
-    }
-    return `<div class="chat-msg ${m.self?'self':''}">
-      <div class="chat-msg__avatar ${isTeacher?'teacher':''}">${escapeHtml(getInitials(m.name))}</div>
-      <div class="chat-msg__body">
-        <div class="chat-msg__head">
-          <span class="chat-msg__name ${isTeacher?'teacher':''}">${escapeHtml(m.name)}${isTeacher?' · GV':''}</span>
-          <span class="chat-msg__time">${time}</span>
-        </div>
-        <div class="chat-msg__text">${content}</div>
-      </div>
-    </div>`;
-  }).join('');
-  el.scrollTop = el.scrollHeight;
-}
-
-/* ============================================================
-   NOTES với LOOKUP
-   ============================================================ */
-let lookupState = { hz:'', py:'', mn:'', example:'', loading:false };
-let lookupTimer = null;
-
-async function lookupWord(hanzi){
-  hanzi = hanzi.trim();
-  if(!hanzi) return null;
-  const result = { hz: hanzi, py:'', mn:'', example:'' };
-
-  try {
-    if(window.pinyinPro && window.pinyinPro.pinyin){
-      result.py = window.pinyinPro.pinyin(hanzi, { toneType:'symbol', type:'string' });
-    }
-  } catch(e){ console.warn(e); }
-
-  try {
-    result.mn = await fetchGoogleTranslate(hanzi) || '';
-  } catch(e){ console.warn(e); }
-
-  return result;
-}
-
-async function fetchGoogleTranslate(text){
-  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=zh-CN&tl=vi&dt=t&q=${encodeURIComponent(text)}`;
-  const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
-  if(!res.ok) throw new Error('GT HTTP ' + res.status);
-  const data = await res.json();
-  if(Array.isArray(data) && Array.isArray(data[0])){
-    return data[0].map(seg => seg[0]).join('').trim();
-  }
-  return '';
-}
-
-function onNoteHzInput(){
-  const hz = $('noteHz').value.trim();
-  lookupState.hz = hz;
-
-  if(!hz){
-    lookupState = { hz:'', py:'', mn:'', example:'', loading:false };
-    renderLookupPreview();
-    updateAddNoteButton();
-    return;
-  }
-
-  clearTimeout(lookupTimer);
-  lookupTimer = setTimeout(async () => {
-    lookupState.loading = true;
-    renderLookupPreview();
-    try {
-      const r = await lookupWord(hz);
-      if(r && lookupState.hz === hz){
-        lookupState.py = r.py || '';
-        lookupState.mn = r.mn || '';
-        lookupState.example = r.example || '';
-      }
-    } catch(e){ console.warn(e); }
-    lookupState.loading = false;
-    renderLookupPreview();
-    updateAddNoteButton();
-  }, 600);
-}
-
-function renderLookupPreview(){
-  const box = $('lookupPreview');
-  if(!box) return;
-  const s = lookupState;
-  if(!s.hz){
-    box.innerHTML = '<div class="lookup-empty">Nhập Hán tự để tra pinyin, nghĩa và ví dụ</div>';
-    return;
-  }
-  if(s.loading){
-    box.innerHTML = '<div class="lookup-loading"><i class="fas fa-spinner fa-spin"></i> Đang tra từ điển...</div>';
-    return;
-  }
-  box.innerHTML = `
-    <div class="lookup-row">
-      <div class="lookup-label">Pinyin</div>
-      <input type="text" class="lookup-input" value="${escapeAttr(s.py)}" placeholder="Đang trống..." oninput="lookupState.py=this.value;updateAddNoteButton();">
-    </div>
-    <div class="lookup-row">
-      <div class="lookup-label">Nghĩa</div>
-      <input type="text" class="lookup-input" value="${escapeAttr(s.mn)}" placeholder="Đang trống..." oninput="lookupState.mn=this.value;updateAddNoteButton();">
-    </div>
-    <div class="lookup-row">
-      <div class="lookup-label">Ví dụ</div>
-      <input type="text" class="lookup-input" value="${escapeAttr(s.example)}" placeholder="(tuỳ chọn)" oninput="lookupState.example=this.value;">
-    </div>
-  `;
-}
-
-function updateAddNoteButton(){
-  const btn = $('btnAddNote');
-  if(!btn) return;
-  btn.disabled = !(lookupState.hz && lookupState.mn);
-}
-
-function addNote(){
-  if(myRole !== 'teacher') return;
-  const hz = lookupState.hz.trim();
-  const mn = lookupState.mn.trim();
-  if(!hz || !mn){ toast('Cần Hán tự và nghĩa', 'warn'); return; }
-
-  const note = { hz, py: lookupState.py.trim(), mn, example: lookupState.example.trim() };
-  notes.push(note);
-  sendMsg({ type:'note-add', ...note });
-  renderNotes();
-
-  $('noteHz').value = '';
-  lookupState = { hz:'', py:'', mn:'', example:'', loading:false };
-  renderLookupPreview();
-  updateAddNoteButton();
-  $('noteHz').focus();
-  toast('📖 Đã thêm từ vựng', 'ok');
-}
-
-function deleteNote(idx){
-  if(myRole !== 'teacher') return;
-  notes.splice(idx, 1);
-  sendMsg({ type:'note-delete', idx });
-  renderNotes();
-}
-
-function clearAllNotes(){
-  if(myRole !== 'teacher') return;
-  if(!notes.length) return;
-  if(!confirm('Xoá hết ghi chú?')) return;
-  notes = [];
-  sendMsg({ type:'note-clear' });
-  renderNotes();
-}
-
-function exportNotesToFile(){
-  if(!notes.length){ toast('Chưa có từ vựng để xuất', 'warn'); return; }
-  const today = new Date().toLocaleDateString('vi-VN');
-  const lessonId = 1000 + Math.floor(Math.random() * 9000);
-
-  const lesson = {
-    id: lessonId,
-    level: 'Live-class',
-    title: 'Từ vựng lớp ' + today,
-    sub: 'Ghi chú từ buổi học trực tuyến ngày ' + today + ' cùng ' + myName,
-    vocab: notes.map(n => ({
-      hanzi: n.hz || '', pinyin: n.py || '', meaning: n.mn || '',
-      pos: '', example: n.example || '', image: ''
-    })),
-    speaking: notes.map(n => ({
-      hanzi: n.hz || '', pinyin: n.py || '', meaning: n.mn || ''
-    })),
-    quiz: [],
-    dialogue: { lines: [], keyWords: [] }
-  };
-
-  const json = JSON.stringify([lesson], null, 2);
-  const blob = new Blob([json], { type:'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `handi-vocab-${Date.now()}.json`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-  toast('📥 Đã tải file. Vào CMS → Import JSON để thêm vào app.', 'ok', 5000);
-}
-
-function renderNotes(){
-  const el = $('notesList');
-  if(!notes.length){
-    el.innerHTML = `<div class="notes-empty"><i class="fas fa-bookmark"></i>Chưa có từ vựng<br>${myRole === 'teacher' ? 'Ghi từ mới ở dưới' : 'GV sẽ ghi từ mới ở đây'}</div>`;
-    return;
-  }
-  el.innerHTML = notes.map((n, i) => `
-    <div class="note-item">
-      ${myRole === 'teacher' ? `<button class="note-item__del" onclick="deleteNote(${i})"><i class="fas fa-times"></i></button>` : ''}
-      <div class="note-item__hz">${escapeHtml(n.hz)}</div>
-      ${n.py ? `<div class="note-item__py">${escapeHtml(n.py)}</div>` : ''}
-      <div class="note-item__mn">${escapeHtml(n.mn)}</div>
-      ${n.example ? `<div class="note-item__ex"><i class="fas fa-quote-left"></i> ${escapeHtml(n.example)}</div>` : ''}
-    </div>`).join('');
-}
-
-/* ============================================================
-   LEAVE / CLEANUP
-   ============================================================ */
-async function leaveRoom(){
-  if(!confirm('Rời khỏi lớp?')) return;
-  await cleanup();
-  location.reload();
-}
-
-async function cleanup(){
-  try {
-    if(broadcastTimer){ clearInterval(broadcastTimer); broadcastTimer = null; }
-    if(headerDurationTimer){ clearInterval(headerDurationTimer); headerDurationTimer = null; }
-    if(screenTrack){ screenTrack.stop(); screenTrack.close(); screenTrack = null; }
-    if(localVideoTrack){ localVideoTrack.stop(); localVideoTrack.close(); localVideoTrack = null; }
-    if(localAudioTrack){ localAudioTrack.stop(); localAudioTrack.close(); localAudioTrack = null; }
-    if(client){ await client.leave(); client = null; }
-  } catch(e){ console.warn(e); }
-  remoteUsers = {};
-  chatMessages = [];
-  imageBuffers = {};
-}
-
-/* ============================================================
-   STATUS TOAST
-   ============================================================ */
-function showStatus(type, title, body, actions, ms){
-  const map = { success:'fa-circle-check', error:'fa-circle-exclamation', warn:'fa-triangle-exclamation', info:'fa-circle-info' };
-  const el = document.createElement('div');
-  el.className = 'status-toast ' + type;
-  el.innerHTML = `
-    <i class="fas ${map[type] || 'fa-circle-info'}"></i>
-    <div class="status-toast__body">
-      <b>${escapeHtml(title)}</b>
-      <span>${escapeHtml(body || '')}</span>
-      ${actions ? '<div class="status-toast__actions">' + actions + '</div>' : ''}
-    </div>`;
-  $('toastContainer').appendChild(el);
-  setTimeout(() => {
-    el.style.transition = 'opacity .3s, transform .3s';
-    el.style.opacity = '0';
-    el.style.transform = 'translateX(120%)';
-    setTimeout(() => el.remove(), 300);
-  }, ms || 6000);
-}
-
-/* ============================================================
-   HELPERS
-   ============================================================ */
-function getInitials(name){
-  if(!name) return '?';
-  const clean = name.replace(/\s*\(Bạn\)\s*/, '').trim();
-  const p = clean.split(/\s+/);
-  if(p.length === 1) return p[0].substring(0,2).toUpperCase();
-  return (p[0][0] + p[p.length-1][0]).toUpperCase();
-}
-
-function escapeHtml(s){
-  return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
-    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-function escapeAttr(s){ return escapeHtml(s); }
-
-function toast(msg, type, ms){
-  const t = $('toast');
-  t.textContent = msg;
-  t.className = 'toast show ' + (type || '');
-  clearTimeout(t._t);
-  t._t = setTimeout(() => t.className = 'toast', ms || 2600);
-}
-
-/* ============================================================
-   AUTO-FILL
-   ============================================================ */
-function autoFillFromUrl(){
-  const params = new URLSearchParams(location.search);
-  const code = (params.get('code') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, CODE_LENGTH);
-  const name = params.get('name');
-  if(code){
-    switchSetupTab('student');
-    $('studentCodeInput').value = code;
-    if(name) $('studentNameInput').value = name;
-    setTimeout(() => $('studentNameInput').focus(), 300);
-    toast(`Đã điền mã ${code}`, 'ok', 2500);
-  }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  const hz = $('noteHz');
-  if(hz) hz.addEventListener('input', onNoteHzInput);
-
-  const codeInp = $('studentCodeInput');
-  if(codeInp){
-    codeInp.addEventListener('input', e => {
-      e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, CODE_LENGTH);
-    });
-  }
-});
-
-window.addEventListener('beforeunload', () => { cleanup(); });
-autoFillFromUrl();
-</script>
-</body>
-</html>
