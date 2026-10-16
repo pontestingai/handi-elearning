@@ -1640,3 +1640,337 @@ async function handleChatImage(e){
   if(!file.type.startsWith('image/')){ toast('Chỉ gửi được ảnh', 'err'); return; }
   if(file.size > IMG_MAX_SIZE){ toast('Ảnh phải dưới 10MB', 'err'); return; }
   try {
+    toast('📤 Đang xử lý ảnh...', 'ok', 1500);
+    const dataUrl = await compressImage(file, 1600, 0.75);
+    await sendImageAsChunks(dataUrl);
+  } catch(err){ toast('Không gửi được ảnh', 'err'); }
+}
+
+function compressImage(file, maxDim, quality){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.onerror = reject;
+      img.onload = () => {
+        let { width, height } = img;
+        if(width > maxDim || height > maxDim){
+          if(width > height){ height = height * maxDim / width; width = maxDim; }
+          else { width = width * maxDim / height; height = maxDim; }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        let q = quality;
+        let data = canvas.toDataURL('image/jpeg', q);
+        while(data.length > IMG_COMPRESS_MAX && q > 0.3){ q -= 0.08; data = canvas.toDataURL('image/jpeg', q); }
+        resolve(data);
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+async function sendImageAsChunks(dataUrl){
+  const id = 'img_' + Date.now() + '_' + myUid;
+  const total = Math.ceil(dataUrl.length / IMG_CHUNK_SIZE);
+  const meta = { uid: myUid, name: myName, role: myRole, id, total, ts: Date.now() };
+
+  chatMessages.push({ uid: myUid, name: myName, role: myRole, text: '', imageId: id, imageLoading: true, ts: meta.ts, self: true });
+  renderChat();
+
+  sendMsg({ type:'chat-image-header', ...meta });
+
+  for(let i = 0; i < total; i++){
+    const data = dataUrl.slice(i * IMG_CHUNK_SIZE, (i + 1) * IMG_CHUNK_SIZE);
+    sendMsg({ type:'chat-image-chunk', id, idx: i, data });
+    if(i % 8 === 7) await new Promise(r => setTimeout(r, 25));
+  }
+
+  sendMsg({ type:'chat-image-end', id });
+
+  const localMsg = chatMessages.find(m => m.imageId === id);
+  if(localMsg){ localMsg.imageLoading = false; localMsg.imageData = dataUrl; renderChat(); }
+}
+
+function handleChatImageSignal(uid, msg){
+  if(msg.type === 'chat-image-header'){
+    imageBuffers[msg.id] = { chunks: new Array(msg.total), total: msg.total, received: 0, meta: msg };
+    chatMessages.push({ uid: msg.uid, name: msg.name, role: msg.role, text: '', imageId: msg.id, imageLoading: true, ts: msg.ts, self: false });
+    renderChat();
+    if(currentSbTab !== 'chat'){ unreadChat++; updateChatBadge(); }
+  } else if(msg.type === 'chat-image-chunk'){
+    const buf = imageBuffers[msg.id];
+    if(!buf) return;
+    if(buf.chunks[msg.idx] === undefined){ buf.chunks[msg.idx] = msg.data; buf.received++; }
+    if(buf.received === buf.total){
+      const dataUrl = buf.chunks.join('');
+      const m = chatMessages.find(x => x.imageId === msg.id);
+      if(m){ m.imageLoading = false; m.imageData = dataUrl; renderChat(); }
+      delete imageBuffers[msg.id];
+    }
+  }
+}
+
+function openChatImage(imageId){
+  const m = chatMessages.find(x => x.imageId === imageId);
+  if(!m || !m.imageData) return;
+  const w = window.open();
+  if(w) w.document.write(`<html><head><title>Ảnh</title><style>body{margin:0;background:#111;display:flex;align-items:center;justify-content:center;min-height:100vh}img{max-width:100%;max-height:100vh}</style></head><body><img src="${m.imageData}"></body></html>`);
+}
+
+function renderChat(){
+  const el = $('chatMessages');
+  if(!chatMessages.length){
+    el.innerHTML = '<div class="notes-empty"><i class="fas fa-comments"></i>Chưa có tin nhắn<br>Gõ tin nhắn, dán link, hoặc gửi ảnh (≤10MB)</div>';
+    return;
+  }
+  el.innerHTML = chatMessages.map(m => {
+    const isTeacher = m.role === 'teacher';
+    const time = new Date(m.ts).toLocaleTimeString('vi-VN', {hour:'2-digit', minute:'2-digit'});
+    let content = '';
+    if(m.imageLoading) content = `<div class="chat-image-loading"><i class="fas fa-spinner fa-spin"></i> Đang nhận ảnh...</div>`;
+    else if(m.imageData) content = `<img src="${m.imageData}" onclick="openChatImage('${m.imageId}')" alt="ảnh">`;
+    else if(m.text) content = linkify(m.text);
+    return `<div class="chat-msg ${m.self?'self':''}">
+      <div class="chat-msg__avatar ${isTeacher?'teacher':''}">${escapeHtml(getInitials(m.name))}</div>
+      <div class="chat-msg__body">
+        <div class="chat-msg__head">
+          <span class="chat-msg__name ${isTeacher?'teacher':''}">${escapeHtml(m.name)}${isTeacher?' · GV':''}</span>
+          <span class="chat-msg__time">${time}</span>
+        </div>
+        <div class="chat-msg__text">${content}</div>
+      </div>
+    </div>`;
+  }).join('');
+  el.scrollTop = el.scrollHeight;
+}
+
+/* ============================================================
+   NOTES với lookup
+   ============================================================ */
+let lookupState = { hz:'', py:'', mn:'', example:'', loading:false };
+let lookupTimer = null;
+
+async function lookupWord(hanzi){
+  hanzi = hanzi.trim();
+  if(!hanzi) return null;
+  const result = { hz: hanzi, py:'', mn:'', example:'' };
+  try { if(window.pinyinPro && window.pinyinPro.pinyin) result.py = window.pinyinPro.pinyin(hanzi, { toneType:'symbol', type:'string' }); } catch(e){}
+  try { result.mn = await fetchGoogleTranslate(hanzi) || ''; } catch(e){}
+  return result;
+}
+
+async function fetchGoogleTranslate(text){
+  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=zh-CN&tl=vi&dt=t&q=${encodeURIComponent(text)}`;
+  const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+  if(!res.ok) throw new Error('GT HTTP ' + res.status);
+  const data = await res.json();
+  if(Array.isArray(data) && Array.isArray(data[0])) return data[0].map(seg => seg[0]).join('').trim();
+  return '';
+}
+
+function onNoteHzInput(){
+  const hz = $('noteHz').value.trim();
+  lookupState.hz = hz;
+  if(!hz){
+    lookupState = { hz:'', py:'', mn:'', example:'', loading:false };
+    renderLookupPreview(); updateAddNoteButton(); return;
+  }
+  clearTimeout(lookupTimer);
+  lookupTimer = setTimeout(async () => {
+    lookupState.loading = true; renderLookupPreview();
+    try {
+      const r = await lookupWord(hz);
+      if(r && lookupState.hz === hz){ lookupState.py = r.py || ''; lookupState.mn = r.mn || ''; lookupState.example = r.example || ''; }
+    } catch(e){}
+    lookupState.loading = false;
+    renderLookupPreview(); updateAddNoteButton();
+  }, 600);
+}
+
+function renderLookupPreview(){
+  const box = $('lookupPreview');
+  if(!box) return;
+  const s = lookupState;
+  if(!s.hz){ box.innerHTML = '<div class="lookup-empty">Nhập Hán tự để tra pinyin, nghĩa và ví dụ</div>'; return; }
+  if(s.loading){ box.innerHTML = '<div class="lookup-loading"><i class="fas fa-spinner fa-spin"></i> Đang tra...</div>'; return; }
+  box.innerHTML = `
+    <div class="lookup-row"><div class="lookup-label">Pinyin</div><input type="text" class="lookup-input" value="${escapeAttr(s.py)}" oninput="lookupState.py=this.value;updateAddNoteButton();"></div>
+    <div class="lookup-row"><div class="lookup-label">Nghĩa</div><input type="text" class="lookup-input" value="${escapeAttr(s.mn)}" oninput="lookupState.mn=this.value;updateAddNoteButton();"></div>
+    <div class="lookup-row"><div class="lookup-label">Ví dụ</div><input type="text" class="lookup-input" value="${escapeAttr(s.example)}" oninput="lookupState.example=this.value;"></div>
+  `;
+}
+
+function updateAddNoteButton(){
+  const btn = $('btnAddNote');
+  if(!btn) return;
+  btn.disabled = !(lookupState.hz && lookupState.mn);
+}
+
+function addNote(){
+  if(myRole !== 'teacher') return;
+  const hz = lookupState.hz.trim();
+  const mn = lookupState.mn.trim();
+  if(!hz || !mn){ toast('Cần Hán tự và nghĩa', 'warn'); return; }
+  const note = { hz, py: lookupState.py.trim(), mn, example: lookupState.example.trim() };
+  notes.push(note);
+  sendMsg({ type:'note-add', ...note });
+  renderNotes();
+  $('noteHz').value = '';
+  lookupState = { hz:'', py:'', mn:'', example:'', loading:false };
+  renderLookupPreview(); updateAddNoteButton();
+  $('noteHz').focus();
+  toast('📖 Đã thêm từ vựng', 'ok');
+}
+
+function deleteNote(idx){
+  if(myRole !== 'teacher') return;
+  notes.splice(idx, 1);
+  sendMsg({ type:'note-delete', idx });
+  renderNotes();
+}
+
+function clearAllNotes(){
+  if(myRole !== 'teacher') return;
+  if(!notes.length) return;
+  if(!confirm('Xoá hết ghi chú?')) return;
+  notes = [];
+  sendMsg({ type:'note-clear' });
+  renderNotes();
+}
+
+function exportNotesToFile(){
+  if(!notes.length){ toast('Chưa có từ vựng để xuất', 'warn'); return; }
+  const today = new Date().toLocaleDateString('vi-VN');
+  const lessonId = 1000 + Math.floor(Math.random() * 9000);
+  const lesson = {
+    id: lessonId, level: 'Live-class',
+    title: 'Từ vựng lớp ' + today,
+    sub: 'Ghi chú từ buổi học ngày ' + today + ' cùng ' + myName,
+    vocab: notes.map(n => ({ hanzi: n.hz || '', pinyin: n.py || '', meaning: n.mn || '', pos: '', example: n.example || '', image: '' })),
+    speaking: notes.map(n => ({ hanzi: n.hz || '', pinyin: n.py || '', meaning: n.mn || '' })),
+    quiz: [], dialogue: { lines: [], keyWords: [] }
+  };
+  const json = JSON.stringify([lesson], null, 2);
+  const blob = new Blob([json], { type:'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `handi-vocab-${Date.now()}.json`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  toast('📥 Đã tải file. Vào CMS → Import JSON.', 'ok', 5000);
+}
+
+function renderNotes(){
+  const el = $('notesList');
+  if(!notes.length){
+    el.innerHTML = `<div class="notes-empty"><i class="fas fa-bookmark"></i>Chưa có từ vựng<br>${myRole === 'teacher' ? 'Ghi từ mới ở dưới' : 'GV sẽ ghi từ mới ở đây'}</div>`;
+    return;
+  }
+  el.innerHTML = notes.map((n, i) => `
+    <div class="note-item">
+      ${myRole === 'teacher' ? `<button class="note-item__del" onclick="deleteNote(${i})"><i class="fas fa-times"></i></button>` : ''}
+      <div class="note-item__hz">${escapeHtml(n.hz)}</div>
+      ${n.py ? `<div class="note-item__py">${escapeHtml(n.py)}</div>` : ''}
+      <div class="note-item__mn">${escapeHtml(n.mn)}</div>
+      ${n.example ? `<div class="note-item__ex"><i class="fas fa-quote-left"></i> ${escapeHtml(n.example)}</div>` : ''}
+    </div>`).join('');
+}
+
+/* ============================================================
+   LEAVE
+   ============================================================ */
+async function leaveRoom(){
+  if(!confirm('Rời khỏi lớp?')) return;
+  await cleanup();
+  location.reload();
+}
+
+async function cleanup(){
+  try {
+    if(broadcastTimer){ clearInterval(broadcastTimer); broadcastTimer = null; }
+    if(headerDurationTimer){ clearInterval(headerDurationTimer); headerDurationTimer = null; }
+    if(screenTrack){ screenTrack.stop(); screenTrack.close(); screenTrack = null; }
+    if(localVideoTrack){ localVideoTrack.stop(); localVideoTrack.close(); localVideoTrack = null; }
+    if(localAudioTrack){ localAudioTrack.stop(); localAudioTrack.close(); localAudioTrack = null; }
+    if(client){ await client.leave(); client = null; }
+  } catch(e){}
+  remoteUsers = {}; chatMessages = []; imageBuffers = {};
+}
+
+function showStatus(type, title, body, actions, ms){
+  const map = { success:'fa-circle-check', error:'fa-circle-exclamation', warn:'fa-triangle-exclamation', info:'fa-circle-info' };
+  const el = document.createElement('div');
+  el.className = 'status-toast ' + type;
+  el.innerHTML = `
+    <i class="fas ${map[type] || 'fa-circle-info'}"></i>
+    <div class="status-toast__body">
+      <b>${escapeHtml(title)}</b>
+      <span>${escapeHtml(body || '')}</span>
+      ${actions ? '<div class="status-toast__actions">' + actions + '</div>' : ''}
+    </div>`;
+  $('toastContainer').appendChild(el);
+  setTimeout(() => {
+    el.style.transition = 'opacity .3s, transform .3s';
+    el.style.opacity = '0';
+    el.style.transform = 'translateX(120%)';
+    setTimeout(() => el.remove(), 300);
+  }, ms || 6000);
+}
+
+function getInitials(name){
+  if(!name) return '?';
+  const clean = name.replace(/\s*\(Bạn\)\s*/, '').trim();
+  const p = clean.split(/\s+/);
+  if(p.length === 1) return p[0].substring(0,2).toUpperCase();
+  return (p[0][0] + p[p.length-1][0]).toUpperCase();
+}
+
+function escapeHtml(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function escapeAttr(s){ return escapeHtml(s); }
+
+function toast(msg, type, ms){
+  const t = $('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + (type || '');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.className = 'toast', ms || 2600);
+}
+
+function autoFillFromUrl(){
+  const params = new URLSearchParams(location.search);
+  const code = (params.get('code') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, CODE_LENGTH);
+  const name = params.get('name');
+  if(code){
+    switchSetupTab('student');
+    $('studentCodeInput').value = code;
+    if(name) $('studentNameInput').value = name;
+    setTimeout(() => $('studentNameInput').focus(), 300);
+    toast(`Đã điền mã ${code}`, 'ok', 2500);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const hz = $('noteHz');
+  if(hz) hz.addEventListener('input', onNoteHzInput);
+  const codeInp = $('studentCodeInput');
+  if(codeInp){
+    codeInp.addEventListener('input', e => {
+      e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, CODE_LENGTH);
+    });
+  }
+});
+
+window.addEventListener('beforeunload', () => { cleanup(); });
+autoFillFromUrl();
+</script>
+</body>
+</html>
